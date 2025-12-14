@@ -4,7 +4,9 @@ class AirConditioningPlugin extends OfficePlugin {
         super(
             '智能空调系统',
             '安装智能空调系统，自动调节办公室温度，减少员工关于温度的抱怨',
-            ['空调问题']
+            ['空调问题'],
+            'Kiro开发团队',
+            '1.2.0'
         );
         this.temperatureLevel = 0; // 0=正常, 1=优化, 2=完美
     }

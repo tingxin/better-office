@@ -4,7 +4,9 @@ class WellnessProgramPlugin extends OfficePlugin {
         super(
             '员工健康计划',
             '实施综合健康计划，包括健身设施、健康零食和定期休息提醒',
-            ['健康问题', '座椅问题', '异味问题']
+            ['健康问题', '座椅问题', '异味问题'],
+            '健康生活顾问',
+            '1.5.3'
         );
         this.programs = [];
     }

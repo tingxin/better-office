@@ -54,7 +54,7 @@
             justify-content: center;
             gap: 40px;
             margin-bottom: 15px;
-            width: 1280px;
+            width: 1400px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -77,11 +77,21 @@
             margin-bottom: 20px;
         }
 
+        .game-layout {
+            display: flex;
+            gap: 20px;
+            width: 1400px;
+            margin: 0 auto;
+        }
+
+        .main-game-area {
+            flex: 1;
+        }
+
         #gameContainer {
             position: relative;
-            width: 1280px;
+            width: 1000px;
             height: 720px;
-            margin: 0 auto;
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
@@ -99,11 +109,9 @@
             margin-top: 25px;
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             flex-wrap: wrap;
-            width: 1280px;
-            margin-left: auto;
-            margin-right: auto;
+            width: 1000px;
         }
 
         .btn {
@@ -163,15 +171,27 @@
             box-shadow: 0 6px 20px rgba(168, 237, 234, 0.6);
         }
 
-        @media (max-width: 1400px) {
+        @media (max-width: 1500px) {
             .game-wrapper {
                 margin: 20px;
                 padding: 20px;
             }
 
+            .game-layout {
+                flex-direction: column;
+                width: 100%;
+                max-width: 1000px;
+            }
+
+            .plugin-panel {
+                width: 100%;
+                height: auto;
+                max-height: 400px;
+            }
+
             #gameContainer {
                 width: 100%;
-                max-width: 1280px;
+                max-width: 1000px;
             }
 
             #gameCanvas {
@@ -181,12 +201,20 @@
 
             .controls {
                 width: 100%;
-                max-width: 1280px;
             }
 
             .stats {
                 width: 100%;
-                max-width: 1280px;
+            }
+
+            .plugin-grid {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .plugin-card {
+                flex: 1;
+                min-width: 300px;
             }
         }
 
@@ -231,19 +259,20 @@
 
         /* 插件面板样式 */
         .plugin-panel {
-            width: 1280px;
-            margin: 30px auto;
-            padding: 25px;
+            width: 360px;
+            height: 720px;
+            padding: 20px;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
         }
 
         .plugin-panel h3 {
             text-align: center;
-            margin-bottom: 25px;
-            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
             background: linear-gradient(135deg, #667eea, #764ba2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -251,16 +280,16 @@
         }
 
         .plugin-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
         .plugin-card {
             background: #ffffff;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
             border: 2px solid #e9ecef;
             transition: all 0.3s ease;
         }
@@ -297,9 +326,33 @@
         }
 
         .plugin-info p {
-            margin: 0;
+            margin: 0 0 8px 0;
             color: #666;
             font-size: 0.9rem;
+        }
+
+        .plugin-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .plugin-meta .author {
+            font-size: 0.8rem;
+            color: #495057;
+            background: #f8f9fa;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .plugin-meta .version {
+            font-size: 0.75rem;
+            color: #6c757d;
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-weight: 600;
         }
 
         .plugin-status {
@@ -367,85 +420,102 @@
             <p class="tip">💡 点击员工查看姓名和活动状态！观察他们的日常工作生活</p>
         </div>
 
-        <div id="gameContainer">
-            <canvas id="gameCanvas" width="1280" height="720"></canvas>
-        </div>
-
-        <div class="controls">
-            <button class="btn btn-primary" onclick="addEmployee()">➕ 添加员工</button>
-            <button class="btn btn-secondary" onclick="removeEmployee()">➖ 移除员工</button>
-            <button class="btn btn-success" onclick="togglePause()">⏸️ 暂停/继续</button>
-            <button class="btn btn-danger" onclick="resetGame()">🔄 重置游戏</button>
-            <button class="btn btn-primary" onclick="debugPlugins()" style="background: #17a2b8;">🔧 调试插件</button>
-        </div>
-
-        <!-- 插件管理面板 -->
-        <div class="plugin-panel">
-            <h3>🔌 办公室改善插件</h3>
-            <div class="plugin-grid">
-                <!-- 空调插件 -->
-                <div class="plugin-card" id="ac-plugin-card">
-                    <div class="plugin-header">
-                        <span class="plugin-icon">🌡️</span>
-                        <div class="plugin-info">
-                            <h4>智能空调系统</h4>
-                            <p>自动调节温度，减少员工抱怨</p>
-                        </div>
-                        <div class="plugin-status" id="ac-status">未激活</div>
-                    </div>
-                    <div class="plugin-controls">
-                        <button class="btn btn-primary" onclick="togglePlugin('智能空调系统', 'ac')"
-                            id="ac-toggle">激活插件</button>
-                        <div class="plugin-settings" id="ac-settings" style="display: none;">
-                            <label>温度级别:</label>
-                            <select onchange="adjustTemperature(this.value)" id="temp-level">
-                                <option value="0">标准</option>
-                                <option value="1">优化</option>
-                                <option value="2">完美</option>
-                            </select>
-                        </div>
-                    </div>
+        <div class="game-layout">
+            <div class="main-game-area">
+                <div id="gameContainer">
+                    <canvas id="gameCanvas" width="1000" height="720"></canvas>
                 </div>
 
-                <!-- 打印机插件 -->
-                <div class="plugin-card" id="printer-plugin-card">
-                    <div class="plugin-header">
-                        <span class="plugin-icon">🖨️</span>
-                        <div class="plugin-info">
-                            <h4>打印机维护系统</h4>
-                            <p>定期维护，减少故障和排队</p>
+                <div class="controls">
+                    <button class="btn btn-primary" onclick="addEmployee()">➕ 添加员工</button>
+                    <button class="btn btn-secondary" onclick="removeEmployee()">➖ 移除员工</button>
+                    <button class="btn btn-success" onclick="togglePause()">⏸️ 暂停/继续</button>
+                    <button class="btn btn-danger" onclick="resetGame()">🔄 重置游戏</button>
+                    <button class="btn btn-primary" onclick="debugPlugins()" style="background: #17a2b8;">🔧
+                        调试插件</button>
+                </div>
+            </div>
+
+            <!-- 插件管理面板 -->
+            <div class="plugin-panel">
+                <h3>🔌 办公室改善插件</h3>
+                <div class="plugin-grid">
+                    <!-- 空调插件 -->
+                    <div class="plugin-card" id="ac-plugin-card">
+                        <div class="plugin-header">
+                            <span class="plugin-icon">🌡️</span>
+                            <div class="plugin-info">
+                                <h4>智能空调系统</h4>
+                                <p>自动调节温度，减少员工抱怨</p>
+                                <div class="plugin-meta">
+                                    <span class="author">👤 Kiro开发团队</span>
+                                    <span class="version">v1.2.0</span>
+                                </div>
+                            </div>
+                            <div class="plugin-status" id="ac-status">未激活</div>
                         </div>
-                        <div class="plugin-status" id="printer-status">未激活</div>
-                    </div>
-                    <div class="plugin-controls">
-                        <button class="btn btn-primary" onclick="togglePlugin('打印机维护系统', 'printer')"
-                            id="printer-toggle">激活插件</button>
-                        <div class="plugin-settings" id="printer-settings" style="display: none;">
-                            <button class="btn btn-secondary" onclick="emergencyRepair()">🚨 紧急维修</button>
-                            <div class="maintenance-info">
-                                <span>备用打印机: <span id="backup-count">0</span></span>
+                        <div class="plugin-controls">
+                            <button class="btn btn-primary" onclick="togglePlugin('智能空调系统', 'ac')"
+                                id="ac-toggle">激活插件</button>
+                            <div class="plugin-settings" id="ac-settings" style="display: none;">
+                                <label>温度级别:</label>
+                                <select onchange="adjustTemperature(this.value)" id="temp-level">
+                                    <option value="0">标准</option>
+                                    <option value="1">优化</option>
+                                    <option value="2">完美</option>
+                                </select>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- 健康计划插件 -->
-                <div class="plugin-card" id="wellness-plugin-card">
-                    <div class="plugin-header">
-                        <span class="plugin-icon">💪</span>
-                        <div class="plugin-info">
-                            <h4>员工健康计划</h4>
-                            <p>提供健身设施和健康活动</p>
+                    <!-- 打印机插件 -->
+                    <div class="plugin-card" id="printer-plugin-card">
+                        <div class="plugin-header">
+                            <span class="plugin-icon">🖨️</span>
+                            <div class="plugin-info">
+                                <h4>打印机维护系统</h4>
+                                <p>定期维护，减少故障和排队</p>
+                                <div class="plugin-meta">
+                                    <span class="author">👤 办公设备专家</span>
+                                    <span class="version">v2.1.0</span>
+                                </div>
+                            </div>
+                            <div class="plugin-status" id="printer-status">未激活</div>
                         </div>
-                        <div class="plugin-status" id="wellness-status">未激活</div>
+                        <div class="plugin-controls">
+                            <button class="btn btn-primary" onclick="togglePlugin('打印机维护系统', 'printer')"
+                                id="printer-toggle">激活插件</button>
+                            <div class="plugin-settings" id="printer-settings" style="display: none;">
+                                <button class="btn btn-secondary" onclick="emergencyRepair()">🚨 紧急维修</button>
+                                <div class="maintenance-info">
+                                    <span>备用打印机: <span id="backup-count">0</span></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="plugin-controls">
-                        <button class="btn btn-primary" onclick="togglePlugin('员工健康计划', 'wellness')"
-                            id="wellness-toggle">激活插件</button>
-                        <div class="plugin-settings" id="wellness-settings" style="display: none;">
-                            <button class="btn btn-secondary" onclick="conductHealthCheck()">🏥 健康检查</button>
-                            <div class="wellness-activities">
-                                <span>活动状态: <span id="wellness-activity">待机中</span></span>
+
+                    <!-- 健康计划插件 -->
+                    <div class="plugin-card" id="wellness-plugin-card">
+                        <div class="plugin-header">
+                            <span class="plugin-icon">💪</span>
+                            <div class="plugin-info">
+                                <h4>员工健康计划</h4>
+                                <p>提供健身设施和健康活动</p>
+                                <div class="plugin-meta">
+                                    <span class="author">👤 健康生活顾问</span>
+                                    <span class="version">v1.5.3</span>
+                                </div>
+                            </div>
+                            <div class="plugin-status" id="wellness-status">未激活</div>
+                        </div>
+                        <div class="plugin-controls">
+                            <button class="btn btn-primary" onclick="togglePlugin('员工健康计划', 'wellness')"
+                                id="wellness-toggle">激活插件</button>
+                            <div class="plugin-settings" id="wellness-settings" style="display: none;">
+                                <button class="btn btn-secondary" onclick="conductHealthCheck()">🏥 健康检查</button>
+                                <div class="wellness-activities">
+                                    <span>活动状态: <span id="wellness-activity">待机中</span></span>
+                                </div>
                             </div>
                         </div>
                     </div>

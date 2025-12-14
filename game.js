@@ -79,10 +79,12 @@ class PluginAPI {
 
 // 插件基类 - 所有插件都应该继承这个类
 class OfficePlugin {
-    constructor(name, description, targetComplaints = []) {
+    constructor(name, description, targetComplaints = [], author = '未知作者', version = '1.0.0') {
         this.name = name;
         this.description = description;
         this.targetComplaints = targetComplaints;
+        this.author = author;
+        this.version = version;
         this.isActive = false;
         this.api = null;
     }
@@ -127,6 +129,8 @@ class OfficePlugin {
         return {
             name: this.name,
             description: this.description,
+            author: this.author,
+            version: this.version,
             isActive: this.isActive,
             targetComplaints: this.targetComplaints
         };
@@ -260,27 +264,26 @@ class OfficeGame {
             '食堂排队太长了，都不知道什么时候能吃上饭'
         ];
 
-        // 美化的办公室活动区域
+        // 美化的办公室活动区域 (适应1000px宽度)
         this.activityAreas = [
             { name: '饮水机', x: 280, y: 50, width: 40, height: 40, icon: '🚰', color: '#E3F2FD', borderColor: '#2196F3' },
-            { name: '打印机', x: 1100, y: 100, width: 50, height: 40, icon: '🖨️', color: '#E8F5E8', borderColor: '#4CAF50' },
-            { name: '休息区', x: 1000, y: 600, width: 120, height: 80, icon: '☕', color: '#FFF3E0', borderColor: '#FF9800' },
+            { name: '打印机', x: 900, y: 100, width: 50, height: 40, icon: '🖨️', color: '#E8F5E8', borderColor: '#4CAF50' },
+            { name: '休息区', x: 800, y: 600, width: 120, height: 80, icon: '☕', color: '#FFF3E0', borderColor: '#FF9800' },
             { name: '洗手间', x: 280, y: 600, width: 70, height: 50, icon: '🚻', color: '#FCE4EC', borderColor: '#E91E63' },
-            { name: '会议室', x: 800, y: 50, width: 150, height: 80, icon: '📋', color: '#F3E5F5', borderColor: '#9C27B0' },
-            { name: '茶水间', x: 1150, y: 300, width: 80, height: 60, icon: '🫖', color: '#E8F8F5', borderColor: '#52C41A' },
+            { name: '会议室', x: 650, y: 50, width: 120, height: 80, icon: '📋', color: '#F3E5F5', borderColor: '#9C27B0' },
+            { name: '茶水间', x: 900, y: 300, width: 80, height: 60, icon: '🫖', color: '#E8F8F5', borderColor: '#52C41A' },
             { name: '储物间', x: 280, y: 300, width: 60, height: 50, icon: '📦', color: '#FFF7E6', borderColor: '#FA8C16' }
         ];
 
-        // 装饰元素
+        // 装饰元素 (适应1000px宽度)
         this.decorations = [
             { type: 'plant', x: 400, y: 30, emoji: '🌱' },
-            { type: 'plant', x: 650, y: 30, emoji: '🪴' },
-            { type: 'plant', x: 1000, y: 30, emoji: '🌿' },
-            { type: 'plant', x: 1200, y: 500, emoji: '🌵' },
-            { type: 'clock', x: 640, y: 20, emoji: '🕐' },
-            { type: 'bookshelf', x: 1150, y: 200, emoji: '📚' },
-            { type: 'whiteboard', x: 280, y: 200, emoji: '📋' },
-            { type: 'calendar', x: 1200, y: 150, emoji: '📅' }
+            { type: 'plant', x: 550, y: 30, emoji: '🪴' },
+            { type: 'plant', x: 800, y: 30, emoji: '🌿' },
+            { type: 'plant', x: 950, y: 500, emoji: '🌵' },
+            { type: 'clock', x: 500, y: 20, emoji: '🕐' },
+            { type: 'bookshelf', x: 900, y: 200, emoji: '📚' },
+            { type: 'whiteboard', x: 280, y: 200, emoji: '📋' }
         ];
 
         this.loadImages();
@@ -405,9 +408,9 @@ class OfficeGame {
         const startX = 320; // 向右移动为公告栏留空间
         const startY = 120;
 
-        // 宽屏布局：4行6列的办公桌
+        // 调整布局：4行5列的办公桌 (适应1000px宽度)
         for (let row = 0; row < 4; row++) {
-            for (let col = 0; col < 6; col++) {
+            for (let col = 0; col < 5; col++) {
                 const x = startX + col * (deskWidth + spacing);
                 const y = startY + row * (deskHeight + spacing);
 

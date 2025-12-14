@@ -4,7 +4,9 @@ class PrinterMaintenancePlugin extends OfficePlugin {
         super(
             '打印机维护系统',
             '定期维护打印机，减少卡纸和故障，提供备用打印机',
-            ['打印机问题', '排队问题']
+            ['打印机问题', '排队问题'],
+            '办公设备专家',
+            '2.1.0'
         );
         this.maintenanceSchedule = [];
         this.backupPrinters = 0;
