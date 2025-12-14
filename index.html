@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>办公室生存游戏</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .game-wrapper {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 15px;
+            width: 1280px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .stat-item {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(240, 147, 251, 0.3);
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .tip {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        #gameContainer {
+            position: relative;
+            width: 1280px;
+            height: 720px;
+            margin: 0 auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            background: #f8f9fa;
+        }
+
+        #gameCanvas {
+            display: block;
+            cursor: pointer;
+            border-radius: 15px;
+        }
+
+        .controls {
+            text-align: center;
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            width: 1280px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-width: 160px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #8b4513;
+            box-shadow: 0 4px 15px rgba(252, 182, 159, 0.4);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(252, 182, 159, 0.6);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            color: #d63384;
+            box-shadow: 0 4px 15px rgba(255, 154, 158, 0.4);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 154, 158, 0.6);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #198754;
+            box-shadow: 0 4px 15px rgba(168, 237, 234, 0.4);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(168, 237, 234, 0.6);
+        }
+
+        @media (max-width: 1400px) {
+            .game-wrapper {
+                margin: 20px;
+                padding: 20px;
+            }
+
+            #gameContainer {
+                width: 100%;
+                max-width: 1280px;
+            }
+
+            #gameCanvas {
+                width: 100%;
+                height: auto;
+            }
+
+            .controls {
+                width: 100%;
+                max-width: 1280px;
+            }
+
+            .stats {
+                width: 100%;
+                max-width: 1280px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .game-wrapper {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: 15px;
+                width: 100%;
+            }
+
+            .controls {
+                width: 100%;
+                gap: 10px;
+            }
+
+            .btn {
+                padding: 12px 20px;
+                font-size: 14px;
+                min-width: 120px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-wrapper">
+        <div class="header">
+            <h1>🏢 办公室生存游戏</h1>
+            <div class="stats">
+                <div class="stat-item">
+                    👥 员工: <span id="employeeCount">0</span>
+                </div>
+                <div class="stat-item">
+                    ⏰ 时间: <span id="gameTime">00:00</span>
+                </div>
+            </div>
+            <p class="tip">💡 点击员工查看姓名和活动状态！观察他们的日常工作生活</p>
+        </div>
+
+        <div id="gameContainer">
+            <canvas id="gameCanvas" width="1280" height="720"></canvas>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-primary" onclick="addEmployee()">➕ 添加员工</button>
+            <button class="btn btn-secondary" onclick="removeEmployee()">➖ 移除员工</button>
+            <button class="btn btn-success" onclick="togglePause()">⏸️ 暂停/继续</button>
+            <button class="btn btn-danger" onclick="resetGame()">🔄 重置游戏</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+
+</html>
