@@ -216,6 +216,138 @@
                 font-size: 14px;
                 min-width: 120px;
             }
+
+            .plugin-panel {
+                width: 100%;
+                max-width: 1280px;
+                margin: 0 auto;
+            }
+
+            .plugin-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+
+        /* 插件面板样式 */
+        .plugin-panel {
+            width: 1280px;
+            margin: 30px auto;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .plugin-panel h3 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .plugin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .plugin-card {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .plugin-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .plugin-card.active {
+            border-color: #28a745;
+            background: linear-gradient(135deg, #f8fff9 0%, #e8f5e8 100%);
+        }
+
+        .plugin-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .plugin-icon {
+            font-size: 2rem;
+            margin-right: 15px;
+        }
+
+        .plugin-info {
+            flex: 1;
+        }
+
+        .plugin-info h4 {
+            margin: 0 0 5px 0;
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .plugin-info p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .plugin-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: #6c757d;
+            color: white;
+        }
+
+        .plugin-status.active {
+            background: #28a745;
+        }
+
+        .plugin-controls {
+            margin-top: 15px;
+        }
+
+        .plugin-settings {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .plugin-settings label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .plugin-settings select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .maintenance-info,
+        .wellness-activities {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: #e9ecef;
+            border-radius: 5px;
+            font-size: 0.9rem;
         }
     </style>
 </head>
@@ -244,10 +376,257 @@
             <button class="btn btn-secondary" onclick="removeEmployee()">➖ 移除员工</button>
             <button class="btn btn-success" onclick="togglePause()">⏸️ 暂停/继续</button>
             <button class="btn btn-danger" onclick="resetGame()">🔄 重置游戏</button>
+            <button class="btn btn-primary" onclick="debugPlugins()" style="background: #17a2b8;">🔧 调试插件</button>
+        </div>
+
+        <!-- 插件管理面板 -->
+        <div class="plugin-panel">
+            <h3>🔌 办公室改善插件</h3>
+            <div class="plugin-grid">
+                <!-- 空调插件 -->
+                <div class="plugin-card" id="ac-plugin-card">
+                    <div class="plugin-header">
+                        <span class="plugin-icon">🌡️</span>
+                        <div class="plugin-info">
+                            <h4>智能空调系统</h4>
+                            <p>自动调节温度，减少员工抱怨</p>
+                        </div>
+                        <div class="plugin-status" id="ac-status">未激活</div>
+                    </div>
+                    <div class="plugin-controls">
+                        <button class="btn btn-primary" onclick="togglePlugin('智能空调系统', 'ac')"
+                            id="ac-toggle">激活插件</button>
+                        <div class="plugin-settings" id="ac-settings" style="display: none;">
+                            <label>温度级别:</label>
+                            <select onchange="adjustTemperature(this.value)" id="temp-level">
+                                <option value="0">标准</option>
+                                <option value="1">优化</option>
+                                <option value="2">完美</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 打印机插件 -->
+                <div class="plugin-card" id="printer-plugin-card">
+                    <div class="plugin-header">
+                        <span class="plugin-icon">🖨️</span>
+                        <div class="plugin-info">
+                            <h4>打印机维护系统</h4>
+                            <p>定期维护，减少故障和排队</p>
+                        </div>
+                        <div class="plugin-status" id="printer-status">未激活</div>
+                    </div>
+                    <div class="plugin-controls">
+                        <button class="btn btn-primary" onclick="togglePlugin('打印机维护系统', 'printer')"
+                            id="printer-toggle">激活插件</button>
+                        <div class="plugin-settings" id="printer-settings" style="display: none;">
+                            <button class="btn btn-secondary" onclick="emergencyRepair()">🚨 紧急维修</button>
+                            <div class="maintenance-info">
+                                <span>备用打印机: <span id="backup-count">0</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 健康计划插件 -->
+                <div class="plugin-card" id="wellness-plugin-card">
+                    <div class="plugin-header">
+                        <span class="plugin-icon">💪</span>
+                        <div class="plugin-info">
+                            <h4>员工健康计划</h4>
+                            <p>提供健身设施和健康活动</p>
+                        </div>
+                        <div class="plugin-status" id="wellness-status">未激活</div>
+                    </div>
+                    <div class="plugin-controls">
+                        <button class="btn btn-primary" onclick="togglePlugin('员工健康计划', 'wellness')"
+                            id="wellness-toggle">激活插件</button>
+                        <div class="plugin-settings" id="wellness-settings" style="display: none;">
+                            <button class="btn btn-secondary" onclick="conductHealthCheck()">🏥 健康检查</button>
+                            <div class="wellness-activities">
+                                <span>活动状态: <span id="wellness-activity">待机中</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script src="game.js"></script>
+
+    <!-- 插件加载 -->
+    <script src="plugins/air-conditioning-plugin.js"></script>
+    <script src="plugins/printer-maintenance-plugin.js"></script>
+    <script src="plugins/wellness-program-plugin.js"></script>
+
+    <script>
+        // 插件管理界面
+        window.addEventListener('load', () => {
+            // 等待游戏加载完成后显示插件控制台信息
+            setTimeout(() => {
+                console.log('🎮 办公室生存游戏已加载');
+
+                // 等待插件注册完成
+                setTimeout(() => {
+                    console.log('📦 可用插件:', window.game.getPluginList());
+                    console.log('');
+                    console.log('🔧 插件管理命令:');
+                    console.log('  game.getPluginList() - 查看所有插件');
+                    console.log('  game.activatePlugin("插件名称") - 激活插件');
+                    console.log('  game.deactivatePlugin("插件名称") - 停用插件');
+                    console.log('  game.getSolutions() - 查看已实施的解决方案');
+                    console.log('');
+                    console.log('💡 示例: game.activatePlugin("智能空调系统")');
+                    console.log('🔧 如果插件未显示，请点击"调试插件"按钮');
+                }, 2000);
+            }, 1000);
+        });
+
+        // 插件UI控制函数
+        function togglePlugin(pluginName, pluginId) {
+            console.log('尝试切换插件:', pluginName, pluginId);
+
+            if (!window.game) {
+                console.error('游戏对象未找到');
+                return;
+            }
+
+            const plugin = window.game.plugins.get(pluginName);
+            if (!plugin) {
+                console.error('插件未找到:', pluginName);
+                console.log('可用插件:', Array.from(window.game.plugins.keys()));
+                return;
+            }
+
+            const card = document.getElementById(`${pluginId}-plugin-card`);
+            const status = document.getElementById(`${pluginId}-status`);
+            const toggle = document.getElementById(`${pluginId}-toggle`);
+            const settings = document.getElementById(`${pluginId}-settings`);
+
+            if (plugin.isActive) {
+                // 停用插件
+                console.log('停用插件:', pluginName);
+                window.game.deactivatePlugin(pluginName);
+                card.classList.remove('active');
+                status.textContent = '未激活';
+                status.classList.remove('active');
+                toggle.textContent = '激活插件';
+                settings.style.display = 'none';
+            } else {
+                // 激活插件
+                console.log('激活插件:', pluginName);
+                window.game.activatePlugin(pluginName);
+                card.classList.add('active');
+                status.textContent = '已激活';
+                status.classList.add('active');
+                toggle.textContent = '停用插件';
+                settings.style.display = 'block';
+            }
+        }
+
+        // 空调插件特定功能
+        function adjustTemperature(level) {
+            const plugin = window.game.plugins.get('智能空调系统');
+            if (plugin && plugin.isActive && plugin.adjustTemperature) {
+                plugin.adjustTemperature(parseInt(level));
+
+                const levelNames = ['标准', '优化', '完美'];
+                console.log(`🌡️ 温度调节至: ${levelNames[level]}`);
+            }
+        }
+
+        // 打印机插件特定功能
+        function emergencyRepair() {
+            const plugin = window.game.plugins.get('打印机维护系统');
+            if (plugin && plugin.isActive && plugin.emergencyRepair) {
+                plugin.emergencyRepair();
+
+                // 更新UI反馈
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = '✅ 维修完成';
+                button.disabled = true;
+
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                }, 3000);
+            }
+        }
+
+        // 健康计划插件特定功能
+        function conductHealthCheck() {
+            const plugin = window.game.plugins.get('员工健康计划');
+            if (plugin && plugin.isActive && plugin.conductHealthCheck) {
+                plugin.conductHealthCheck();
+
+                // 更新活动状态显示
+                const activitySpan = document.getElementById('wellness-activity');
+                activitySpan.textContent = '进行健康检查...';
+
+                setTimeout(() => {
+                    activitySpan.textContent = '待机中';
+                }, 5000);
+            }
+        }
+
+        // 更新备用打印机数量显示
+        function updateBackupPrinterCount() {
+            const plugin = window.game.plugins.get('打印机维护系统');
+            if (plugin && plugin.backupPrinters !== undefined) {
+                const countSpan = document.getElementById('backup-count');
+                if (countSpan) {
+                    countSpan.textContent = plugin.backupPrinters;
+                }
+            }
+        }
+
+        // 定期更新插件状态显示
+        setInterval(() => {
+            updateBackupPrinterCount();
+
+            // 更新健康活动状态
+            const plugin = window.game.plugins.get('员工健康计划');
+            if (plugin && plugin.isActive) {
+                const activitySpan = document.getElementById('wellness-activity');
+                if (activitySpan && activitySpan.textContent === '待机中') {
+                    const activities = ['待机中', '监控中...', '准备活动...'];
+                    const randomActivity = activities[Math.floor(Math.random() * activities.length)];
+                    activitySpan.textContent = randomActivity;
+                }
+            }
+        }, 5000);
+
+        // 调试插件系统
+        function debugPlugins() {
+            console.log('=== 插件系统调试信息 ===');
+            console.log('游戏对象:', window.game);
+            console.log('插件数量:', window.game ? window.game.plugins.size : '游戏未加载');
+
+            if (window.game && window.game.plugins.size > 0) {
+                console.log('已注册的插件:');
+                window.game.plugins.forEach((plugin, name) => {
+                    console.log(`  - ${name}: ${plugin.isActive ? '已激活' : '未激活'}`);
+                });
+            } else {
+                console.log('没有找到已注册的插件');
+            }
+
+            // 测试插件注册
+            if (window.game && window.game.plugins.size === 0) {
+                console.log('尝试手动注册插件...');
+                try {
+                    const acPlugin = new AirConditioningPlugin();
+                    window.game.registerPlugin(acPlugin);
+                    console.log('✅ 空调插件手动注册成功');
+                } catch (error) {
+                    console.error('❌ 插件注册失败:', error);
+                }
+            }
+        }
+    </script>
 </body>
 
 </html>

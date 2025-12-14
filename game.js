@@ -1,3 +1,138 @@
+// 插件API类 - 为插件开发者提供的接口
+class PluginAPI {
+    constructor(game) {
+        this.game = game;
+    }
+
+    // 获取抱怨统计数据
+    getComplaintStats() {
+        return new Map(this.game.complaintStats);
+    }
+
+    // 获取员工列表
+    getEmployees() {
+        return [...this.game.employees];
+    }
+
+    // 获取办公室设施
+    getFacilities() {
+        return {
+            desks: [...this.game.desks],
+            activityAreas: [...this.game.activityAreas],
+            computers: [...this.game.computers]
+        };
+    }
+
+    // 实施解决方案
+    implementSolution(solutionId, config) {
+        if (this.game.solutions.has(solutionId)) {
+            console.warn(`解决方案 ${solutionId} 已经实施`);
+            return false;
+        }
+
+        this.game.solutions.set(solutionId, {
+            id: solutionId,
+            config: config,
+            implementedAt: Date.now(),
+            active: true
+        });
+
+        console.log(`✅ 解决方案 "${solutionId}" 已实施`);
+        return true;
+    }
+
+    // 移除解决方案
+    removeSolution(solutionId) {
+        if (this.game.solutions.delete(solutionId)) {
+            console.log(`❌ 解决方案 "${solutionId}" 已移除`);
+            return true;
+        }
+        return false;
+    }
+
+    // 减少特定类型的抱怨
+    reduceComplaints(category, reductionRate = 0.5) {
+        if (this.game.complaintStats.has(category)) {
+            const currentCount = this.game.complaintStats.get(category);
+            const newCount = Math.max(0, Math.floor(currentCount * (1 - reductionRate)));
+            this.game.complaintStats.set(category, newCount);
+            console.log(`📉 ${category} 抱怨减少了 ${Math.round(reductionRate * 100)}%`);
+        }
+    }
+
+    // 添加新的活动区域
+    addActivityArea(area) {
+        this.game.activityAreas.push(area);
+        console.log(`🏢 新增活动区域: ${area.name}`);
+    }
+
+    // 提升员工满意度
+    boostEmployeeMorale(employees = null) {
+        const targetEmployees = employees || this.game.employees;
+        targetEmployees.forEach(employee => {
+            // 减少抱怨频率
+            employee.nextComplaintTime = Math.max(employee.nextComplaintTime, 1800);
+        });
+        console.log(`😊 员工满意度提升`);
+    }
+}
+
+// 插件基类 - 所有插件都应该继承这个类
+class OfficePlugin {
+    constructor(name, description, targetComplaints = []) {
+        this.name = name;
+        this.description = description;
+        this.targetComplaints = targetComplaints;
+        this.isActive = false;
+        this.api = null;
+    }
+
+    // 插件初始化
+    init(api) {
+        this.api = api;
+        console.log(`🔌 插件 "${this.name}" 已加载`);
+    }
+
+    // 激活插件
+    activate() {
+        if (this.isActive) return false;
+
+        this.isActive = true;
+        this.onActivate();
+        console.log(`▶️ 插件 "${this.name}" 已激活`);
+        return true;
+    }
+
+    // 停用插件
+    deactivate() {
+        if (!this.isActive) return false;
+
+        this.isActive = false;
+        this.onDeactivate();
+        console.log(`⏸️ 插件 "${this.name}" 已停用`);
+        return true;
+    }
+
+    // 子类需要实现的方法
+    onActivate() {
+        throw new Error('插件必须实现 onActivate 方法');
+    }
+
+    onDeactivate() {
+        throw new Error('插件必须实现 onDeactivate 方法');
+    }
+
+    // 获取插件状态
+    getStatus() {
+        return {
+            name: this.name,
+            description: this.description,
+            isActive: this.isActive,
+            targetComplaints: this.targetComplaints
+        };
+    }
+}
+
 // 简化的路径寻找类
 class PathFinder {
     constructor(game) {
@@ -95,6 +230,11 @@ class OfficeGame {
             '空间问题', '电话问题', '同事问题', '排队问题', '停车问题',
             '健康问题', '光线问题', '座椅问题', '食堂问题'
         ];
+
+        // 插件系统
+        this.plugins = new Map();
+        this.pluginAPI = new PluginAPI(this);
+        this.solutions = new Map(); // 存储已实施的解决方案
 
         // 员工抱怨内容库
         this.complaints = [
@@ -1110,6 +1250,52 @@ class OfficeGame {
         }
         this.updateEmployeeCount();
     }
+
+    // 插件管理方法
+    registerPlugin(plugin) {
+        if (!(plugin instanceof OfficePlugin)) {
+            throw new Error('插件必须继承 OfficePlugin 类');
+        }
+
+        if (this.plugins.has(plugin.name)) {
+            console.warn(`插件 "${plugin.name}" 已存在`);
+            return false;
+        }
+
+        plugin.init(this.pluginAPI);
+        this.plugins.set(plugin.name, plugin);
+        console.log(`📦 插件 "${plugin.name}" 已注册`);
+        return true;
+    }
+
+    activatePlugin(pluginName) {
+        const plugin = this.plugins.get(pluginName);
+        if (!plugin) {
+            console.error(`插件 "${pluginName}" 不存在`);
+            return false;
+        }
+
+        return plugin.activate();
+    }
+
+    deactivatePlugin(pluginName) {
+        const plugin = this.plugins.get(pluginName);
+        if (!plugin) {
+            console.error(`插件 "${pluginName}" 不存在`);
+            return false;
+        }
+
+        return plugin.deactivate();
+    }
+
+    getPluginList() {
+        return Array.from(this.plugins.values()).map(plugin => plugin.getStatus());
+    }
+
+    // 获取解决方案列表
+    getSolutions() {
+        return Array.from(this.solutions.values());
+    }
 }
 
 // 全局游戏实例
@@ -1117,6 +1303,7 @@ let game;
 
 window.addEventListener('load', () => {
     game = new OfficeGame();
+    window.game = game; // 暴露到全局作用域
 
     const canvas = document.getElementById('gameCanvas');
     canvas.addEventListener('click', (event) => {
