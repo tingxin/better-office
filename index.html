@@ -17,31 +17,42 @@
             padding: 0;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             font-family: 'Inter', sans-serif;
-            min-height: 100vh;
+            height: 100vh;
+            overflow: hidden;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+        }
+
+        html {
+            height: 100%;
+            overflow: hidden;
         }
 
         .game-wrapper {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            padding: 8px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
             max-width: 1400px;
-            width: 100%;
+            width: 95%;
+            max-height: 98vh;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 3px;
+            flex-shrink: 0;
         }
 
         .header h1 {
-            margin: 0 0 10px 0;
-            font-size: 2.5rem;
+            margin: 0 0 2px 0;
+            font-size: 1.4rem;
             font-weight: 700;
             background: linear-gradient(135deg, #667eea, #764ba2);
             -webkit-background-clip: text;
@@ -52,9 +63,10 @@
         .stats {
             display: flex;
             justify-content: center;
-            gap: 40px;
-            margin-bottom: 15px;
-            width: 1400px;
+            gap: 15px;
+            margin-bottom: 3px;
+            width: 100%;
+            max-width: 1380px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -62,40 +74,49 @@
         .stat-item {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white;
-            padding: 15px 30px;
-            border-radius: 25px;
+            padding: 5px 12px;
+            border-radius: 12px;
             font-weight: 600;
-            font-size: 16px;
-            box-shadow: 0 4px 15px rgba(240, 147, 251, 0.3);
-            min-width: 150px;
+            font-size: 12px;
+            box-shadow: 0 2px 6px rgba(240, 147, 251, 0.3);
+            min-width: 80px;
             text-align: center;
         }
 
         .tip {
-            font-size: 14px;
+            font-size: 11px;
             color: #666;
-            margin-bottom: 20px;
+            margin-bottom: 3px;
         }
 
         .game-layout {
             display: flex;
-            gap: 20px;
-            width: 1400px;
+            gap: 10px;
+            width: 100%;
+            max-width: 1380px;
             margin: 0 auto;
+            flex: 1;
+            min-height: 0;
         }
 
         .main-game-area {
             flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         #gameContainer {
             position: relative;
-            width: 1000px;
-            height: 720px;
-            border-radius: 15px;
+            width: 1100px;
+            flex: 2;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
             background: #f8f9fa;
+            flex-shrink: 0;
         }
 
         #gameCanvas {
@@ -106,25 +127,26 @@
 
         .controls {
             text-align: center;
-            margin-top: 25px;
+            margin-top: 5px;
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 6px;
             flex-wrap: wrap;
-            width: 1000px;
+            width: 100%;
+            max-width: 1000px;
         }
 
         .btn {
-            padding: 15px 30px;
+            padding: 5px 10px;
             border: none;
-            border-radius: 25px;
-            font-size: 16px;
+            border-radius: 12px;
+            font-size: 11px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            min-width: 160px;
+            letter-spacing: 0.2px;
+            min-width: 85px;
         }
 
         .btn-primary {
@@ -171,36 +193,37 @@
             box-shadow: 0 6px 20px rgba(168, 237, 234, 0.6);
         }
 
-        @media (max-width: 1500px) {
+        @media (max-width: 1440px) {
             .game-wrapper {
-                margin: 20px;
-                padding: 20px;
+                padding: 8px;
+                max-height: 98vh;
             }
 
             .game-layout {
                 flex-direction: column;
                 width: 100%;
-                max-width: 1000px;
             }
 
             .plugin-panel {
                 width: 100%;
-                height: auto;
-                max-height: 400px;
+                flex: 1;
+                margin-top: 8px;
             }
 
             #gameContainer {
                 width: 100%;
-                max-width: 1000px;
+                flex: 1;
+                margin: 0 auto;
             }
 
             #gameCanvas {
                 width: 100%;
-                height: auto;
+                height: 100%;
             }
 
             .controls {
                 width: 100%;
+                margin: 5px auto 0;
             }
 
             .stats {
@@ -208,89 +231,107 @@
             }
 
             .plugin-grid {
-                flex-direction: row;
-                flex-wrap: wrap;
+                flex-direction: column;
+                gap: 8px;
             }
 
             .plugin-card {
-                flex: 1;
-                min-width: 300px;
+                flex: 0 0 auto;
             }
         }
 
         @media (max-width: 900px) {
             .game-wrapper {
-                margin: 10px;
-                padding: 15px;
+                padding: 8px;
+                max-height: 98vh;
             }
 
             .header h1 {
-                font-size: 2rem;
+                font-size: 1.2rem;
+                margin-bottom: 2px;
             }
 
             .stats {
-                flex-direction: column;
-                gap: 15px;
+                flex-direction: row;
+                gap: 10px;
                 width: 100%;
+                margin-bottom: 3px;
+            }
+
+            .stat-item {
+                padding: 5px 10px;
+                font-size: 11px;
+                min-width: 70px;
             }
 
             .controls {
                 width: 100%;
-                gap: 10px;
+                gap: 6px;
+                margin-top: 5px;
             }
 
             .btn {
-                padding: 12px 20px;
-                font-size: 14px;
-                min-width: 120px;
+                padding: 5px 10px;
+                font-size: 10px;
+                min-width: 80px;
             }
 
             .plugin-panel {
                 width: 100%;
-                max-width: 1280px;
-                margin: 0 auto;
+                flex: 1;
+                margin-top: 8px;
             }
 
             .plugin-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .plugin-card {
+                padding: 10px;
             }
         }
 
         /* 插件面板样式 */
         .plugin-panel {
-            width: 360px;
-            height: 720px;
-            padding: 20px;
+            width: 280px;
+            flex: 1;
+            padding: 12px;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             overflow-y: auto;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
         }
 
         .plugin-panel h3 {
             text-align: center;
-            margin-bottom: 20px;
-            font-size: 1.4rem;
+            margin-bottom: 8px;
+            font-size: 1rem;
             background: linear-gradient(135deg, #667eea, #764ba2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            flex-shrink: 0;
         }
 
         .plugin-grid {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 8px;
+            flex: 1;
+            overflow-y: auto;
         }
 
         .plugin-card {
             background: #ffffff;
-            border-radius: 12px;
-            padding: 15px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e9ecef;
             transition: all 0.3s ease;
         }
 
@@ -307,12 +348,12 @@
         .plugin-header {
             display: flex;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
         }
 
         .plugin-icon {
-            font-size: 2rem;
-            margin-right: 15px;
+            font-size: 1.3rem;
+            margin-right: 8px;
         }
 
         .plugin-info {
@@ -320,45 +361,45 @@
         }
 
         .plugin-info h4 {
-            margin: 0 0 5px 0;
-            font-size: 1.2rem;
+            margin: 0 0 2px 0;
+            font-size: 0.95rem;
             color: #333;
         }
 
         .plugin-info p {
-            margin: 0 0 8px 0;
+            margin: 0 0 3px 0;
             color: #666;
-            font-size: 0.9rem;
+            font-size: 0.75rem;
         }
 
         .plugin-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 8px;
+            margin-top: 3px;
         }
 
         .plugin-meta .author {
-            font-size: 0.8rem;
+            font-size: 0.65rem;
             color: #495057;
             background: #f8f9fa;
-            padding: 2px 8px;
-            border-radius: 12px;
+            padding: 1px 5px;
+            border-radius: 6px;
         }
 
         .plugin-meta .version {
-            font-size: 0.75rem;
+            font-size: 0.6rem;
             color: #6c757d;
             background: #e9ecef;
-            padding: 2px 6px;
-            border-radius: 8px;
+            padding: 1px 3px;
+            border-radius: 5px;
             font-weight: 600;
         }
 
         .plugin-status {
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.65rem;
             font-weight: 600;
             background: #6c757d;
             color: white;
@@ -369,14 +410,14 @@
         }
 
         .plugin-controls {
-            margin-top: 15px;
+            margin-top: 6px;
         }
 
         .plugin-settings {
-            margin-top: 15px;
-            padding: 15px;
+            margin-top: 6px;
+            padding: 8px;
             background: #f8f9fa;
-            border-radius: 10px;
+            border-radius: 6px;
         }
 
         .plugin-settings label {
@@ -423,7 +464,7 @@
         <div class="game-layout">
             <div class="main-game-area">
                 <div id="gameContainer">
-                    <canvas id="gameCanvas" width="1000" height="720"></canvas>
+                    <canvas id="gameCanvas" width="1100" height="700"></canvas>
                 </div>
 
                 <div class="controls">

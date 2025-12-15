@@ -264,26 +264,40 @@ class OfficeGame {
             '食堂排队太长了，都不知道什么时候能吃上饭'
         ];
 
-        // 美化的办公室活动区域 (适应1000px宽度)
+        // 重新设计的办公室活动区域 (1000x600px，避免与办公桌重叠)
         this.activityAreas = [
-            { name: '饮水机', x: 280, y: 50, width: 40, height: 40, icon: '🚰', color: '#E3F2FD', borderColor: '#2196F3' },
-            { name: '打印机', x: 900, y: 100, width: 50, height: 40, icon: '🖨️', color: '#E8F5E8', borderColor: '#4CAF50' },
-            { name: '休息区', x: 800, y: 600, width: 120, height: 80, icon: '☕', color: '#FFF3E0', borderColor: '#FF9800' },
-            { name: '洗手间', x: 280, y: 600, width: 70, height: 50, icon: '🚻', color: '#FCE4EC', borderColor: '#E91E63' },
-            { name: '会议室', x: 650, y: 50, width: 120, height: 80, icon: '📋', color: '#F3E5F5', borderColor: '#9C27B0' },
-            { name: '茶水间', x: 900, y: 300, width: 80, height: 60, icon: '🫖', color: '#E8F8F5', borderColor: '#52C41A' },
-            { name: '储物间', x: 280, y: 300, width: 60, height: 50, icon: '📦', color: '#FFF7E6', borderColor: '#FA8C16' }
+            // 上方区域 (办公桌上方，增加间距)
+            { name: '会议室', x: 350, y: 15, width: 150, height: 70, icon: '📋', color: '#F3E5F5', borderColor: '#9C27B0' },
+            { name: '饮水机', x: 520, y: 15, width: 50, height: 70, icon: '🚰', color: '#E3F2FD', borderColor: '#2196F3' },
+            { name: '打印机', x: 590, y: 15, width: 80, height: 70, icon: '🖨️', color: '#E8F5E8', borderColor: '#4CAF50' },
+
+            // 右侧区域 (办公桌右侧，增加间距)
+            { name: '茶水间', x: 970, y: 130, width: 70, height: 90, icon: '🫖', color: '#E8F8F5', borderColor: '#52C41A' },
+            { name: '储物间', x: 970, y: 240, width: 70, height: 70, icon: '📦', color: '#FFF7E6', borderColor: '#FA8C16' },
+
+            // 下方区域 (办公桌下方，增加间距)
+            { name: '休息区', x: 350, y: 320, width: 200, height: 80, icon: '☕', color: '#FFF3E0', borderColor: '#FF9800' },
+            { name: '洗手间', x: 570, y: 320, width: 100, height: 80, icon: '🚻', color: '#FCE4EC', borderColor: '#E91E63' }
         ];
 
-        // 装饰元素 (适应1000px宽度)
+        // 重新布置的装饰元素 (避免重叠，美化空间)
         this.decorations = [
-            { type: 'plant', x: 400, y: 30, emoji: '🌱' },
-            { type: 'plant', x: 550, y: 30, emoji: '🪴' },
-            { type: 'plant', x: 800, y: 30, emoji: '🌿' },
-            { type: 'plant', x: 950, y: 500, emoji: '🌵' },
-            { type: 'clock', x: 500, y: 20, emoji: '🕐' },
-            { type: 'bookshelf', x: 900, y: 200, emoji: '📚' },
-            { type: 'whiteboard', x: 280, y: 200, emoji: '📋' }
+            // 上方装饰 (与活动区域保持间距)
+            { type: 'clock', x: 320, y: 5, emoji: '🕐' },
+            { type: 'plant', x: 720, y: 5, emoji: '🌿' },
+
+            // 左侧装饰 (公告栏旁边)
+            { type: 'plant', x: 280, y: 70, emoji: '🌱' },
+            { type: 'whiteboard', x: 280, y: 150, emoji: '📋' },
+            { type: 'plant', x: 280, y: 230, emoji: '🪴' },
+
+            // 右侧装饰 (与活动区域保持间距)
+            { type: 'bookshelf', x: 970, y: 330, emoji: '📚' },
+            { type: 'plant', x: 1000, y: 420, emoji: '🌵' },
+
+            // 下方装饰 (与休息区保持间距)
+            { type: 'plant', x: 320, y: 420, emoji: '🌺' },
+            { type: 'plant', x: 710, y: 420, emoji: '🌸' }
         ];
 
         this.loadImages();
@@ -402,17 +416,20 @@ class OfficeGame {
     }
 
     createOfficeLayout() {
-        const deskWidth = 80;
-        const deskHeight = 60;
-        const spacing = 40;
-        const startX = 320; // 向右移动为公告栏留空间
-        const startY = 120;
+        const deskWidth = 75;
+        const deskHeight = 45;
+        const spacing = 35;
+        const startX = 320; // 为公告栏和左侧装饰留空间
+        const startY = 105; // 为上方活动区域留更多空间
 
-        // 调整布局：4行5列的办公桌 (适应1000px宽度)
-        for (let row = 0; row < 4; row++) {
+        // 优化布局：3行5列的办公桌，避免与活动区域重叠
+        for (let row = 0; row < 3; row++) {
             for (let col = 0; col < 5; col++) {
                 const x = startX + col * (deskWidth + spacing);
                 const y = startY + row * (deskHeight + spacing);
+
+                // 确保不超出右侧边界，为右侧活动区域留空间
+                if (x + deskWidth > 950) continue;
 
                 const desk = {
                     x: x,
@@ -420,7 +437,7 @@ class OfficeGame {
                     width: deskWidth,
                     height: deskHeight,
                     occupied: false,
-                    hasDrawer: Math.random() > 0.5, // 在创建时决定是否有抽屉
+                    hasDrawer: Math.random() > 0.5,
                     workPosition: {
                         x: x + deskWidth / 2 - 16,
                         y: y + deskHeight / 2 - 16
@@ -429,10 +446,10 @@ class OfficeGame {
                 this.desks.push(desk);
 
                 const computer = {
-                    x: x + 15,
-                    y: y + 15,
-                    width: 25,
-                    height: 20,
+                    x: x + 12,
+                    y: y + 12,
+                    width: 22,
+                    height: 18,
                     isOn: Math.random() > 0.2
                 };
                 this.computers.push(computer);
@@ -511,7 +528,17 @@ class OfficeGame {
 
     findEmptyPosition() {
         for (let attempts = 0; attempts < 100; attempts++) {
-            // 确保不在公告栏区域生成 (x > 270)
+            // 在办公桌区域附近生成，避开活动区域
+            const x = 300 + Math.random() * 580; // 在300-880之间
+            const y = 110 + Math.random() * 200; // 在办公桌区域附近
+
+            if (this.pathFinder.isPositionSafe(x, y, null)) {
+                return { x, y };
+            }
+        }
+
+        // 如果办公桌区域找不到位置，尝试其他安全区域
+        for (let attempts = 0; attempts < 50; attempts++) {
             const x = 270 + Math.random() * (this.width - 270 - 32);
             const y = Math.random() * (this.height - 32);
 
@@ -1114,9 +1141,9 @@ class OfficeGame {
 
     drawComplaintBoard() {
         const boardWidth = 250;
-        const boardHeight = this.height - 40;
+        const boardHeight = this.height - 20;
         const boardX = 10;
-        const boardY = 20;
+        const boardY = 10;
 
         // 绘制公告栏背景
         const gradient = this.ctx.createLinearGradient(boardX, boardY, boardX + boardWidth, boardY);
