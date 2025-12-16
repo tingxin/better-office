@@ -264,40 +264,40 @@ class OfficeGame {
             '食堂排队太长了，都不知道什么时候能吃上饭'
         ];
 
-        // 重新设计的办公室活动区域 (1000x600px，避免与办公桌重叠)
+        // 重新设计的办公室活动区域 (900x560px，避免与办公桌重叠)
         this.activityAreas = [
-            // 上方区域 (办公桌上方，增加间距)
-            { name: '会议室', x: 350, y: 15, width: 150, height: 70, icon: '📋', color: '#F3E5F5', borderColor: '#9C27B0' },
-            { name: '饮水机', x: 520, y: 15, width: 50, height: 70, icon: '🚰', color: '#E3F2FD', borderColor: '#2196F3' },
-            { name: '打印机', x: 590, y: 15, width: 80, height: 70, icon: '🖨️', color: '#E8F5E8', borderColor: '#4CAF50' },
+            // 上方区域 (办公桌上方)
+            { name: '会议室', x: 300, y: 10, width: 120, height: 55, icon: '📋', color: '#F3E5F5', borderColor: '#9C27B0' },
+            { name: '饮水机', x: 440, y: 10, width: 45, height: 55, icon: '🚰', color: '#E3F2FD', borderColor: '#2196F3' },
+            { name: '打印机', x: 505, y: 10, width: 70, height: 55, icon: '🖨️', color: '#E8F5E8', borderColor: '#4CAF50' },
 
-            // 右侧区域 (办公桌右侧，增加间距)
-            { name: '茶水间', x: 970, y: 130, width: 70, height: 90, icon: '🫖', color: '#E8F8F5', borderColor: '#52C41A' },
-            { name: '储物间', x: 970, y: 240, width: 70, height: 70, icon: '📦', color: '#FFF7E6', borderColor: '#FA8C16' },
+            // 右侧区域 (办公桌右侧)
+            { name: '茶水间', x: 790, y: 100, width: 60, height: 70, icon: '🫖', color: '#E8F8F5', borderColor: '#52C41A' },
+            { name: '储物间', x: 790, y: 190, width: 60, height: 60, icon: '📦', color: '#FFF7E6', borderColor: '#FA8C16' },
 
-            // 下方区域 (办公桌下方，增加间距)
-            { name: '休息区', x: 350, y: 320, width: 200, height: 80, icon: '☕', color: '#FFF3E0', borderColor: '#FF9800' },
-            { name: '洗手间', x: 570, y: 320, width: 100, height: 80, icon: '🚻', color: '#FCE4EC', borderColor: '#E91E63' }
+            // 下方区域 (办公桌下方，增加与办公桌的间距)
+            { name: '休息区', x: 300, y: 420, width: 160, height: 65, icon: '☕', color: '#FFF3E0', borderColor: '#FF9800' },
+            { name: '洗手间', x: 480, y: 420, width: 90, height: 65, icon: '🚻', color: '#FCE4EC', borderColor: '#E91E63' }
         ];
 
-        // 重新布置的装饰元素 (避免重叠，美化空间)
+        // 重新布置的装饰元素 (900x560px，避免重叠)
         this.decorations = [
-            // 上方装饰 (与活动区域保持间距)
-            { type: 'clock', x: 320, y: 5, emoji: '🕐' },
-            { type: 'plant', x: 720, y: 5, emoji: '🌿' },
+            // 上方装饰
+            { type: 'clock', x: 270, y: 5, emoji: '🕐' },
+            { type: 'plant', x: 600, y: 5, emoji: '🌿' },
 
             // 左侧装饰 (公告栏旁边)
-            { type: 'plant', x: 280, y: 70, emoji: '🌱' },
-            { type: 'whiteboard', x: 280, y: 150, emoji: '📋' },
-            { type: 'plant', x: 280, y: 230, emoji: '🪴' },
+            { type: 'plant', x: 230, y: 70, emoji: '🌱' },
+            { type: 'whiteboard', x: 230, y: 150, emoji: '📋' },
+            { type: 'plant', x: 230, y: 230, emoji: '🪴' },
 
-            // 右侧装饰 (与活动区域保持间距)
-            { type: 'bookshelf', x: 970, y: 330, emoji: '📚' },
-            { type: 'plant', x: 1000, y: 420, emoji: '🌵' },
+            // 右侧装饰
+            { type: 'bookshelf', x: 800, y: 280, emoji: '📚' },
+            { type: 'plant', x: 820, y: 350, emoji: '🌵' },
 
-            // 下方装饰 (与休息区保持间距)
-            { type: 'plant', x: 320, y: 420, emoji: '🌺' },
-            { type: 'plant', x: 710, y: 420, emoji: '🌸' }
+            // 下方装饰
+            { type: 'plant', x: 270, y: 500, emoji: '🌺' },
+            { type: 'plant', x: 600, y: 500, emoji: '🌸' }
         ];
 
         this.loadImages();
@@ -416,20 +416,22 @@ class OfficeGame {
     }
 
     createOfficeLayout() {
-        const deskWidth = 75;
-        const deskHeight = 45;
-        const spacing = 35;
-        const startX = 320; // 为公告栏和左侧装饰留空间
-        const startY = 105; // 为上方活动区域留更多空间
+        const deskWidth = 70;
+        const deskHeight = 42;
+        const spacing = 30;
+        const startX = 270; // 为公告栏留空间
+        const startY = 85; // 为上方活动区域留空间
 
-        // 优化布局：3行5列的办公桌，避免与活动区域重叠
-        for (let row = 0; row < 3; row++) {
-            for (let col = 0; col < 5; col++) {
+        // 优化布局：4行4列的办公桌，适配900x560画布
+        for (let row = 0; row < 4; row++) {
+            for (let col = 0; col < 4; col++) {
                 const x = startX + col * (deskWidth + spacing);
                 const y = startY + row * (deskHeight + spacing);
 
                 // 确保不超出右侧边界，为右侧活动区域留空间
-                if (x + deskWidth > 950) continue;
+                if (x + deskWidth > 770) continue;
+                // 确保不超出下方边界，为下方活动区域留空间
+                if (y + deskHeight > 380) continue;
 
                 const desk = {
                     x: x,
@@ -529,8 +531,8 @@ class OfficeGame {
     findEmptyPosition() {
         for (let attempts = 0; attempts < 100; attempts++) {
             // 在办公桌区域附近生成，避开活动区域
-            const x = 300 + Math.random() * 580; // 在300-880之间
-            const y = 110 + Math.random() * 200; // 在办公桌区域附近
+            const x = 260 + Math.random() * 450; // 在260-710之间
+            const y = 90 + Math.random() * 250; // 在办公桌区域附近
 
             if (this.pathFinder.isPositionSafe(x, y, null)) {
                 return { x, y };
@@ -539,7 +541,7 @@ class OfficeGame {
 
         // 如果办公桌区域找不到位置，尝试其他安全区域
         for (let attempts = 0; attempts < 50; attempts++) {
-            const x = 270 + Math.random() * (this.width - 270 - 32);
+            const x = 220 + Math.random() * (this.width - 220 - 32);
             const y = Math.random() * (this.height - 32);
 
             if (this.pathFinder.isPositionSafe(x, y, null)) {
@@ -807,7 +809,7 @@ class OfficeGame {
         // 地板瓷砖效果 (为公告栏留出空间)
         this.ctx.strokeStyle = '#dee2e6';
         this.ctx.lineWidth = 1;
-        for (let x = 270; x < this.width; x += 40) {
+        for (let x = 220; x < this.width; x += 40) {
             this.ctx.beginPath();
             this.ctx.moveTo(x, 0);
             this.ctx.lineTo(x, this.height);
@@ -815,7 +817,7 @@ class OfficeGame {
         }
         for (let y = 0; y < this.height; y += 40) {
             this.ctx.beginPath();
-            this.ctx.moveTo(270, y);
+            this.ctx.moveTo(220, y);
             this.ctx.lineTo(this.width, y);
             this.ctx.stroke();
         }
@@ -1140,7 +1142,7 @@ class OfficeGame {
     }
 
     drawComplaintBoard() {
-        const boardWidth = 250;
+        const boardWidth = 200;
         const boardHeight = this.height - 20;
         const boardX = 10;
         const boardY = 10;
@@ -1338,8 +1340,11 @@ window.addEventListener('load', () => {
     const canvas = document.getElementById('gameCanvas');
     canvas.addEventListener('click', (event) => {
         const rect = canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
+        // 计算缩放比例，处理响应式布局
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        const x = (event.clientX - rect.left) * scaleX;
+        const y = (event.clientY - rect.top) * scaleY;
         if (game) {
             game.handleClick(x, y);
         }
