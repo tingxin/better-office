@@ -211,6 +211,21 @@ class OfficeGame {
 
         this.pathFinder = new PathFinder(this);
 
+        // 增强功能管理器
+        this.gameManager = null;
+        
+        // 个性系统
+        this.personalitySystem = new PersonalitySystem();
+        
+        // 性能优化器
+        this.performanceOptimizer = null;
+        
+        // 用户体验增强器
+        this.uxEnhancer = null;
+        
+        // 错误恢复系统
+        this.errorRecoverySystem = null;
+
         // 角色图片
         this.characterImages = [];
         this.gameStarted = false;
@@ -413,6 +428,74 @@ class OfficeGame {
         for (let i = 0; i < 12; i++) {
             this.addRandomEmployee();
         }
+
+        // 初始化增强功能管理器
+        this.initializeEnhancements();
+    }
+
+    // 初始化增强功能
+    initializeEnhancements() {
+        console.log('🔧 开始初始化增强功能...');
+        console.log('GameManager 类型:', typeof GameManager);
+        
+        // 初始化性能优化器
+        if (typeof PerformanceOptimizer !== 'undefined') {
+            try {
+                this.performanceOptimizer = new PerformanceOptimizer(this);
+                this.performanceOptimizer.initialize();
+                console.log('⚡ 性能优化器已启用');
+            } catch (error) {
+                console.error('❌ 性能优化器初始化失败:', error);
+            }
+        }
+        
+        // 初始化用户体验增强器
+        if (typeof UXEnhancer !== 'undefined') {
+            try {
+                this.uxEnhancer = new UXEnhancer(this);
+                this.uxEnhancer.initialize();
+                window.uxEnhancer = this.uxEnhancer; // 全局访问
+                console.log('✨ 用户体验增强器已启用');
+            } catch (error) {
+                console.error('❌ 用户体验增强器初始化失败:', error);
+            }
+        }
+        
+        // 初始化错误恢复系统
+        if (typeof ErrorRecoverySystem !== 'undefined') {
+            try {
+                this.errorRecoverySystem = new ErrorRecoverySystem(this);
+                this.errorRecoverySystem.initialize();
+                console.log('🛡️ 错误恢复系统已启用');
+            } catch (error) {
+                console.error('❌ 错误恢复系统初始化失败:', error);
+            }
+        }
+        
+        // 确保GameManager类已加载
+        if (typeof GameManager !== 'undefined') {
+            try {
+                this.gameManager = new GameManager(this);
+                this.gameManager.initialize();
+                console.log('🎮 游戏增强功能已启用');
+                
+                // 测试系统访问
+                const resourceSystem = this.gameManager.getResourceSystem();
+                if (resourceSystem) {
+                    console.log('💰 资源系统已就绪，初始资金:', resourceSystem.getResource('money'));
+                }
+                
+                const achievementSystem = this.gameManager.getAchievementSystem();
+                if (achievementSystem) {
+                    console.log('🏆 成就系统已就绪，成就数量:', achievementSystem.achievements.size);
+                }
+                
+            } catch (error) {
+                console.error('❌ 增强功能初始化失败:', error);
+            }
+        } else {
+            console.warn('⚠️ GameManager未加载，增强功能不可用');
+        }
     }
 
     createOfficeLayout() {
@@ -498,6 +581,11 @@ class OfficeGame {
 
         if (!position) return;
 
+        // 生成个性特征和技能
+        const personality = this.personalitySystem.generatePersonality();
+        const skills = this.personalitySystem.generateSkills();
+        const initialState = this.personalitySystem.generateInitialState();
+
         const employee = {
             x: position.x,
             y: position.y,
@@ -521,7 +609,22 @@ class OfficeGame {
             // 抱怨系统
             complaint: null,
             complaintTimer: 0,
-            nextComplaintTime: 60 + Math.random() * 180 // 1-4秒后第一次抱怨
+            nextComplaintTime: 60 + Math.random() * 180, // 1-4秒后第一次抱怨
+            
+            // 个性特征 (五大人格)
+            personality: personality,
+            
+            // 技能属性
+            skills: skills,
+            
+            // 状态属性
+            mood: initialState.mood,
+            energy: initialState.energy,
+            stress: initialState.stress,
+            relationships: initialState.relationships,
+            
+            // 行为修正参数（基于个性计算）
+            behaviorModifiers: this.personalitySystem.modifyBehaviorParameters({ personality: personality })
         };
 
         this.employees.push(employee);
@@ -566,13 +669,32 @@ class OfficeGame {
     update() {
         if (this.isPaused || !this.gameStarted) return;
 
-        this.gameTime += 1 / 60;
+        const deltaTime = 1 / 60;
+        this.gameTime += deltaTime;
 
+        // 使用性能优化的更新方法
+        if (this.performanceOptimizer && this.performanceOptimizer.initialized) {
+            if (!this.performanceOptimizer.optimizedUpdate(deltaTime)) {
+                // 如果优化更新失败，回退到原始方法
+                this.fallbackUpdate(deltaTime);
+            }
+        } else {
+            this.fallbackUpdate(deltaTime);
+        }
+
+        // 更新增强功能系统
+        if (this.gameManager) {
+            this.gameManager.update(deltaTime);
+        }
+
+        this.updateGameTime();
+    }
+
+    // 回退更新方法
+    fallbackUpdate(deltaTime) {
         this.employees.forEach(employee => {
             this.updateEmployee(employee);
         });
-
-        this.updateGameTime();
     }
 
     updateEmployee(employee) {
@@ -581,6 +703,11 @@ class OfficeGame {
             employee.showName = true;
         } else {
             employee.showName = false;
+        }
+
+        // 更新员工状态（心情、精力、压力）
+        if (employee.personality) {
+            this.personalitySystem.updateEmployeeState(employee, 1/60); // 60 FPS
         }
 
         // 处理抱怨系统
@@ -621,37 +748,199 @@ class OfficeGame {
                 // 检查当前抱怨的员工数量
                 const currentComplainingCount = this.employees.filter(emp => emp.complaint).length;
 
-                if (currentComplainingCount < 2) {
-                    // 随机选择一个抱怨
-                    const complaintIndex = Math.floor(Math.random() * this.complaints.length);
+                // 根据个性和状态决定是否抱怨
+                let shouldComplain = currentComplainingCount < 2;
+                
+                if (shouldComplain && employee.personality) {
+                    // 个性化的抱怨倾向
+                    const complaintThreshold = this.calculateComplaintThreshold(employee);
+                    shouldComplain = Math.random() < complaintThreshold;
+                }
+
+                if (shouldComplain) {
+                    // 根据个性选择抱怨类型
+                    const complaintIndex = this.selectPersonalizedComplaint(employee);
                     employee.complaint = this.complaints[complaintIndex];
-                    employee.complaintTimer = 300; // 显示5秒
+                    
+                    // 根据个性调整抱怨显示时间
+                    const displayDuration = this.calculateComplaintDuration(employee);
+                    employee.complaintTimer = displayDuration;
 
                     // 统计抱怨
                     this.recordComplaint(complaintIndex);
-                    console.log(`${employee.name} 自动抱怨: ${employee.complaint}`); // 调试信息
+                    console.log(`${employee.name} (${this.personalitySystem.getPersonalityTags(employee).join(', ')}) 抱怨: ${employee.complaint}`);
                 }
-                // 设置下次抱怨时间 (15-45秒后)
-                employee.nextComplaintTime = 900 + Math.random() * 1800;
+                
+                // 设置下次抱怨时间，考虑个性化频率和当前状态
+                this.setNextComplaintTime(employee);
             }
         }
     }
 
-    handleWorking(employee) {
-        employee.workTimer--;
+    // 计算员工的抱怨阈值（增强版本）
+    calculateComplaintThreshold(employee) {
+        let threshold = 0.5; // 基础阈值
+        
+        if (!employee.personality) return threshold;
+        
+        // 使用个性化行为模式
+        const baseAction = { complaintFrequency: 1.0 };
+        const adjustedAction = this.personalitySystem.adjustBehaviorPattern(employee, baseAction);
+        
+        // 神经质影响抱怨倾向
+        threshold += (employee.personality.neuroticism / 100) * 0.4;
+        
+        // 宜人性影响（宜人性高的人较少抱怨）
+        threshold -= (employee.personality.agreeableness / 100) * 0.3;
+        
+        // 外向性影响（外向的人更愿意表达不满）
+        threshold += (employee.personality.extroversion / 100) * 0.2;
+        
+        // 尽责性影响（尽责的人对工作环境要求更高）
+        threshold += (employee.personality.conscientiousness / 100) * 0.15;
+        
+        // 心情和压力影响
+        threshold += (employee.stress / 100) * 0.3;
+        threshold -= (employee.mood / 100) * 0.2;
+        
+        // 精力影响
+        if (employee.energy < 30) {
+            threshold += 0.2;
+        }
+        
+        // 应用个性化的抱怨频率修正
+        if (adjustedAction.emotionalVolatility) {
+            threshold *= 1.3; // 情绪不稳定的人更容易抱怨
+        }
+        if (adjustedAction.emotionalStability) {
+            threshold *= 0.7; // 情绪稳定的人较少抱怨
+        }
+        
+        return Math.max(0.1, Math.min(0.9, threshold));
+    }
 
-        if (Math.random() < 0.001) {
+    // 根据个性选择抱怨类型
+    selectPersonalizedComplaint(employee) {
+        const personality = employee.personality;
+        let weightedComplaints = [];
+        
+        // 为每个抱怨分配权重
+        this.complaints.forEach((complaint, index) => {
+            let weight = 1.0;
+            
+            // 根据个性调整权重
+            if (complaint.includes('热') || complaint.includes('空调')) {
+                // 神经质的人更容易抱怨温度
+                weight *= (1 + personality.neuroticism / 200);
+            }
+            
+            if (complaint.includes('噪音') || complaint.includes('大声')) {
+                // 内向的人更容易抱怨噪音
+                weight *= (1 + (100 - personality.extroversion) / 200);
+            }
+            
+            if (complaint.includes('排队') || complaint.includes('等')) {
+                // 尽责性高的人更容易抱怨效率问题
+                weight *= (1 + personality.conscientiousness / 200);
+            }
+            
+            if (complaint.includes('脏') || complaint.includes('清洁')) {
+                // 尽责性高的人更容易抱怨清洁问题
+                weight *= (1 + personality.conscientiousness / 150);
+            }
+            
+            weightedComplaints.push({ index, weight });
+        });
+        
+        // 按权重随机选择
+        const totalWeight = weightedComplaints.reduce((sum, item) => sum + item.weight, 0);
+        let random = Math.random() * totalWeight;
+        
+        for (const item of weightedComplaints) {
+            random -= item.weight;
+            if (random <= 0) {
+                return item.index;
+            }
+        }
+        
+        return Math.floor(Math.random() * this.complaints.length);
+    }
+
+    // 计算抱怨显示持续时间
+    calculateComplaintDuration(employee) {
+        let baseDuration = 300; // 5秒基础时间
+        
+        if (employee.personality) {
+            // 外向的人抱怨时间更长（更愿意表达）
+            baseDuration *= (0.8 + employee.personality.extroversion / 250);
+            
+            // 神经质的人抱怨时间更长
+            baseDuration *= (0.9 + employee.personality.neuroticism / 200);
+        }
+        
+        return Math.floor(baseDuration);
+    }
+
+    // 设置下次抱怨时间
+    setNextComplaintTime(employee) {
+        const complaintFrequency = employee.behaviorModifiers?.complaintFrequency || 1.0;
+        const baseTime = 900 + Math.random() * 1800; // 15-45秒基础时间
+        
+        // 根据当前状态调整
+        let stateModifier = 1.0;
+        if (employee.stress > 70) stateModifier *= 0.7; // 高压力时更频繁抱怨
+        if (employee.mood < 30) stateModifier *= 0.8;   // 心情差时更频繁抱怨
+        if (employee.energy < 20) stateModifier *= 0.9; // 低精力时更容易抱怨
+        
+        employee.nextComplaintTime = (baseTime * stateModifier) / complaintFrequency;
+    }
+
+    handleWorking(employee) {
+        // 应用个性化的工作时间修正和心情影响
+        const workTimeModifier = employee.behaviorModifiers?.workTime || 1.0;
+        const workEfficiency = this.personalitySystem.calculateWorkEfficiency(employee, 'general');
+        const decreaseRate = workTimeModifier * workEfficiency;
+        
+        employee.workTimer -= decreaseRate;
+
+        // 根据个性调整显示名字的概率
+        const nameDisplayChance = employee.personality?.extroversion > 50 ? 0.002 : 0.0005;
+        if (Math.random() < nameDisplayChance) {
             employee.nameTimer = 120;
         }
 
+        // 检查是否与其他员工进行工作协作
+        if (Math.random() < 0.05) { // 5%概率检查协作
+            this.checkWorkCollaboration(employee);
+        }
+
         if (employee.workTimer <= 0) {
+            // 使用个性化行为模式调整决策
+            const baseAction = {
+                socialInteractionChance: 0.5,
+                workDuration: 1.0,
+                breakFrequency: 1.0
+            };
+            
+            const adjustedAction = this.personalitySystem.adjustBehaviorPattern(employee, baseAction);
             const rand = Math.random();
-            if (rand < 0.5) { // 50%概率去活动
+            
+            // 根据精力水平调整行为选择
+            const energyFactor = employee.energy / 100;
+            const adjustedSocialChance = adjustedAction.socialInteractionChance * energyFactor;
+            
+            if (rand < adjustedSocialChance && adjustedAction.groupActivityPreference !== false) {
+                // 个性化的活动选择
                 this.startActivity(employee);
-            } else if (rand < 0.8) { // 30%概率随意走动
+            } else if (rand < adjustedSocialChance + 0.2 && energyFactor > 0.3) {
+                // 根据精力决定是否走动
                 this.startWandering(employee);
-            } else { // 20%概率继续工作
-                employee.workTimer = 300 + Math.random() * 900; // 5-20秒工作时间
+            } else {
+                // 继续工作，但工作时间受个性和状态影响
+                const baseWorkTime = 300 + Math.random() * 900;
+                const personalityModifier = adjustedAction.workDuration;
+                const stateModifier = (employee.mood / 100) * 0.5 + (employee.energy / 100) * 0.3 + 0.7;
+                employee.workTimer = baseWorkTime * personalityModifier * stateModifier;
             }
         }
     }
@@ -698,13 +987,63 @@ class OfficeGame {
             return;
         }
 
+        // 使用个性化行为模式
+        const baseAction = {
+            socialInteractionChance: 0.3,
+            workDuration: 1.0,
+            breakFrequency: 1.0,
+            noveltySeekingBehavior: false
+        };
+        
+        const adjustedAction = this.personalitySystem.adjustBehaviorPattern(employee, baseAction);
         const rand = Math.random();
-        if (rand < 0.03) { // 3%概率回到工作
+        
+        // 根据个性调整行为概率
+        let workReturnChance = 0.03;
+        let activityChance = 0.03;
+        let moveChance = 0.04;
+        let socialChance = 0.02;
+        
+        if (employee.personality) {
+            // 尽责性影响回到工作的概率
+            workReturnChance *= (0.5 + employee.personality.conscientiousness / 100);
+            
+            // 外向性影响活动和社交概率
+            activityChance *= adjustedAction.socialInteractionChance;
+            socialChance *= adjustedAction.socialInteractionChance;
+            
+            // 开放性影响探索移动的概率
+            if (adjustedAction.noveltySeekingBehavior) {
+                moveChance *= 1.5;
+            }
+            
+            // 神经质影响决策速度
+            if (employee.personality.neuroticism > 70) {
+                workReturnChance *= 1.3; // 更急于回到安全的工作状态
+                activityChance *= 0.7;   // 较少参与活动
+                socialChance *= 0.5;     // 避免社交
+            }
+        }
+        
+        // 精力和心情影响行为选择
+        const energyFactor = employee.energy / 100;
+        const moodFactor = employee.mood / 100;
+        
+        workReturnChance *= (0.5 + energyFactor * 0.5);
+        activityChance *= energyFactor;
+        moveChance *= (0.7 + moodFactor * 0.3);
+        socialChance *= moodFactor;
+
+        if (rand < workReturnChance) {
             this.returnToWork(employee);
-        } else if (rand < 0.06) { // 3%概率去活动区域
+        } else if (rand < workReturnChance + activityChance) {
             this.startActivity(employee);
-        } else if (rand < 0.1) { // 4%概率随机移动
+        } else if (rand < workReturnChance + activityChance + socialChance) {
+            this.attemptSocialInteraction(employee);
+        } else if (rand < workReturnChance + activityChance + socialChance + moveChance) {
             this.moveToRandomLocation(employee);
+        } else {
+            employee.restTimer = 30 + Math.random() * 60;
         }
     }
 
@@ -747,13 +1086,99 @@ class OfficeGame {
         );
 
         if (availableAreas.length > 0) {
-            const area = availableAreas[Math.floor(Math.random() * availableAreas.length)];
-            employee.currentActivity = area.name;
-            employee.nameTimer = 180;
-            this.moveEmployeeTo(employee, area.x + area.width / 2 - 16, area.y + area.height / 2 - 16);
+            // 使用个性化行为模式选择活动
+            const baseAction = { groupActivityPreference: true };
+            const adjustedAction = this.personalitySystem.adjustBehaviorPattern(employee, baseAction);
+            
+            let selectedArea;
+            
+            if (employee.personality) {
+                const personality = employee.personality;
+                const preferences = [];
+                
+                // 外向的人更喜欢社交区域
+                if (personality.extroversion > 60 && adjustedAction.groupActivityPreference) {
+                    const socialAreas = availableAreas.filter(area => 
+                        ['茶水间', '休息区', '会议室'].includes(area.name));
+                    preferences.push(...socialAreas.map(area => ({ area, weight: 2.5 })));
+                }
+                
+                // 尽责的人可能更喜欢功能性区域
+                if (personality.conscientiousness > 60 || adjustedAction.organizationLevel === 'high') {
+                    const functionalAreas = availableAreas.filter(area => 
+                        ['打印机', '储物间'].includes(area.name));
+                    preferences.push(...functionalAreas.map(area => ({ area, weight: 2.0 })));
+                }
+                
+                // 神经质高的人可能避免人多的地方
+                if (personality.neuroticism > 70 || adjustedAction.stressReaction === 'high') {
+                    const quietAreas = availableAreas.filter(area => 
+                        ['洗手间', '储物间'].includes(area.name));
+                    preferences.push(...quietAreas.map(area => ({ area, weight: 2.2 })));
+                }
+                
+                // 开放性高的人可能尝试不同的活动
+                if (personality.openness > 60 && adjustedAction.noveltySeekingBehavior) {
+                    // 给所有区域一个基础权重，鼓励探索
+                    availableAreas.forEach(area => {
+                        if (!preferences.some(pref => pref.area === area)) {
+                            preferences.push({ area, weight: 1.3 });
+                        }
+                    });
+                }
+                
+                // 宜人性高的人倾向于选择能帮助他人的区域
+                if (personality.agreeableness > 70 && adjustedAction.helpingBehavior > 1.0) {
+                    const helpfulAreas = availableAreas.filter(area => 
+                        ['茶水间', '会议室'].includes(area.name));
+                    preferences.push(...helpfulAreas.map(area => ({ area, weight: 1.8 })));
+                }
+                
+                // 如果有偏好，按权重选择
+                if (preferences.length > 0) {
+                    const totalWeight = preferences.reduce((sum, pref) => sum + pref.weight, 0);
+                    let random = Math.random() * totalWeight;
+                    
+                    for (const pref of preferences) {
+                        random -= pref.weight;
+                        if (random <= 0) {
+                            selectedArea = pref.area;
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            // 如果没有特殊偏好或偏好区域不可用，随机选择
+            if (!selectedArea) {
+                selectedArea = availableAreas[Math.floor(Math.random() * availableAreas.length)];
+            }
+            
+            employee.currentActivity = selectedArea.name;
+            
+            // 根据个性调整活动时间和显示
+            const nameDisplayDuration = employee.personality?.extroversion > 50 ? 240 : 180;
+            employee.nameTimer = nameDisplayDuration;
+            
+            // 根据个性调整活动持续时间
+            const baseActivityTime = 120 + Math.random() * 240;
+            let activityTimeModifier = 1.0;
+            
+            if (adjustedAction.groupActivityPreference) {
+                activityTimeModifier *= 1.2; // 喜欢社交的人活动时间更长
+            }
+            if (adjustedAction.stressReaction === 'high') {
+                activityTimeModifier *= 0.8; // 容易紧张的人活动时间较短
+            }
+            
+            employee.activityTimer = baseActivityTime * activityTimeModifier;
+            
+            this.moveEmployeeTo(employee, selectedArea.x + selectedArea.width / 2 - 16, selectedArea.y + selectedArea.height / 2 - 16);
         } else {
             employee.state = 'wandering';
-            employee.restTimer = 60; // 1秒等待
+            // 根据个性调整等待时间
+            const patienceModifier = employee.personality?.agreeableness > 50 ? 1.5 : 1.0;
+            employee.restTimer = 60 * patienceModifier;
         }
     }
 
@@ -796,9 +1221,152 @@ class OfficeGame {
         }
     }
 
+    // 检查工作协作机会
+    checkWorkCollaboration(employee) {
+        if (!employee.personality || !employee.currentDesk) return;
+
+        // 寻找附近的工作员工
+        const nearbyEmployees = this.employees.filter(other => 
+            other !== employee && 
+            other.state === 'working' && 
+            other.currentDesk &&
+            this.getDistance(employee, other) < 100 // 100像素范围内
+        );
+
+        if (nearbyEmployees.length === 0) return;
+
+        // 选择最兼容的员工进行协作
+        let bestPartner = null;
+        let bestCompatibility = 0;
+
+        nearbyEmployees.forEach(other => {
+            const compatibility = this.personalitySystem.calculateWorkCompatibility(employee, other, 'general');
+            if (compatibility > bestCompatibility) {
+                bestCompatibility = compatibility;
+                bestPartner = other;
+            }
+        });
+
+        // 如果兼容性足够高，进行协作
+        if (bestPartner && bestCompatibility > 0.6) {
+            this.performCollaboration(employee, bestPartner);
+        }
+    }
+
+    // 执行员工协作
+    performCollaboration(employee1, employee2) {
+        const interactionResult = this.personalitySystem.simulateSocialInteraction(
+            employee1, employee2, 'collaboration'
+        );
+
+        if (interactionResult.success) {
+            // 协作成功，提升工作效率
+            const efficiency1 = this.personalitySystem.calculateWorkEfficiency(employee1, 'general');
+            const efficiency2 = this.personalitySystem.calculateWorkEfficiency(employee2, 'general');
+            
+            // 缩短工作时间（表示效率提升）
+            employee1.workTimer *= 0.9;
+            employee2.workTimer *= 0.9;
+
+            // 显示协作效果
+            employee1.nameTimer = 180;
+            employee2.nameTimer = 180;
+
+            console.log(`${employee1.name} 和 ${employee2.name} 进行了成功的工作协作`);
+        }
+    }
+
+    // 尝试社交互动
+    attemptSocialInteraction(employee) {
+        if (!employee.personality) return;
+
+        // 寻找附近的其他员工
+        const nearbyEmployees = this.employees.filter(other => 
+            other !== employee && 
+            this.getDistance(employee, other) < 80 // 80像素范围内
+        );
+
+        if (nearbyEmployees.length === 0) {
+            // 没有人可以互动，转为休息
+            employee.state = 'resting';
+            employee.restTimer = 60 + Math.random() * 120;
+            return;
+        }
+
+        // 根据个性选择互动对象
+        let targetEmployee = null;
+        
+        if (employee.personality.extroversion > 60) {
+            // 外向的人倾向于与更多人互动
+            targetEmployee = nearbyEmployees[Math.floor(Math.random() * nearbyEmployees.length)];
+        } else {
+            // 内向的人倾向于与关系好的人互动
+            const knownEmployees = nearbyEmployees.filter(other => 
+                employee.relationships && employee.relationships.has(other.name)
+            );
+            
+            if (knownEmployees.length > 0) {
+                // 选择关系最好的员工
+                targetEmployee = knownEmployees.reduce((best, current) => {
+                    const currentRelation = employee.relationships.get(current.name) || 50;
+                    const bestRelation = employee.relationships.get(best.name) || 50;
+                    return currentRelation > bestRelation ? current : best;
+                });
+            } else {
+                targetEmployee = nearbyEmployees[0]; // 随机选择一个
+            }
+        }
+
+        if (targetEmployee) {
+            this.performSocialInteraction(employee, targetEmployee);
+        }
+    }
+
+    // 执行社交互动
+    performSocialInteraction(employee1, employee2) {
+        const interactionResult = this.personalitySystem.simulateSocialInteraction(
+            employee1, employee2, 'casual'
+        );
+
+        // 显示互动效果
+        employee1.nameTimer = 150;
+        employee2.nameTimer = 150;
+
+        // 根据互动结果调整状态
+        if (interactionResult.success) {
+            console.log(`${employee1.name} 和 ${employee2.name} 进行了愉快的社交互动`);
+        } else {
+            console.log(`${employee1.name} 和 ${employee2.name} 的互动不太顺利`);
+        }
+
+        // 互动后转为休息状态
+        employee1.state = 'resting';
+        employee1.restTimer = 30 + Math.random() * 60;
+    }
+
+    // 计算两个员工之间的距离
+    getDistance(employee1, employee2) {
+        const dx = employee1.x - employee2.x;
+        const dy = employee1.y - employee2.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
     render() {
         if (!this.gameStarted) return;
 
+        // 使用性能优化的渲染方法
+        if (this.performanceOptimizer && this.performanceOptimizer.initialized) {
+            if (!this.performanceOptimizer.optimizedRender()) {
+                // 如果优化渲染失败，回退到原始方法
+                this.fallbackRender();
+            }
+        } else {
+            this.fallbackRender();
+        }
+    }
+
+    // 回退渲染方法
+    fallbackRender() {
         // 渐变背景
         const gradient = this.ctx.createLinearGradient(0, 0, this.width, this.height);
         gradient.addColorStop(0, '#f8f9fa');
@@ -1018,18 +1586,28 @@ class OfficeGame {
                 const text = employee.currentActivity ? `${employee.name} (${employee.currentActivity})` : employee.name;
 
                 // 测量文本宽度
-                this.ctx.font = '12px Inter, sans-serif';
+                this.ctx.font = 'bold 11px Inter, sans-serif';
                 const textWidth = this.ctx.measureText(text).width;
 
                 // 名字背景 - 如果有抱怨气泡，名字显示在更上方
                 const nameY = employee.complaint ? employee.y - 80 : employee.y - 25;
-                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-                this.ctx.fillRect(employee.x - 5, nameY, textWidth + 10, 18);
+                const nameX = employee.x + employee.width / 2 - textWidth / 2 - 6;
+                const boxWidth = textWidth + 12;
+                const boxHeight = 20;
+                
+                // 绘制背景矩形（深色背景）
+                this.ctx.fillStyle = '#333333';
+                this.ctx.fillRect(nameX, nameY, boxWidth, boxHeight);
+                
+                // 绘制边框
+                this.ctx.strokeStyle = '#666666';
+                this.ctx.lineWidth = 1;
+                this.ctx.strokeRect(nameX, nameY, boxWidth, boxHeight);
 
-                // 名字文本
-                this.ctx.fillStyle = '#FFFFFF';
-                this.ctx.textAlign = 'left';
-                this.ctx.fillText(text, employee.x, nameY + 15);
+                // 名字文本 - 使用深色背景上的亮色文字
+                this.ctx.fillStyle = '#00FF00';  // 绿色文字，非常醒目
+                this.ctx.textAlign = 'center';
+                this.ctx.fillText(text, employee.x + employee.width / 2, nameY + 14);
             }
         });
 
@@ -1134,6 +1712,11 @@ class OfficeGame {
 
     recordComplaint(complaintIndex) {
         const category = this.complaintCategories[complaintIndex];
+        // 确保category有效
+        if (!category) {
+            console.warn('无效的抱怨索引:', complaintIndex);
+            return;
+        }
         if (this.complaintStats.has(category)) {
             this.complaintStats.set(category, this.complaintStats.get(category) + 1);
         } else {
@@ -1174,8 +1757,9 @@ class OfficeGame {
         this.ctx.textAlign = 'center';
         this.ctx.fillText('📊 员工抱怨统计', boardX + boardWidth / 2, boardY + 25);
 
-        // 获取排序后的抱怨统计
+        // 获取排序后的抱怨统计，先过滤掉无效条目
         const sortedComplaints = Array.from(this.complaintStats.entries())
+            .filter(entry => entry && entry[0] != null && entry[1] != null)
             .sort((a, b) => b[1] - a[1])
             .slice(0, 15); // 只显示前15项
 
@@ -1192,7 +1776,20 @@ class OfficeGame {
         let currentY = boardY + 60;
         const lineHeight = 30;
 
-        sortedComplaints.forEach((complaint, index) => {
+        // 使用已过滤的数据
+        const validComplaints = sortedComplaints;
+        
+        if (validComplaints.length === 0) {
+            this.ctx.fillStyle = '#6c757d';
+            this.ctx.font = '14px Inter, sans-serif';
+            this.ctx.textAlign = 'center';
+            this.ctx.fillText('暂无有效抱怨记录', boardX + boardWidth / 2, boardY + 80);
+            return;
+        }
+        
+        const maxCount = validComplaints[0][1] || 1; // 防止除以0
+        
+        validComplaints.forEach((complaint, index) => {
             const [category, count] = complaint;
 
             // 绘制排名背景
@@ -1211,7 +1808,8 @@ class OfficeGame {
             // 绘制问题类别
             this.ctx.fillStyle = '#495057';
             this.ctx.font = '12px Inter, sans-serif';
-            const categoryText = category.length > 8 ? category.substring(0, 8) + '...' : category;
+            const categoryStr = String(category || '未知');
+            const categoryText = categoryStr.length > 8 ? categoryStr.substring(0, 8) + '...' : categoryStr;
             this.ctx.fillText(categoryText, boardX + 35, currentY);
 
             // 绘制次数
@@ -1223,7 +1821,6 @@ class OfficeGame {
             // 绘制进度条
             const barWidth = 60;
             const barHeight = 4;
-            const maxCount = sortedComplaints[0][1];
             const barLength = (count / maxCount) * barWidth;
 
             this.ctx.fillStyle = '#e9ecef';
@@ -1351,26 +1948,126 @@ window.addEventListener('load', () => {
     });
 });
 
+// 全局控制函数
 function addEmployee() {
-    if (game) {
-        game.addRandomEmployee();
+    if (window.game) {
+        window.game.addRandomEmployee();
     }
 }
 
 function removeEmployee() {
-    if (game) {
-        game.removeRandomEmployee();
+    if (window.game) {
+        window.game.removeRandomEmployee();
     }
 }
 
 function togglePause() {
-    if (game) {
-        game.togglePause();
+    if (window.game) {
+        window.game.isPaused = !window.game.isPaused;
+        const button = document.querySelector('button[onclick="togglePause()"]');
+        if (button) {
+            button.textContent = window.game.isPaused ? '▶️ 继续' : '⏸️ 暂停/继续';
+        }
     }
 }
 
 function resetGame() {
-    if (game) {
-        game.reset();
+    if (confirm('确定要重置游戏吗？所有进度将丢失！')) {
+        localStorage.removeItem('office-game-enhanced-data');
+        location.reload();
     }
+}
+
+
+// ===== 全局面板控制函数 =====
+
+// 切换成就面板
+function toggleAchievementPanel() {
+    const panel = document.getElementById('achievementPanel');
+    if (!panel) return;
+    
+    if (panel.style.display === 'none' || panel.style.display === '') {
+        panel.style.display = 'flex';
+        if (typeof updateAchievementPanel === 'function') {
+            updateAchievementPanel();
+        }
+    } else {
+        panel.style.display = 'none';
+    }
+}
+
+// 切换进展面板
+function toggleProgressionPanel() {
+    const panel = document.getElementById('progressionPanel');
+    if (!panel) return;
+    
+    if (panel.style.display === 'none' || panel.style.display === '') {
+        panel.style.display = 'flex';
+        if (typeof updateProgressionPanel === 'function') {
+            updateProgressionPanel();
+        }
+    } else {
+        panel.style.display = 'none';
+    }
+}
+
+// 切换统计面板
+function toggleStatisticsPanel() {
+    const panel = document.getElementById('statisticsPanel');
+    if (!panel) return;
+    
+    if (panel.style.display === 'none' || panel.style.display === '') {
+        panel.style.display = 'flex';
+        if (typeof updateStatisticsPanel === 'function') {
+            updateStatisticsPanel();
+        }
+    } else {
+        panel.style.display = 'none';
+    }
+}
+
+// 切换社交面板
+function toggleSocialPanel() {
+    let panel = document.getElementById('socialPanel');
+    if (panel) {
+        document.body.removeChild(panel);
+        return;
+    }
+    // 如果面板不存在，调用 index.html 中的创建函数
+    if (typeof window.createSocialPanel === 'function') {
+        window.createSocialPanel();
+    } else {
+        console.log('社交面板功能未加载');
+    }
+}
+
+// 调试插件
+function debugPlugins() {
+    if (!window.game) {
+        console.log('❌ 游戏未初始化');
+        return;
+    }
+    console.log('🔧 插件调试信息:');
+    console.log('可用插件:', window.game.getPluginList());
+    console.log('已实施解决方案:', window.game.getSolutions());
+    if (window.game.gameManager) {
+        console.log('增强功能状态:', window.game.gameManager.getGameSummary());
+    }
+}
+
+// 测试增强功能
+function testEnhancedFeatures() {
+    if (!window.game || !window.game.gameManager) {
+        console.log('❌ 增强功能未初始化');
+        return;
+    }
+    console.log('🎮 测试增强功能...');
+    const resourceSystem = window.game.gameManager.getResourceSystem();
+    if (resourceSystem) {
+        console.log('💰 当前资源:', resourceSystem.getResourceSummary());
+        resourceSystem.addResource('money', 10000);
+        resourceSystem.addResource('satisfaction', 10);
+        console.log('✅ 资源系统测试完成');
+    }
+    console.log('🎉 增强功能测试完成！');
 }
