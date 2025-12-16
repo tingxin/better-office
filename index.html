@@ -209,6 +209,27 @@
             flex-shrink: 0;
         }
 
+        .qr-code-container {
+            text-align: center;
+            margin: 0 0 10px 0;
+            padding: 0;
+            flex-shrink: 0;
+        }
+
+        .qr-code-image {
+            width: 100%;
+            max-width: 200px;
+            height: auto;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border: 2px solid #e9ecef;
+            object-fit: contain;
+            object-position: center;
+            display: block;
+            margin: 0 auto;
+        }
+
         .plugin-grid {
             display: flex;
             flex-direction: column;
@@ -460,89 +481,93 @@
             <!-- 插件管理面板 -->
             <div class="plugin-panel">
                 <h3>🔌 办公室改善插件</h3>
-                <div class="plugin-grid">
-                    <!-- 空调插件 -->
-                    <div class="plugin-card" id="ac-plugin-card">
-                        <div class="plugin-header">
-                            <span class="plugin-icon">🌡️</span>
-                            <div class="plugin-info">
-                                <h4>智能空调系统</h4>
-                                <p>自动调节温度，减少员工抱怨</p>
-                                <div class="plugin-meta">
-                                    <span class="author">👤 Kiro开发团队</span>
-                                    <span class="version">v1.2.0</span>
-                                </div>
+                <!-- 二维码图片 -->
+                <div class="qr-code-container">
+                    <img src="assets/qr.jpg" alt="二维码" class="qr-code-image" />
+                </div>
+                <div class="plugin-grid"></div>""
+                <!-- 空调插件 -->
+                <div class="plugin-card" id="ac-plugin-card">
+                    <div class="plugin-header">
+                        <span class="plugin-icon">🌡️</span>
+                        <div class="plugin-info">
+                            <h4>智能空调系统</h4>
+                            <p>自动调节温度，减少员工抱怨</p>
+                            <div class="plugin-meta">
+                                <span class="author">👤 Kiro开发团队</span>
+                                <span class="version">v1.2.0</span>
                             </div>
-                            <div class="plugin-status" id="ac-status">未激活</div>
                         </div>
-                        <div class="plugin-controls">
-                            <button class="btn btn-primary" onclick="togglePlugin('智能空调系统', 'ac')"
-                                id="ac-toggle">激活插件</button>
-                            <div class="plugin-settings" id="ac-settings" style="display: none;">
-                                <label>温度级别:</label>
-                                <select onchange="adjustTemperature(this.value)" id="temp-level">
-                                    <option value="0">标准</option>
-                                    <option value="1">优化</option>
-                                    <option value="2">完美</option>
-                                </select>
+                        <div class="plugin-status" id="ac-status">未激活</div>
+                    </div>
+                    <div class="plugin-controls">
+                        <button class="btn btn-primary" onclick="togglePlugin('智能空调系统', 'ac')"
+                            id="ac-toggle">激活插件</button>
+                        <div class="plugin-settings" id="ac-settings" style="display: none;">
+                            <label>温度级别:</label>
+                            <select onchange="adjustTemperature(this.value)" id="temp-level">
+                                <option value="0">标准</option>
+                                <option value="1">优化</option>
+                                <option value="2">完美</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 打印机插件 -->
+                <div class="plugin-card" id="printer-plugin-card">
+                    <div class="plugin-header">
+                        <span class="plugin-icon">🖨️</span>
+                        <div class="plugin-info">
+                            <h4>打印机维护系统</h4>
+                            <p>定期维护，减少故障和排队</p>
+                            <div class="plugin-meta">
+                                <span class="author">👤 办公设备专家</span>
+                                <span class="version">v2.1.0</span>
+                            </div>
+                        </div>
+                        <div class="plugin-status" id="printer-status">未激活</div>
+                    </div>
+                    <div class="plugin-controls">
+                        <button class="btn btn-primary" onclick="togglePlugin('打印机维护系统', 'printer')"
+                            id="printer-toggle">激活插件</button>
+                        <div class="plugin-settings" id="printer-settings" style="display: none;">
+                            <button class="btn btn-secondary" onclick="emergencyRepair()">🚨 紧急维修</button>
+                            <div class="maintenance-info">
+                                <span>备用打印机: <span id="backup-count">0</span></span>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- 打印机插件 -->
-                    <div class="plugin-card" id="printer-plugin-card">
-                        <div class="plugin-header">
-                            <span class="plugin-icon">🖨️</span>
-                            <div class="plugin-info">
-                                <h4>打印机维护系统</h4>
-                                <p>定期维护，减少故障和排队</p>
-                                <div class="plugin-meta">
-                                    <span class="author">👤 办公设备专家</span>
-                                    <span class="version">v2.1.0</span>
-                                </div>
-                            </div>
-                            <div class="plugin-status" id="printer-status">未激活</div>
-                        </div>
-                        <div class="plugin-controls">
-                            <button class="btn btn-primary" onclick="togglePlugin('打印机维护系统', 'printer')"
-                                id="printer-toggle">激活插件</button>
-                            <div class="plugin-settings" id="printer-settings" style="display: none;">
-                                <button class="btn btn-secondary" onclick="emergencyRepair()">🚨 紧急维修</button>
-                                <div class="maintenance-info">
-                                    <span>备用打印机: <span id="backup-count">0</span></span>
-                                </div>
+                <!-- 健康计划插件 -->
+                <div class="plugin-card" id="wellness-plugin-card">
+                    <div class="plugin-header">
+                        <span class="plugin-icon">💪</span>
+                        <div class="plugin-info">
+                            <h4>员工健康计划</h4>
+                            <p>提供健身设施和健康活动</p>
+                            <div class="plugin-meta">
+                                <span class="author">👤 健康生活顾问</span>
+                                <span class="version">v1.5.3</span>
                             </div>
                         </div>
+                        <div class="plugin-status" id="wellness-status">未激活</div>
                     </div>
-
-                    <!-- 健康计划插件 -->
-                    <div class="plugin-card" id="wellness-plugin-card">
-                        <div class="plugin-header">
-                            <span class="plugin-icon">💪</span>
-                            <div class="plugin-info">
-                                <h4>员工健康计划</h4>
-                                <p>提供健身设施和健康活动</p>
-                                <div class="plugin-meta">
-                                    <span class="author">👤 健康生活顾问</span>
-                                    <span class="version">v1.5.3</span>
-                                </div>
-                            </div>
-                            <div class="plugin-status" id="wellness-status">未激活</div>
-                        </div>
-                        <div class="plugin-controls">
-                            <button class="btn btn-primary" onclick="togglePlugin('员工健康计划', 'wellness')"
-                                id="wellness-toggle">激活插件</button>
-                            <div class="plugin-settings" id="wellness-settings" style="display: none;">
-                                <button class="btn btn-secondary" onclick="conductHealthCheck()">🏥 健康检查</button>
-                                <div class="wellness-activities">
-                                    <span>活动状态: <span id="wellness-activity">待机中</span></span>
-                                </div>
+                    <div class="plugin-controls">
+                        <button class="btn btn-primary" onclick="togglePlugin('员工健康计划', 'wellness')"
+                            id="wellness-toggle">激活插件</button>
+                        <div class="plugin-settings" id="wellness-settings" style="display: none;">
+                            <button class="btn btn-secondary" onclick="conductHealthCheck()">🏥 健康检查</button>
+                            <div class="wellness-activities">
+                                <span>活动状态: <span id="wellness-activity">待机中</span></span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <script src="game.js"></script>
