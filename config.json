@@ -1,0 +1,21 @@
+{
+    "database": {
+        "host": "tx-db.cbore8wpy3mc.us-east-2.rds.amazonaws.com",
+        "port": 3306,
+        "username": "demo",
+        "password": "Demo1234",
+        "database": "game",
+        "charset": "utf8mb4",
+        "autocommit": true
+    },
+    "server": {
+        "host": "0.0.0.0",
+        "port": 5000,
+        "debug": true
+    },
+    "app": {
+        "name": "办公室生存游戏",
+        "version": "1.0.0",
+        "description": "插件评分系统"
+    }
+}

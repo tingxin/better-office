@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS plugins (
     description TEXT COMMENT '插件描述',
     author VARCHAR(100) DEFAULT '未知作者' COMMENT '插件作者',
     version VARCHAR(20) DEFAULT '1.0.0' COMMENT '插件版本',
-    icon VARCHAR(10) DEFAULT '🔌' COMMENT '插件图标',
+    icon VARCHAR(10) DEFAULT 'plugin' COMMENT '插件图标',
     color VARCHAR(20) DEFAULT '#4CAF50' COMMENT '插件主题色',
     category VARCHAR(50) DEFAULT 'general' COMMENT '插件分类',
     target_complaints JSON COMMENT '目标抱怨类型(JSON数组)',
@@ -126,11 +126,11 @@ DELIMITER ;
 
 -- 5. 插入初始插件数据
 INSERT INTO plugins (plugin_name, plugin_id, description, author, version, icon, color, category, target_complaints) VALUES
-('智能空调系统', 'air-conditioning', '安装智能空调系统，自动调节办公室温度，减少员工关于温度的抱怨', 'Kiro开发团队', '2.0.0', '❄️', '#2196F3', 'facility', '["空调问题", "异味问题"]'),
-('打印机维护系统', 'printer-maintenance', '定期维护打印机，减少卡纸和故障，显示实时工作状态', '办公设备专家', '3.0.0', '🖨️', '#4CAF50', 'equipment', '["打印机问题", "排队问题"]'),
-('智能照明系统', 'smart-lighting', '安装智能LED照明系统，自动调节光线亮度，减少眼疲劳', '照明专家', '1.0.0', '💡', '#FFC107', 'facility', '["光线问题", "健康问题"]'),
-('专业清洁服务', 'cleaning-service', '定期清洁办公室，保持环境整洁，显示清洁效果', '清洁专家', '2.0.0', '🧹', '#FF9800', 'service', '["清洁问题", "异味问题"]'),
-('网络基础设施升级', 'network-upgrade', '升级网络设备，提供稳定高速的网络连接', '网络工程师', '1.5.0', '🌐', '#9C27B0', 'infrastructure', '["网络问题", "电脑问题"]');
+('智能空调系统', 'air-conditioning', '安装智能空调系统，自动调节办公室温度，减少员工关于温度的抱怨', 'Kiro开发团队', '2.0.0', 'snowflake', '#2196F3', 'facility', '["空调问题", "异味问题"]'),
+('打印机维护系统', 'printer-maintenance', '定期维护打印机，减少卡纸和故障，显示实时工作状态', '办公设备专家', '3.0.0', 'printer', '#4CAF50', 'equipment', '["打印机问题", "排队问题"]'),
+('智能照明系统', 'smart-lighting', '安装智能LED照明系统，自动调节光线亮度，减少眼疲劳', '照明专家', '1.0.0', 'lightbulb', '#FFC107', 'facility', '["光线问题", "健康问题"]'),
+('专业清洁服务', 'cleaning-service', '定期清洁办公室，保持环境整洁，显示清洁效果', '清洁专家', '2.0.0', 'broom', '#FF9800', 'service', '["清洁问题", "异味问题"]'),
+('网络基础设施升级', 'network-upgrade', '升级网络设备，提供稳定高速的网络连接', '网络工程师', '1.5.0', 'network', '#9C27B0', 'infrastructure', '["网络问题", "电脑问题"]');
 
 -- 6. 创建视图：插件详细信息(包含统计)
 CREATE VIEW plugin_details AS

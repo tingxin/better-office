@@ -40,12 +40,32 @@ def install_requirements():
         print(f"❌ 依赖包安装失败: {e}")
         return False
 
+def check_config_file():
+    """检查配置文件"""
+    if not os.path.exists('config.json'):
+        print("📝 配置文件不存在，创建默认配置...")
+        try:
+            from config_manager import ConfigManager
+            config_manager = ConfigManager()
+            if config_manager.create_default_config():
+                print("✅ 默认配置文件已创建")
+                return True
+            else:
+                return False
+        except ImportError:
+            print("❌ 无法导入配置管理器")
+            return False
+    else:
+        print("✅ 找到配置文件: config.json")
+        return True
+
 def check_game_files():
     """检查游戏文件是否存在"""
     required_files = [
         'index.html',
         'game.js',
-        'app.py'
+        'app.py',
+        'config.json'
     ]
     
     missing_files = []
@@ -89,12 +109,17 @@ def main():
     if not check_python_version():
         return
     
-    # 2. 检查游戏文件
+    # 2. 检查配置文件
+    if not check_config_file():
+        print("\n💡 请检查配置文件")
+        return
+    
+    # 3. 检查游戏文件
     if not check_game_files():
         print("\n💡 请确保在游戏项目根目录中运行此脚本")
         return
     
-    # 3. 检查Flask安装
+    # 4. 检查Flask安装
     if not check_flask_installation():
         print("📦 尝试自动安装Flask...")
         if not install_requirements():
@@ -105,7 +130,7 @@ def main():
     print("\n✅ 所有检查通过!")
     print("=" * 50)
     
-    # 4. 启动服务器
+    # 5. 启动服务器
     start_server()
 
 if __name__ == '__main__':
