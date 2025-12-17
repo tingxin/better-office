@@ -5,7 +5,7 @@
 简单的静态文件服务器，用于托管游戏网站
 """
 
-from flask import Flask, send_from_directory, send_file, jsonify
+from flask import Flask, send_from_directory, send_file, jsonify, request
 import os
 import mimetypes
 from datetime import datetime
