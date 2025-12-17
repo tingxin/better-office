@@ -444,11 +444,14 @@ if __name__ == '__main__':
     # 启动Flask开发服务器
     try:
         server_config = CONFIG['server']
+        print(f"🚀 启动服务器: {server_config['host']}:{server_config['port']}")
         app.run(
             host=server_config['host'],
             port=server_config['port'],
             debug=server_config['debug'],
-            threaded=True
+            threaded=True,
+            use_reloader=True,
+            use_debugger=server_config['debug']
         )
     except KeyboardInterrupt:
         print("\n👋 服务器已停止")
