@@ -47,7 +47,7 @@ def test_with_requests():
     except ImportError:
         return None
 
-def test_server(base_url="http://localhost:5000"):
+def test_server(base_url="http://localhost:5218"):
     """测试服务器功能"""
     print(f"🧪 测试服务器: {base_url}")
     print("=" * 60)
@@ -65,7 +65,9 @@ def test_server(base_url="http://localhost:5000"):
     # 测试用例
     tests = [
         ("🏠 主页访问", "/", "HTML页面"),
+        ("🔧 插件评分页面", "/kiro/workshop", "插件评分页面"),
         ("📊 服务器状态API", "/api/status", "JSON响应"),
+        ("📦 插件列表API", "/api/plugins", "JSON响应"),
         ("📁 文件列表API", "/api/files", "JSON响应"),
         ("🎮 游戏主脚本", "/game.js", "JavaScript文件"),
         ("❄️ 空调插件", "/plugins/air-conditioning-plugin.js", "插件文件"),
@@ -156,7 +158,7 @@ def print_usage():
     print("  python3 test_server.py http://IP:PORT     # 测试远程服务器")
     print()
     print("示例:")
-    print("  python3 test_server.py http://192.168.1.100:5000")
+    print("  python3 test_server.py http://192.168.1.100:5218")
     print("  python3 test_server.py http://localhost:8080")
     print()
 
@@ -167,7 +169,7 @@ def main():
         return
     
     # 获取服务器地址
-    server_url = sys.argv[1] if len(sys.argv) > 1 else "http://localhost:5000"
+    server_url = sys.argv[1] if len(sys.argv) > 1 else "http://localhost:5218"
     
     try:
         print("🚀 开始测试...")

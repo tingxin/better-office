@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>办公室生存游戏 - 插件评分</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .plugins-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .plugin-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .plugin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .plugin-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .plugin-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-right: 15px;
+            color: white;
+        }
+
+        .plugin-info h3 {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .plugin-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .plugin-description {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .plugin-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .rating-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stars-display {
+            display: flex;
+            gap: 2px;
+        }
+
+        .star-display {
+            color: #ffc107;
+            font-size: 1.2rem;
+        }
+
+        .star-display.empty {
+            color: #ddd;
+        }
+
+        .rating-text {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .rating-count {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .rating-section {
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        .rating-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .stars-rating {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .star {
+            font-size: 2rem;
+            color: #ddd;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .star:hover,
+        .star.active {
+            color: #ffc107;
+            transform: scale(1.1);
+        }
+
+        .star.hover {
+            color: #ffeb3b;
+        }
+
+        .comment-section {
+            margin-top: 15px;
+        }
+
+        .comment-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            resize: vertical;
+            min-height: 80px;
+            margin-bottom: 15px;
+        }
+
+        .comment-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .message.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #667eea;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .plugins-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .plugin-stats {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎮 办公室生存游戏插件</h1>
+            <p>为你喜欢的插件评分，帮助改善办公室环境！</p>
+        </div>
+
+        <div id="loading" class="loading">
+            正在加载插件信息...
+        </div>
+
+        <div id="plugins-container" class="plugins-grid" style="display: none;">
+            <!-- 插件卡片将通过JavaScript动态生成 -->
+        </div>
+
+        <div class="footer">
+            <p>感谢您的参与！您的评分将帮助我们改进插件质量。</p>
+        </div>
+    </div>
+
+    <script>
+        // 图标映射
+        const iconMap = {
+            'snowflake': '❄️',
+            'printer': '🖨️',
+            'lightbulb': '💡',
+            'broom': '🧹',
+            'network': '🌐',
+            'plugin': '🔌'
+        };
+
+        // 当前用户评分状态
+        let userRatings = {};
+
+        // 页面加载完成后获取插件数据
+        document.addEventListener('DOMContentLoaded', function () {
+            loadPlugins();
+        });
+
+        // 加载插件数据
+        async function loadPlugins() {
+            try {
+                const response = await fetch('/api/plugins');
+                const data = await response.json();
+
+                if (data.success) {
+                    renderPlugins(data.plugins);
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('plugins-container').style.display = 'grid';
+                } else {
+                    showError('加载插件失败: ' + data.message);
+                }
+            } catch (error) {
+                console.error('加载插件失败:', error);
+                showError('网络错误，请稍后重试');
+            }
+        }
+
+        // 渲染插件列表
+        function renderPlugins(plugins) {
+            const container = document.getElementById('plugins-container');
+            container.innerHTML = '';
+
+            plugins.forEach(plugin => {
+                const pluginCard = createPluginCard(plugin);
+                container.appendChild(pluginCard);
+            });
+        }
+
+        // 创建插件卡片
+        function createPluginCard(plugin) {
+            const card = document.createElement('div');
+            card.className = 'plugin-card';
+            card.style.borderColor = plugin.color + '20';
+
+            const icon = iconMap[plugin.icon] || iconMap['plugin'];
+            const averageRating = parseFloat(plugin.average_rating) || 0;
+            const totalRatings = parseInt(plugin.total_ratings) || 0;
+
+            card.innerHTML = `
+                <div class="plugin-header">
+                    <div class="plugin-icon" style="background: ${plugin.color}">
+                        ${icon}
+                    </div>
+                    <div class="plugin-info">
+                        <h3>${plugin.plugin_name}</h3>
+                        <div class="plugin-meta">
+                            <span>👤 ${plugin.author}</span>
+                            <span>📦 v${plugin.version}</span>
+                            <span>🏷️ ${plugin.category}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="plugin-description">
+                    ${plugin.description}
+                </div>
+                
+                <div class="plugin-stats">
+                    <div class="rating-display">
+                        <div class="stars-display">
+                            ${generateStarsDisplay(averageRating)}
+                        </div>
+                        <span class="rating-text">${averageRating.toFixed(1)}</span>
+                    </div>
+                    <div class="rating-count">
+                        ${totalRatings} 个评分
+                    </div>
+                </div>
+                
+                <div class="rating-section">
+                    <div class="rating-title">为这个插件评分</div>
+                    <div class="stars-rating" data-plugin-id="${plugin.id}">
+                        ${generateRatingStars(plugin.id)}
+                    </div>
+                    <div class="comment-section">
+                        <textarea 
+                            class="comment-input" 
+                            placeholder="分享您的使用体验（可选）..."
+                            id="comment-${plugin.id}"
+                        ></textarea>
+                        <button 
+                            class="submit-btn" 
+                            onclick="submitRating(${plugin.id})"
+                            id="submit-${plugin.id}"
+                        >
+                            提交评分
+                        </button>
+                    </div>
+                    <div id="message-${plugin.id}"></div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        // 生成显示用的星星
+        function generateStarsDisplay(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= rating) {
+                    stars += '<span class="star-display">★</span>';
+                } else if (i - 0.5 <= rating) {
+                    stars += '<span class="star-display">☆</span>';
+                } else {
+                    stars += '<span class="star-display empty">☆</span>';
+                }
+            }
+            return stars;
+        }
+
+        // 生成评分用的星星
+        function generateRatingStars(pluginId) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                stars += `<span class="star" data-rating="${i}" onclick="setRating(${pluginId}, ${i})" onmouseover="hoverRating(${pluginId}, ${i})" onmouseout="unhoverRating(${pluginId})">☆</span>`;
+            }
+            return stars;
+        }
+
+        // 设置评分
+        function setRating(pluginId, rating) {
+            userRatings[pluginId] = rating;
+            updateStarsDisplay(pluginId, rating);
+        }
+
+        // 鼠标悬停效果
+        function hoverRating(pluginId, rating) {
+            const stars = document.querySelectorAll(`[data-plugin-id="${pluginId}"] .star`);
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('hover');
+                } else {
+                    star.classList.remove('hover');
+                }
+            });
+        }
+
+        // 取消悬停效果
+        function unhoverRating(pluginId) {
+            const stars = document.querySelectorAll(`[data-plugin-id="${pluginId}"] .star`);
+            stars.forEach(star => {
+                star.classList.remove('hover');
+            });
+
+            // 恢复当前评分显示
+            if (userRatings[pluginId]) {
+                updateStarsDisplay(pluginId, userRatings[pluginId]);
+            }
+        }
+
+        // 更新星星显示
+        function updateStarsDisplay(pluginId, rating) {
+            const stars = document.querySelectorAll(`[data-plugin-id="${pluginId}"] .star`);
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                    star.textContent = '★';
+                } else {
+                    star.classList.remove('active');
+                    star.textContent = '☆';
+                }
+            });
+        }
+
+        // 提交评分
+        async function submitRating(pluginId) {
+            const rating = userRatings[pluginId];
+            if (!rating) {
+                showMessage(pluginId, '请先选择评分', 'error');
+                return;
+            }
+
+            const comment = document.getElementById(`comment-${pluginId}`).value.trim();
+            const submitBtn = document.getElementById(`submit-${pluginId}`);
+
+            // 禁用提交按钮
+            submitBtn.disabled = true;
+            submitBtn.textContent = '提交中...';
+
+            try {
+                const response = await fetch('/api/rate-plugin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        plugin_id: pluginId,
+                        rating: rating,
+                        comment: comment
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showMessage(pluginId, '评分提交成功！感谢您的参与。', 'success');
+                    // 禁用评分区域
+                    disableRatingSection(pluginId);
+                    // 重新加载插件数据以更新统计
+                    setTimeout(() => {
+                        loadPlugins();
+                    }, 2000);
+                } else {
+                    showMessage(pluginId, '提交失败: ' + data.message, 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '提交评分';
+                }
+            } catch (error) {
+                console.error('提交评分失败:', error);
+                showMessage(pluginId, '网络错误，请稍后重试', 'error');
+                submitBtn.disabled = false;
+                submitBtn.textContent = '提交评分';
+            }
+        }
+
+        // 显示消息
+        function showMessage(pluginId, message, type) {
+            const messageDiv = document.getElementById(`message-${pluginId}`);
+            messageDiv.innerHTML = `<div class="message ${type}">${message}</div>`;
+
+            // 3秒后自动清除消息
+            setTimeout(() => {
+                messageDiv.innerHTML = '';
+            }, 3000);
+        }
+
+        // 显示错误信息
+        function showError(message) {
+            const loading = document.getElementById('loading');
+            loading.innerHTML = `<div class="message error">${message}</div>`;
+        }
+
+        // 禁用评分区域
+        function disableRatingSection(pluginId) {
+            const stars = document.querySelectorAll(`[data-plugin-id="${pluginId}"] .star`);
+            const comment = document.getElementById(`comment-${pluginId}`);
+            const submitBtn = document.getElementById(`submit-${pluginId}`);
+
+            stars.forEach(star => {
+                star.style.cursor = 'not-allowed';
+                star.onclick = null;
+                star.onmouseover = null;
+                star.onmouseout = null;
+            });
+
+            comment.disabled = true;
+            submitBtn.disabled = true;
+            submitBtn.textContent = '已提交';
+        }
+    </script>
+</body>
+
+</html>
