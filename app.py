@@ -445,13 +445,17 @@ if __name__ == '__main__':
     try:
         server_config = CONFIG['server']
         print(f"🚀 启动服务器: {server_config['host']}:{server_config['port']}")
+        
+        # 设置环境变量确保Flask使用正确端口
+        import os
+        os.environ['FLASK_RUN_PORT'] = str(server_config['port'])
+        os.environ['FLASK_RUN_HOST'] = server_config['host']
+        
         app.run(
             host=server_config['host'],
             port=server_config['port'],
-            debug=server_config['debug'],
-            threaded=True,
-            use_reloader=True,
-            use_debugger=server_config['debug']
+            debug=False,  # 关闭debug模式避免重启问题
+            threaded=True
         )
     except KeyboardInterrupt:
         print("\n👋 服务器已停止")
