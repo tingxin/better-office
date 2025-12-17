@@ -1,0 +1,7 @@
+# 办公室生存游戏 - Python依赖包
+Flask==2.3.3
+Werkzeug==2.3.7
+
+# 可选：生产环境部署
+# gunicorn==21.2.0
+# waitress==2.1.2
