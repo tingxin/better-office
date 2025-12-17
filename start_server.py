@@ -86,13 +86,16 @@ def start_server():
     print("\n🚀 启动游戏服务器...")
     try:
         # 导入并运行Flask应用
-        from app import app, print_startup_info
+        from app import app, print_startup_info, CONFIG
         
         print_startup_info()
+        
+        # 使用配置文件中的服务器设置
+        server_config = CONFIG['server']
         app.run(
-            host='0.0.0.0',
-            port=5000,
-            debug=True,
+            host=server_config['host'],
+            port=server_config['port'],
+            debug=False,  # 关闭debug避免重启问题
             threaded=True
         )
     except KeyboardInterrupt:
