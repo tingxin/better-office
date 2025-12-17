@@ -124,13 +124,20 @@ def get_client_ip():
     else:
         return request.remote_addr
 
-@app.route('/plugins')
+@app.route('/kiro/workshop')
 def plugins_page():
     """插件评分页面"""
     try:
         return send_file(os.path.join(STATIC_DIR, 'plugins.html'))
     except Exception as e:
         return f"错误：无法加载插件页面 - {str(e)}", 500
+
+# 保持向后兼容
+@app.route('/plugins')
+def plugins_page_redirect():
+    """插件页面重定向到新路径"""
+    from flask import redirect
+    return redirect('/kiro/workshop', code=301)
 
 @app.route('/api/plugins')
 def api_plugins():
@@ -404,11 +411,15 @@ def print_startup_info():
     print("🎮 办公室生存游戏服务器")
     print("=" * 60)
     print(f"📁 静态文件目录: {STATIC_DIR}")
-    print(f"🌐 本地访问地址: http://localhost:5000")
-    print(f"🌐 局域网访问: http://0.0.0.0:5000")
+    print(f"🌐 本地访问地址: http://localhost:{CONFIG['server']['port']}")
+    print(f"🌐 局域网访问: http://0.0.0.0:{CONFIG['server']['port']}")
+    print("📊 主要页面:")
+    print("   - /              - 游戏主页")
+    print("   - /kiro/workshop - 插件评分页面")
     print("📊 API接口:")
-    print("   - /api/status  - 服务器状态")
-    print("   - /api/files   - 文件列表")
+    print("   - /api/status    - 服务器状态")
+    print("   - /api/plugins   - 插件列表")
+    print("   - /api/files     - 文件列表")
     print("=" * 60)
     print("💡 提示: 按 Ctrl+C 停止服务器")
     print("=" * 60)
