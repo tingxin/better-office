@@ -1,3 +1,4 @@
+-i https://pypi.tuna.tsinghua.edu.cn/simple
 # 办公室生存游戏 - Python依赖包
 Flask==2.3.3
 Werkzeug==2.3.7
