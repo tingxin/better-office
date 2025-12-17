@@ -1038,11 +1038,13 @@
         }
 
         /* 挑战样式 */
-        .challenges-section, .special-events-section {
+        .challenges-section,
+        .special-events-section {
             margin-bottom: 30px;
         }
 
-        .challenges-section h4, .special-events-section h4 {
+        .challenges-section h4,
+        .special-events-section h4 {
             margin: 0 0 15px 0;
             font-size: 1.2rem;
             font-weight: 600;
@@ -1051,7 +1053,8 @@
             padding-bottom: 5px;
         }
 
-        .challenge-item, .event-item {
+        .challenge-item,
+        .event-item {
             background: #fff;
             border-radius: 10px;
             padding: 15px;
@@ -1061,12 +1064,14 @@
             transition: all 0.3s ease;
         }
 
-        .challenge-item:hover, .event-item:hover {
+        .challenge-item:hover,
+        .event-item:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
-        .challenge-item.completed, .event-item.completed {
+        .challenge-item.completed,
+        .event-item.completed {
             border-left-color: #28a745;
             background: linear-gradient(135deg, #f8fff9 0%, #e8f5e8 100%);
         }
@@ -1079,31 +1084,36 @@
             border-left-color: #dc3545;
         }
 
-        .challenge-header, .event-header {
+        .challenge-header,
+        .event-header {
             display: flex;
             align-items: center;
             margin-bottom: 10px;
         }
 
-        .challenge-icon, .event-icon {
+        .challenge-icon,
+        .event-icon {
             font-size: 1.5rem;
             margin-right: 12px;
             width: 40px;
             text-align: center;
         }
 
-        .challenge-info, .event-info {
+        .challenge-info,
+        .event-info {
             flex: 1;
         }
 
-        .challenge-info strong, .event-info strong {
+        .challenge-info strong,
+        .event-info strong {
             display: block;
             font-size: 1rem;
             color: #333;
             margin-bottom: 3px;
         }
 
-        .challenge-info p, .event-info p {
+        .challenge-info p,
+        .event-info p {
             margin: 0 0 5px 0;
             font-size: 0.85rem;
             color: #6c757d;
@@ -1128,7 +1138,8 @@
             font-weight: 600;
         }
 
-        .challenge-progress, .event-progress {
+        .challenge-progress,
+        .event-progress {
             margin: 10px 0;
         }
 
@@ -1148,7 +1159,8 @@
             transition: width 0.3s ease;
         }
 
-        .challenge-item.completed .progress-fill, .event-item.completed .progress-fill {
+        .challenge-item.completed .progress-fill,
+        .event-item.completed .progress-fill {
             background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
         }
 
@@ -1158,7 +1170,8 @@
             font-weight: 600;
         }
 
-        .challenge-actions, .event-actions {
+        .challenge-actions,
+        .event-actions {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -1403,13 +1416,18 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
             animation: progressShine 2s infinite;
         }
 
         @keyframes progressShine {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
         }
 
         .level-progress-text {
@@ -1672,15 +1690,35 @@
         }
 
         @keyframes levelUpPop {
-            0% { transform: scale(0.5); opacity: 0; }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); opacity: 1; }
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         @keyframes levelUpBounce {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            25% { transform: translateY(-10px) rotate(-5deg); }
-            75% { transform: translateY(-5px) rotate(5deg); }
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            25% {
+                transform: translateY(-10px) rotate(-5deg);
+            }
+
+            75% {
+                transform: translateY(-5px) rotate(5deg);
+            }
         }
 
         .achievement-panel-header {
@@ -1914,14 +1952,31 @@
         }
 
         @keyframes achievementPop {
-            0% { transform: scale(0.5); opacity: 0; }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); opacity: 1; }
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         @keyframes achievementBounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
 
         /* 事件对话框样式 */
@@ -2568,28 +2623,61 @@
 
         /* 动画效果 */
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         @keyframes eventDialogPop {
-            0% { transform: scale(0.8); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         @keyframes eventResultPop {
-            0% { transform: scale(0.9) translateY(-20px); opacity: 0; }
-            100% { transform: scale(1) translateY(0); opacity: 1; }
+            0% {
+                transform: scale(0.9) translateY(-20px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
         }
 
         @keyframes slideInRight {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
         @keyframes slideOutRight {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(100%); opacity: 0; }
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
         }
 
         /* 超小屏幕 */
@@ -2684,13 +2772,17 @@
                         调试插件</button>
                     <button class="btn btn-success" onclick="testEnhancedFeatures()" style="background: #6f42c1;">🎮
                         测试增强功能</button>
-                    <button class="btn btn-primary" onclick="toggleAchievementPanel()" style="background: #ffc107; color: #000;">🏆
+                    <button class="btn btn-primary" onclick="toggleAchievementPanel()"
+                        style="background: #ffc107; color: #000;">🏆
                         成就面板</button>
-                    <button class="btn btn-primary" onclick="toggleProgressionPanel()" style="background: #28a745; color: #fff;">📈
+                    <button class="btn btn-primary" onclick="toggleProgressionPanel()"
+                        style="background: #28a745; color: #fff;">📈
                         进展面板</button>
-                    <button class="btn btn-primary" onclick="toggleStatisticsPanel()" style="background: #17a2b8; color: #fff;">📊
+                    <button class="btn btn-primary" onclick="toggleStatisticsPanel()"
+                        style="background: #17a2b8; color: #fff;">📊
                         统计面板</button>
-                    <button class="btn btn-primary" onclick="toggleSocialPanel()" style="background: #6f42c1; color: #fff;">🌟
+                    <button class="btn btn-primary" onclick="toggleSocialPanel()"
+                        style="background: #6f42c1; color: #fff;">🌟
                         社交分享</button>
                 </div>
             </div>
@@ -2726,9 +2818,9 @@
                         <div class="plugin-settings" id="ac-settings" style="display: none;">
                             <label>温度级别:</label>
                             <select onchange="adjustTemperature(this.value)" id="temp-level">
-                                <option value="0">标准</option>
-                                <option value="1">优化</option>
-                                <option value="2">完美</option>
+                                <option value="1">正常</option>
+                                <option value="2">舒适</option>
+                                <option value="3">完美</option>
                             </select>
                         </div>
                     </div>
@@ -2763,34 +2855,7 @@
                     </div>
                 </div>
 
-                <!-- 健康计划插件 -->
-                <div class="plugin-card" id="wellness-plugin-card">
-                    <div class="plugin-header">
-                        <span class="plugin-icon">💪</span>
-                        <div class="plugin-info">
-                            <h4>员工健康计划</h4>
-                            <p>提供健身设施和健康活动</p>
-                            <div class="plugin-meta">
-                                <span class="author">👤 健康生活顾问</span>
-                                <span class="version">v1.5.3</span>
-                            </div>
-                        </div>
-                        <div class="plugin-status" id="wellness-status">未激活</div>
-                    </div>
-                    <div class="plugin-controls">
-                        <div class="plugin-cost" style="font-size: 0.6rem; color: #6c757d; margin-bottom: 3px;">
-                            💰 8000 | ⭐ 10
-                        </div>
-                        <button class="btn btn-primary" onclick="togglePlugin('员工健康计划', 'wellness')"
-                            id="wellness-toggle">激活插件</button>
-                        <div class="plugin-settings" id="wellness-settings" style="display: none;">
-                            <button class="btn btn-secondary" onclick="conductHealthCheck()">🏥 健康检查</button>
-                            <div class="wellness-activities">
-                                <span>活动状态: <span id="wellness-activity">待机中</span></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>
@@ -3099,10 +3164,11 @@
             <!-- 智能建议标签页 -->
             <div id="statisticsSuggestions" class="statistics-tab-content" style="display: none;">
                 <div class="suggestions-section">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <h4>💡 智能建议</h4>
-                        <button id="autoSuggestionsToggle" class="export-btn" onclick="toggleAutoSuggestions()" 
-                                style="background: #28a745; color: white; font-size: 0.85rem;">
+                        <button id="autoSuggestionsToggle" class="export-btn" onclick="toggleAutoSuggestions()"
+                            style="background: #28a745; color: white; font-size: 0.85rem;">
                             启用自动建议
                         </button>
                     </div>
@@ -3138,7 +3204,7 @@
                 <div class="export-section">
                     <h4>📤 数据导出</h4>
                     <p>导出游戏统计数据用于进一步分析</p>
-                    
+
                     <div class="export-buttons">
                         <button class="export-btn json" onclick="exportStatisticsData('json')">
                             📄 导出 JSON 格式
@@ -3157,7 +3223,8 @@
 
                     <div style="margin-top: 20px;">
                         <h5>🗑️ 数据管理</h5>
-                        <button class="export-btn" onclick="clearStatisticsData()" style="background: #dc3545; color: white;">
+                        <button class="export-btn" onclick="clearStatisticsData()"
+                            style="background: #dc3545; color: white;">
                             清除历史数据
                         </button>
                         <p style="font-size: 0.8rem; color: #6c757d; margin-top: 5px;">
@@ -3302,7 +3369,6 @@
     <!-- 插件加载 -->
     <script src="plugins/air-conditioning-plugin.js"></script>
     <script src="plugins/printer-maintenance-plugin.js"></script>
-    <script src="plugins/wellness-program-plugin.js"></script>
 
     <script>
         // 插件管理界面
@@ -3323,7 +3389,7 @@
                     console.log('');
                     console.log('💡 示例: game.activatePlugin("智能空调系统")');
                     console.log('🔧 如果插件未显示，请点击"调试插件"按钮');
-                    
+
                     // 启动增强功能UI更新
                     startEnhancedUI();
                 }, 2000);
@@ -3338,7 +3404,7 @@
             const reputationStat = document.getElementById('reputation-stat');
             const productivityStat = document.getElementById('productivity-stat');
             const achievementStat = document.getElementById('achievement-stat');
-            
+
             if (moneystat) moneystat.style.display = 'block';
             if (satisfactionStat) satisfactionStat.style.display = 'block';
             if (reputationStat) reputationStat.style.display = 'block';
@@ -3347,26 +3413,26 @@
 
             // 定期更新增强功能数据
             setInterval(updateEnhancedStats, 1000);
-            
+
             // 初始化资源变化追踪
             initializeResourceTracking();
-            
+
             // 初始化成就UI
             initializeAchievementUI();
-            
+
             // 初始化进展UI
             initializeProgressionUI();
         }
 
         // 资源变化追踪
         let previousResources = {};
-        
+
         function initializeResourceTracking() {
             if (!window.game || !window.game.gameManager) return;
-            
+
             const resourceSystem = window.game.gameManager.getResourceSystem();
             if (!resourceSystem) return;
-            
+
             // 初始化上一次的资源值
             previousResources = {
                 money: resourceSystem.getResource('money'),
@@ -3395,7 +3461,7 @@
             const moneyElement = document.getElementById('moneyAmount');
             if (moneyElement) {
                 moneyElement.textContent = currentResources.money.toLocaleString();
-                
+
                 // 显示资金变化动画
                 if (previousResources.money !== undefined) {
                     const change = currentResources.money - previousResources.money;
@@ -3409,7 +3475,7 @@
             const satisfactionElement = document.getElementById('satisfactionLevel');
             if (satisfactionElement) {
                 satisfactionElement.textContent = currentResources.satisfaction;
-                
+
                 // 根据满意度水平改变颜色
                 const satisfactionStat = document.getElementById('satisfaction-stat');
                 if (satisfactionStat) {
@@ -3421,7 +3487,7 @@
                         satisfactionStat.style.background = 'linear-gradient(135deg, #dc3545 0%, #e83e8c 100%)';
                     }
                 }
-                
+
                 // 显示满意度变化
                 if (previousResources.satisfaction !== undefined) {
                     const change = currentResources.satisfaction - previousResources.satisfaction;
@@ -3435,7 +3501,7 @@
             const reputationElement = document.getElementById('reputationLevel');
             if (reputationElement) {
                 reputationElement.textContent = currentResources.reputation;
-                
+
                 // 根据声望水平改变颜色
                 const reputationStat = document.getElementById('reputation-stat');
                 if (reputationStat) {
@@ -3447,7 +3513,7 @@
                         reputationStat.style.background = 'linear-gradient(135deg, #6c757d 0%, #495057 100%)';
                     }
                 }
-                
+
                 // 显示声望变化
                 if (previousResources.reputation !== undefined) {
                     const change = currentResources.reputation - previousResources.reputation;
@@ -3461,7 +3527,7 @@
             const productivityElement = document.getElementById('productivityLevel');
             if (productivityElement) {
                 productivityElement.textContent = currentResources.productivity;
-                
+
                 // 根据生产力水平改变颜色
                 const productivityStat = document.getElementById('productivity-stat');
                 if (productivityStat) {
@@ -3473,7 +3539,7 @@
                         productivityStat.style.background = 'linear-gradient(135deg, #dc3545 0%, #fd7e14 100%)';
                     }
                 }
-                
+
                 // 显示生产力变化
                 if (previousResources.productivity !== undefined) {
                     const change = currentResources.productivity - previousResources.productivity;
@@ -3505,7 +3571,7 @@
                 animation: resourceChange 2s ease-out forwards;
             `;
             changeIndicator.textContent = (change > 0 ? '+' : '') + change;
-            
+
             // 添加动画样式
             if (!document.getElementById('resource-change-style')) {
                 const style = document.createElement('style');
@@ -3518,11 +3584,11 @@
                 `;
                 document.head.appendChild(style);
             }
-            
+
             // 确保父元素有相对定位
             element.style.position = 'relative';
             element.appendChild(changeIndicator);
-            
+
             // 2秒后移除指示器
             setTimeout(() => {
                 if (changeIndicator.parentNode) {
@@ -3537,12 +3603,12 @@
             if (resources.money < 5000) {
                 showResourceWarning('资金不足！考虑提高员工生产力或减少支出', 'warning');
             }
-            
+
             // 满意度过低警告
             if (resources.satisfaction < 30) {
                 showResourceWarning('员工满意度过低！考虑激活改善插件', 'danger');
             }
-            
+
             // 声望过低警告
             if (resources.reputation < 25) {
                 showResourceWarning('公司声望过低！需要改善管理策略', 'danger');
@@ -3555,9 +3621,9 @@
             const now = Date.now();
             // 避免频繁显示警告（至少间隔10秒）
             if (now - lastWarningTime < 10000) return;
-            
+
             lastWarningTime = now;
-            
+
             const warning = document.createElement('div');
             warning.style.cssText = `
                 position: fixed;
@@ -3574,9 +3640,9 @@
                 animation: slideIn 0.3s ease-out;
             `;
             warning.innerHTML = `⚠️ ${message}`;
-            
+
             document.body.appendChild(warning);
-            
+
             // 5秒后自动移除
             setTimeout(() => {
                 warning.style.animation = 'slideIn 0.3s ease-out reverse';
@@ -3589,9 +3655,9 @@
         }
 
         // 简单的通知系统
-        window.showNotification = function(message, type = 'info') {
+        window.showNotification = function (message, type = 'info') {
             console.log(`🔔 通知 [${type}]: ${message}`);
-            
+
             // 创建通知元素
             const notification = document.createElement('div');
             notification.style.cssText = `
@@ -3609,7 +3675,7 @@
                 animation: slideIn 0.3s ease-out;
             `;
             notification.textContent = message;
-            
+
             // 添加动画样式
             const style = document.createElement('style');
             style.textContent = `
@@ -3619,9 +3685,9 @@
                 }
             `;
             document.head.appendChild(style);
-            
+
             document.body.appendChild(notification);
-            
+
             // 3秒后自动移除
             setTimeout(() => {
                 notification.style.animation = 'slideIn 0.3s ease-out reverse';
@@ -3636,14 +3702,14 @@
         // 事件对话框系统
         let currentEvent = null;
 
-        window.showEventDialog = function(event) {
+        window.showEventDialog = function (event) {
             console.log(`🎲 事件对话框: ${event.name}`);
-            
+
             currentEvent = event;
-            
+
             // 显示事件通知
             showEventNotification(event);
-            
+
             // 显示详细事件对话框
             displayEventDialog(event);
         };
@@ -3655,7 +3721,7 @@
 
             const notification = document.createElement('div');
             notification.className = `event-notification ${event.type || 'random'}`;
-            
+
             const eventTypeNames = {
                 'random': '随机事件',
                 'emergency': '紧急事件',
@@ -3733,7 +3799,7 @@
             };
 
             const typeData = eventTypeData[event.type] || eventTypeData['random'];
-            
+
             typeIndicator.textContent = typeData.icon;
             title.textContent = event.name;
             typeText.textContent = typeData.text;
@@ -3748,10 +3814,10 @@
             event.choices.forEach((choice, index) => {
                 const button = document.createElement('button');
                 button.className = `event-choice-btn ${getChoiceButtonClass(choice, index)}`;
-                
+
                 const costText = formatChoiceCost(choice.cost);
                 const consequencesText = formatChoiceConsequences(choice.consequences);
-                
+
                 button.innerHTML = `
                     <span class="event-choice-text">${choice.text}</span>
                     ${costText ? `<span class="event-choice-cost">成本: ${costText}</span>` : ''}
@@ -3770,11 +3836,11 @@
             // 根据成本和后果确定按钮样式
             const cost = choice.cost || {};
             const consequences = choice.consequences || {};
-            
+
             const hasCost = Object.keys(cost).length > 0;
             const hasPositiveConsequences = Object.values(consequences).some(val => val > 0);
             const hasNegativeConsequences = Object.values(consequences).some(val => val < 0);
-            
+
             if (index === 0) {
                 return hasPositiveConsequences ? 'primary' : hasCost ? 'warning' : 'secondary';
             } else {
@@ -3785,7 +3851,7 @@
         // 格式化选择成本
         function formatChoiceCost(cost) {
             if (!cost || Object.keys(cost).length === 0) return '';
-            
+
             const costParts = [];
             const resourceIcons = {
                 money: '💰',
@@ -3793,19 +3859,19 @@
                 satisfaction: '😊',
                 productivity: '📈'
             };
-            
+
             for (const [resource, amount] of Object.entries(cost)) {
                 const icon = resourceIcons[resource] || resource;
                 costParts.push(`${icon}${amount}`);
             }
-            
+
             return costParts.join(' ');
         }
 
         // 格式化选择后果
         function formatChoiceConsequences(consequences) {
             if (!consequences || Object.keys(consequences).length === 0) return '';
-            
+
             const consequenceParts = [];
             const resourceIcons = {
                 money: '💰',
@@ -3813,29 +3879,29 @@
                 satisfaction: '😊',
                 productivity: '📈'
             };
-            
+
             for (const [resource, amount] of Object.entries(consequences)) {
                 const icon = resourceIcons[resource] || resource;
                 const sign = amount > 0 ? '+' : '';
                 consequenceParts.push(`${icon}${sign}${amount}`);
             }
-            
+
             return consequenceParts.join(' ');
         }
 
         // 处理事件选择
         function handleEventChoice(eventId, choiceIndex, choice) {
             console.log(`处理事件选择: ${eventId}, 选择: ${choiceIndex}`);
-            
+
             // 检查资源是否足够
             if (choice.cost && !canAffordEventChoice(choice.cost)) {
                 showResourceWarning('资源不足，无法执行此选择！', 'danger');
                 return;
             }
-            
+
             // 关闭事件对话框
             closeEventDialog();
-            
+
             // 处理事件
             if (window.game && window.game.gameManager) {
                 const eventSystem = window.game.gameManager.getEventSystem();
@@ -3853,10 +3919,10 @@
         function canAffordEventChoice(cost) {
             if (!cost || Object.keys(cost).length === 0) return true;
             if (!window.game || !window.game.gameManager) return false;
-            
+
             const resourceSystem = window.game.gameManager.getResourceSystem();
             if (!resourceSystem) return false;
-            
+
             for (const [resource, amount] of Object.entries(cost)) {
                 if (resourceSystem.getResource(resource) < amount) {
                     return false;
@@ -3878,21 +3944,21 @@
             // 设置结果图标和标题
             const isPositiveChoice = Object.values(choice.consequences || {}).some(val => val > 0);
             const isNegativeChoice = Object.values(choice.consequences || {}).some(val => val < 0);
-            
+
             if (isPositiveChoice && !isNegativeChoice) {
                 resultIcon.textContent = '✅';
                 resultTitle.textContent = '处理成功';
-                resultDialog.querySelector('.event-result-header').style.background = 
+                resultDialog.querySelector('.event-result-header').style.background =
                     'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
             } else if (isNegativeChoice && !isPositiveChoice) {
                 resultIcon.textContent = '⚠️';
                 resultTitle.textContent = '处理完成';
-                resultDialog.querySelector('.event-result-header').style.background = 
+                resultDialog.querySelector('.event-result-header').style.background =
                     'linear-gradient(135deg, #ffc107 0%, #fd7e14 100%)';
             } else {
                 resultIcon.textContent = '📋';
                 resultTitle.textContent = '处理完成';
-                resultDialog.querySelector('.event-result-header').style.background = 
+                resultDialog.querySelector('.event-result-header').style.background =
                     'linear-gradient(135deg, #6c757d 0%, #495057 100%)';
             }
 
@@ -3904,18 +3970,18 @@
                 for (const [resource, amount] of Object.entries(choice.consequences)) {
                     const consequenceItem = document.createElement('div');
                     consequenceItem.className = `consequence-item ${amount > 0 ? 'positive' : amount < 0 ? 'negative' : 'neutral'}`;
-                    
+
                     const resourceIcons = {
                         money: '💰',
                         reputation: '⭐',
                         satisfaction: '😊',
                         productivity: '📈'
                     };
-                    
+
                     const icon = resourceIcons[resource] || resource;
                     const sign = amount > 0 ? '+' : '';
                     consequenceItem.innerHTML = `${icon} ${sign}${amount}`;
-                    
+
                     consequencesContainer.appendChild(consequenceItem);
                 }
             }
@@ -3959,13 +4025,13 @@
             // 显示等级和经验统计
             const levelStat = document.getElementById('level-stat');
             const experienceStat = document.getElementById('experience-stat');
-            
+
             if (levelStat) levelStat.style.display = 'block';
             if (experienceStat) experienceStat.style.display = 'block';
 
             // 定期更新进展数据
             setInterval(updateProgressionStats, 1000);
-            
+
             // 初始化进展面板内容
             updateProgressionPanel();
         }
@@ -4080,7 +4146,7 @@
                 unlockPreview.unlockDetails.forEach(unlock => {
                     const unlockItem = document.createElement('div');
                     unlockItem.className = 'unlock-item';
-                    
+
                     const categoryIcons = {
                         'management': '👥',
                         'analytics': '📊',
@@ -4143,7 +4209,7 @@
 
             const progressData = progressionSystem.getLevelProgress();
             updateProgressionPanelStats(progressData, progressionSystem);
-            
+
             // 更新其他标签页内容
             updateProgressionUnlocksTab(progressionSystem);
             updateProgressionMilestonesTab(progressionSystem);
@@ -4211,7 +4277,7 @@
                     unlockPreview.unlockDetails.forEach(unlock => {
                         const unlockItem = document.createElement('div');
                         unlockItem.className = 'unlock-item';
-                        
+
                         const categoryIcons = {
                             'management': '👥',
                             'analytics': '📊',
@@ -4266,7 +4332,7 @@
             milestones.forEach(milestone => {
                 const milestoneItem = document.createElement('div');
                 milestoneItem.className = `milestone-item ${milestone.completed ? 'completed' : milestone.progress > 0 ? 'in-progress' : ''}`;
-                
+
                 const categoryIcons = {
                     'employees': '👥',
                     'financial': '💰',
@@ -4302,7 +4368,7 @@
         // 格式化里程碑奖励
         function formatMilestoneRewards(rewards) {
             if (!rewards) return '';
-            
+
             const rewardParts = [];
             const resourceIcons = {
                 money: '💰',
@@ -4311,13 +4377,13 @@
                 productivity: '📈',
                 experience: '⭐'
             };
-            
+
             for (const [resource, amount] of Object.entries(rewards)) {
                 if (resource === 'features' || resource === 'floors') continue;
                 const icon = resourceIcons[resource] || resource;
                 rewardParts.push(`${icon}${amount}`);
             }
-            
+
             return rewardParts.join(' ');
         }
 
@@ -4332,7 +4398,7 @@
             floors.forEach(floor => {
                 const floorItem = document.createElement('div');
                 floorItem.className = `milestone-item ${floor.unlocked ? 'completed' : ''}`;
-                
+
                 const floorIcons = ['', '🏢', '🏬', '🏭', '🏗️', '🏛️'];
                 const icon = floorIcons[floor.id] || '🏢';
 
@@ -4362,9 +4428,9 @@
         }
 
         // 等级提升庆祝动画
-        window.showLevelUpAnimation = function(level, rewards, unlocks) {
+        window.showLevelUpAnimation = function (level, rewards, unlocks) {
             console.log(`🎉 等级提升动画: 等级 ${level}`);
-            
+
             const overlay = document.getElementById('levelUpOverlay');
             const levelElement = document.getElementById('levelUpNewLevel');
             const rewardsElement = document.getElementById('levelUpRewards');
@@ -4384,7 +4450,7 @@
                 if (rewards.reputation) rewardTexts.push(`⭐ +${rewards.reputation}声望`);
                 if (rewards.satisfaction) rewardTexts.push(`😊 +${rewards.satisfaction}满意度`);
                 if (rewards.productivity) rewardTexts.push(`📈 +${rewards.productivity}生产力`);
-                
+
                 rewardsElement.innerHTML = rewardTexts.join('<br>');
             }
 
@@ -4411,27 +4477,6 @@
             if (overlay) {
                 overlay.style.display = 'none';
             }
-        }
-                for (const [resource, amount] of Object.entries(choice.consequences)) {
-                    const consequenceItem = document.createElement('div');
-                    consequenceItem.className = `consequence-item ${amount > 0 ? 'positive' : amount < 0 ? 'negative' : 'neutral'}`;
-                    
-                    const resourceNames = {
-                        money: '💰 资金',
-                        reputation: '⭐ 声望',
-                        satisfaction: '😊 满意度',
-                        productivity: '📈 生产力'
-                    };
-                    
-                    const resourceName = resourceNames[resource] || resource;
-                    const sign = amount > 0 ? '+' : '';
-                    consequenceItem.innerHTML = `${resourceName} ${sign}${amount}`;
-                    
-                    consequencesContainer.appendChild(consequenceItem);
-                }
-            }
-
-            resultDialog.style.display = 'flex';
         }
 
         // 关闭事件对话框
@@ -4495,12 +4540,14 @@
             if (plugin.isActive) {
                 // 停用插件
                 console.log('停用插件:', pluginName);
-                window.game.deactivatePlugin(pluginName);
-                card.classList.remove('active');
-                status.textContent = '未激活';
-                status.classList.remove('active');
-                toggle.textContent = '激活插件';
-                settings.style.display = 'none';
+                const success = window.game.deactivatePlugin(pluginName);
+                if (success && card && status && toggle) {
+                    card.classList.remove('active');
+                    status.textContent = '未激活';
+                    status.classList.remove('active');
+                    toggle.textContent = '激活插件';
+                    if (settings) settings.style.display = 'none';
+                }
             } else {
                 // 检查资源是否足够激活插件
                 const pluginCost = getPluginCost(pluginName);
@@ -4508,21 +4555,23 @@
                     showResourceWarning(`资源不足！激活${pluginName}需要: ${formatCost(pluginCost)}`, 'danger');
                     return;
                 }
-                
+
                 // 激活插件
                 console.log('激活插件:', pluginName);
-                
+
                 // 扣除激活成本
                 if (pluginCost) {
                     spendResourcesForPlugin(pluginCost);
                 }
-                
-                window.game.activatePlugin(pluginName);
-                card.classList.add('active');
-                status.textContent = '已激活';
-                status.classList.add('active');
-                toggle.textContent = '停用插件';
-                settings.style.display = 'block';
+
+                const success = window.game.activatePlugin(pluginName);
+                if (success && card && status && toggle) {
+                    card.classList.add('active');
+                    status.textContent = '已激活';
+                    status.classList.add('active');
+                    toggle.textContent = '停用插件';
+                    if (settings) settings.style.display = 'block';
+                }
             }
         }
 
@@ -4530,8 +4579,7 @@
         function getPluginCost(pluginName) {
             const costs = {
                 '智能空调系统': { money: 5000, reputation: 5 },
-                '打印机维护系统': { money: 3000, reputation: 3 },
-                '员工健康计划': { money: 8000, reputation: 10 }
+                '打印机维护系统': { money: 3000, reputation: 3 }
             };
             return costs[pluginName] || null;
         }
@@ -4539,10 +4587,10 @@
         // 检查是否能承担插件成本
         function canAffordPlugin(cost) {
             if (!window.game || !window.game.gameManager) return false;
-            
+
             const resourceSystem = window.game.gameManager.getResourceSystem();
             if (!resourceSystem) return false;
-            
+
             for (const [resource, amount] of Object.entries(cost)) {
                 if (resourceSystem.getResource(resource) < amount) {
                     return false;
@@ -4554,10 +4602,10 @@
         // 为插件扣除资源
         function spendResourcesForPlugin(cost) {
             if (!window.game || !window.game.gameManager) return;
-            
+
             const resourceSystem = window.game.gameManager.getResourceSystem();
             if (!resourceSystem) return;
-            
+
             for (const [resource, amount] of Object.entries(cost)) {
                 resourceSystem.spendResource(resource, amount);
             }
@@ -4584,7 +4632,7 @@
             if (plugin && plugin.isActive && plugin.adjustTemperature) {
                 plugin.adjustTemperature(parseInt(level));
 
-                const levelNames = ['标准', '优化', '完美'];
+                const levelNames = ['', '正常', '舒适', '完美'];
                 console.log(`🌡️ 温度调节至: ${levelNames[level]}`);
             }
         }
@@ -4608,21 +4656,7 @@
             }
         }
 
-        // 健康计划插件特定功能
-        function conductHealthCheck() {
-            const plugin = window.game.plugins.get('员工健康计划');
-            if (plugin && plugin.isActive && plugin.conductHealthCheck) {
-                plugin.conductHealthCheck();
 
-                // 更新活动状态显示
-                const activitySpan = document.getElementById('wellness-activity');
-                activitySpan.textContent = '进行健康检查...';
-
-                setTimeout(() => {
-                    activitySpan.textContent = '待机中';
-                }, 5000);
-            }
-        }
 
         // 更新备用打印机数量显示
         function updateBackupPrinterCount() {
@@ -4639,34 +4673,25 @@
         setInterval(() => {
             updateBackupPrinterCount();
 
-            // 更新健康活动状态
-            const plugin = window.game.plugins.get('员工健康计划');
-            if (plugin && plugin.isActive) {
-                const activitySpan = document.getElementById('wellness-activity');
-                if (activitySpan && activitySpan.textContent === '待机中') {
-                    const activities = ['待机中', '监控中...', '准备活动...'];
-                    const randomActivity = activities[Math.floor(Math.random() * activities.length)];
-                    activitySpan.textContent = randomActivity;
-                }
-            }
+
         }, 5000);
 
         // 测试增强功能
         function testEnhancedFeatures() {
             console.log('=== 增强功能测试 ===');
-            
+
             if (!window.game) {
                 console.error('游戏对象未找到');
                 return;
             }
-            
+
             if (!window.game.gameManager) {
                 console.error('GameManager 未初始化');
                 return;
             }
-            
+
             const gameManager = window.game.gameManager;
-            
+
             // 测试资源系统
             const resourceSystem = gameManager.getResourceSystem();
             if (resourceSystem) {
@@ -4675,49 +4700,49 @@
                 console.log('  满意度:', resourceSystem.getResource('satisfaction'));
                 console.log('  声望:', resourceSystem.getResource('reputation'));
                 console.log('  生产力:', resourceSystem.getResource('productivity'));
-                
+
                 // 测试资源操作
                 resourceSystem.addResource('money', 5000);
                 console.log('✅ 添加5000资金测试完成');
-                
+
                 resourceSystem.addResource('satisfaction', 10);
                 console.log('✅ 添加10满意度测试完成');
             }
-            
+
             // 测试成就系统
             const achievementSystem = gameManager.getAchievementSystem();
             if (achievementSystem) {
                 console.log('🏆 成就系统状态:');
                 console.log('  总成就数:', achievementSystem.achievements.size);
                 console.log('  已解锁:', achievementSystem.unlockedAchievements.size);
-                
+
                 // 显示成就摘要
                 const summary = achievementSystem.getAchievementSummary();
                 console.log('  完成度:', summary.completionRate + '%');
                 console.log('  类别统计:', summary.categoryStats);
-                
+
                 // 手动检查成就
                 achievementSystem.checkAchievements();
                 console.log('✅ 成就检查测试完成');
-                
+
                 // 显示成就面板
                 console.log('💡 提示: 点击"成就面板"按钮查看详细成就信息');
             }
-            
+
             // 测试事件系统
             const eventSystem = gameManager.getEventSystem();
             if (eventSystem) {
                 console.log('🎲 事件系统状态:');
                 console.log('  总事件数:', eventSystem.events.size);
                 console.log('  活跃事件:', eventSystem.activeEvents.size);
-                
+
                 // 触发测试事件
                 const testEvent = eventSystem.triggerRandomEvent();
                 if (testEvent) {
                     console.log('✅ 随机事件触发测试完成:', testEvent.name);
                 }
             }
-            
+
             // 测试进展系统
             const progressionSystem = gameManager.getProgressionSystem();
             if (progressionSystem) {
@@ -4725,12 +4750,12 @@
                 console.log('  当前等级:', progressionSystem.level);
                 console.log('  经验值:', progressionSystem.experience);
                 console.log('  下级所需:', progressionSystem.experienceToNext);
-                
+
                 // 添加测试经验
                 progressionSystem.addExperience(100, '测试');
                 console.log('✅ 经验添加测试完成');
             }
-            
+
             console.log('=== 测试完成 ===');
         }
 
@@ -4757,13 +4782,13 @@
         // 显示成就标签页
         function showAchievementTab(tabName) {
             currentAchievementTab = tabName;
-            
+
             // 更新标签页样式
             document.querySelectorAll('.achievement-tab').forEach(tab => {
                 tab.classList.remove('active');
             });
             event.target.classList.add('active');
-            
+
             // 更新成就列表
             updateAchievementList();
         }
@@ -4771,17 +4796,17 @@
         // 更新成就面板
         function updateAchievementPanel() {
             if (!window.game || !window.game.gameManager) return;
-            
+
             const achievementSystem = window.game.gameManager.getAchievementSystem();
             if (!achievementSystem) return;
-            
+
             const summary = achievementSystem.getAchievementSummary();
-            
+
             // 更新统计信息
             document.getElementById('achievementCompletionRate').textContent = summary.completionRate + '%';
             document.getElementById('achievementUnlocked').textContent = summary.unlocked;
             document.getElementById('achievementTotal').textContent = summary.total;
-            
+
             // 更新成就列表
             updateAchievementList();
         }
@@ -4789,13 +4814,13 @@
         // 更新成就列表
         function updateAchievementList() {
             if (!window.game || !window.game.gameManager) return;
-            
+
             const achievementSystem = window.game.gameManager.getAchievementSystem();
             if (!achievementSystem) return;
-            
+
             const allAchievements = achievementSystem.getAllAchievements();
             let filteredAchievements = [];
-            
+
             switch (currentAchievementTab) {
                 case 'unlocked':
                     filteredAchievements = allAchievements.filter(a => a.unlocked);
@@ -4809,15 +4834,15 @@
                 default:
                     filteredAchievements = allAchievements;
             }
-            
+
             const listContainer = document.getElementById('achievementList');
             listContainer.innerHTML = '';
-            
+
             filteredAchievements.forEach(achievement => {
                 const achievementElement = createAchievementElement(achievement);
                 listContainer.appendChild(achievementElement);
             });
-            
+
             if (filteredAchievements.length === 0) {
                 listContainer.innerHTML = '<div style="text-align: center; color: #6c757d; padding: 20px;">暂无成就</div>';
             }
@@ -4827,14 +4852,14 @@
         function createAchievementElement(achievement) {
             const element = document.createElement('div');
             element.className = `achievement-item ${achievement.unlocked ? 'unlocked' : ''}`;
-            
+
             const icon = achievement.icon || '🏆';
             const progress = achievement.progress || 0;
             const progressText = achievement.unlocked ? '已完成' : `${Math.floor(progress)}%`;
-            
+
             // 格式化奖励文本
             const rewardText = formatRewardText(achievement.reward);
-            
+
             element.innerHTML = `
                 <div class="achievement-icon">${icon}</div>
                 <div class="achievement-info">
@@ -4849,14 +4874,14 @@
                     ${rewardText ? `<div class="achievement-reward">奖励: ${rewardText}</div>` : ''}
                 </div>
             `;
-            
+
             return element;
         }
 
         // 格式化奖励文本
         function formatRewardText(reward) {
             if (!reward) return '';
-            
+
             const rewardParts = [];
             const rewardNames = {
                 money: '💰',
@@ -4864,28 +4889,28 @@
                 satisfaction: '😊',
                 productivity: '📈'
             };
-            
+
             for (const [type, amount] of Object.entries(reward)) {
                 const icon = rewardNames[type] || type;
                 rewardParts.push(`${icon}${amount}`);
             }
-            
+
             return rewardParts.join(' ');
         }
 
         // 更新成就显示（在状态栏）
         function updateAchievementDisplay() {
             if (!window.game || !window.game.gameManager) return;
-            
+
             const achievementSystem = window.game.gameManager.getAchievementSystem();
             if (!achievementSystem) return;
-            
+
             const summary = achievementSystem.getAchievementSummary();
-            
+
             // 更新状态栏中的成就计数
             const achievementCountElement = document.getElementById('achievementCount');
             const totalAchievementsElement = document.getElementById('totalAchievements');
-            
+
             if (achievementCountElement) {
                 achievementCountElement.textContent = summary.unlocked;
             }
@@ -4900,19 +4925,19 @@
             const nameElement = document.getElementById('unlockedAchievementName');
             const descriptionElement = document.getElementById('unlockedAchievementDescription');
             const rewardElement = document.getElementById('unlockedAchievementReward');
-            
+
             if (overlay && nameElement && descriptionElement && rewardElement) {
                 nameElement.textContent = achievement.name;
                 descriptionElement.textContent = achievement.description;
                 rewardElement.textContent = '奖励: ' + formatRewardText(achievement.reward);
-                
+
                 overlay.style.display = 'flex';
-                
+
                 // 3秒后自动关闭
                 setTimeout(() => {
                     overlay.style.display = 'none';
                 }, 3000);
-                
+
                 // 点击关闭
                 overlay.onclick = () => {
                     overlay.style.display = 'none';
@@ -4956,13 +4981,13 @@
             // 显示进展统计
             const levelStat = document.getElementById('level-stat');
             const experienceStat = document.getElementById('experience-stat');
-            
+
             if (levelStat) levelStat.style.display = 'block';
             if (experienceStat) experienceStat.style.display = 'block';
-            
+
             // 定期更新进展显示
             setInterval(updateProgressionDisplay, 1000);
-            
+
             // 监听等级提升事件
             setupLevelUpListener();
         }
@@ -4981,24 +5006,24 @@
         // 显示进展标签页
         function showProgressionTab(tabName) {
             currentProgressionTab = tabName;
-            
+
             // 更新标签页样式
             document.querySelectorAll('.progression-tab').forEach(tab => {
                 tab.classList.remove('active');
             });
             event.target.classList.add('active');
-            
+
             // 隐藏所有内容
             document.querySelectorAll('.progression-tab-content').forEach(content => {
                 content.style.display = 'none';
             });
-            
+
             // 显示选中的内容
             const targetContent = document.getElementById(`progression${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`);
             if (targetContent) {
                 targetContent.style.display = 'block';
             }
-            
+
             // 更新对应内容
             switch (tabName) {
                 case 'overview':
@@ -5019,18 +5044,18 @@
         // 更新进展面板
         function updateProgressionPanel() {
             if (!window.game || !window.game.gameManager) return;
-            
+
             const progressionSystem = window.game.gameManager.getProgressionSystem();
             if (!progressionSystem) return;
-            
+
             const summary = progressionSystem.getProgressSummary();
-            
+
             // 更新统计信息
             document.getElementById('progressionCurrentLevel').textContent = summary.level;
             document.getElementById('progressionEmployeeCapacity').textContent = summary.employeeCapacity;
             document.getElementById('progressionUnlockedFeatures').textContent = summary.unlockedFeatures.length;
             document.getElementById('progressionFloors').textContent = summary.maxFloors;
-            
+
             // 更新当前标签页内容
             switch (currentProgressionTab) {
                 case 'overview':
@@ -5051,18 +5076,18 @@
         // 更新进展概览
         function updateProgressionOverview() {
             if (!window.game || !window.game.gameManager) return;
-            
+
             const progressionSystem = window.game.gameManager.getProgressionSystem();
             if (!progressionSystem) return;
-            
+
             const levelProgress = progressionSystem.getLevelProgress();
-            
+
             // 更新等级显示
             document.getElementById('currentLevelDisplay').textContent = levelProgress.level;
             document.getElementById('currentExperience').textContent = levelProgress.experience;
             document.getElementById('experienceRequired').textContent = levelProgress.experienceToNext;
             document.getElementById('experienceRemaining').textContent = levelProgress.experienceToNext - levelProgress.experience;
-            
+
             // 更新进度条
             const progressFill = document.getElementById('levelProgressFill');
             const progressText = document.getElementById('levelProgressText');
@@ -5071,7 +5096,7 @@
                 progressFill.style.width = progressPercent + '%';
                 progressText.textContent = progressPercent + '%';
             }
-            
+
             // 更新下一级解锁内容
             updateNextLevelUnlocks();
         }
@@ -5079,18 +5104,18 @@
         // 更新下一级解锁内容
         function updateNextLevelUnlocks() {
             if (!window.game || !window.game.gameManager) return;
-            
+
             const progressionSystem = window.game.gameManager.getProgressionSystem();
             if (!progressionSystem) return;
-            
+
             const nextLevel = progressionSystem.companyLevel + 1;
             const unlockPreview = progressionSystem.getLevelUnlockPreview(nextLevel);
             const container = document.getElementById('nextLevelUnlocks');
-            
+
             if (!container) return;
-            
+
             container.innerHTML = '';
-            
+
             if (unlockPreview.unlockDetails && unlockPreview.unlockDetails.length > 0) {
                 unlockPreview.unlockDetails.forEach(unlock => {
                     const unlockElement = createUnlockElement(unlock, nextLevel, false);
@@ -5104,17 +5129,17 @@
         // 更新解锁预览
         function updateUnlockPreview() {
             if (!window.game || !window.game.gameManager) return;
-            
+
             const progressionSystem = window.game.gameManager.getProgressionSystem();
             if (!progressionSystem) return;
-            
+
             const upcomingUnlocks = progressionSystem.getUpcomingUnlocks(5);
             const container = document.getElementById('futureUnlocks');
-            
+
             if (!container) return;
-            
+
             container.innerHTML = '';
-            
+
             upcomingUnlocks.forEach(levelUnlock => {
                 if (levelUnlock.unlockDetails && levelUnlock.unlockDetails.length > 0) {
                     // 添加等级标题
@@ -5122,14 +5147,14 @@
                     levelHeader.style.cssText = 'font-size: 1.1rem; font-weight: 600; color: #28a745; margin: 15px 0 10px 0; border-bottom: 1px solid #e9ecef; padding-bottom: 5px;';
                     levelHeader.textContent = `等级 ${levelUnlock.level}`;
                     container.appendChild(levelHeader);
-                    
+
                     levelUnlock.unlockDetails.forEach(unlock => {
                         const unlockElement = createUnlockElement(unlock, levelUnlock.level, true);
                         container.appendChild(unlockElement);
                     });
                 }
             });
-            
+
             if (container.children.length === 0) {
                 container.innerHTML = '<div style="text-align: center; color: #6c757d; padding: 20px;">暂无更多解锁内容</div>';
             }
@@ -5139,7 +5164,7 @@
         function createUnlockElement(unlock, level, isLocked) {
             const element = document.createElement('div');
             element.className = `unlock-item ${isLocked ? 'locked' : ''}`;
-            
+
             const categoryIcons = {
                 'management': '👥',
                 'analytics': '📊',
@@ -5153,9 +5178,9 @@
                 'basic': '🔧',
                 'automation': '🤖'
             };
-            
+
             const icon = categoryIcons[unlock.category] || '🔓';
-            
+
             element.innerHTML = `
                 <div class="unlock-icon">${icon}</div>
                 <div class="unlock-info">
@@ -5164,29 +5189,29 @@
                 </div>
                 <div class="unlock-level ${isLocked ? 'locked' : ''}">等级 ${level}</div>
             `;
-            
+
             return element;
         }
 
         // 更新里程碑进度
         function updateMilestoneProgress() {
             if (!window.game || !window.game.gameManager) return;
-            
+
             const progressionSystem = window.game.gameManager.getProgressionSystem();
             if (!progressionSystem) return;
-            
+
             const milestones = progressionSystem.getMilestoneProgress();
             const container = document.getElementById('milestoneList');
-            
+
             if (!container) return;
-            
+
             container.innerHTML = '';
-            
+
             milestones.forEach(milestone => {
                 const milestoneElement = createMilestoneElement(milestone);
                 container.appendChild(milestoneElement);
             });
-            
+
             if (milestones.length === 0) {
                 container.innerHTML = '<div style="text-align: center; color: #6c757d; padding: 20px;">暂无里程碑</div>';
             }
@@ -5197,9 +5222,9 @@
             const element = document.createElement('div');
             const isCompleted = milestone.completed;
             const isInProgress = !isCompleted && milestone.progress > 0;
-            
+
             element.className = `milestone-item ${isCompleted ? 'completed' : isInProgress ? 'in-progress' : ''}`;
-            
+
             const categoryIcons = {
                 'employees': '👥',
                 'financial': '💰',
@@ -5207,14 +5232,14 @@
                 'satisfaction': '😊',
                 'time': '⏰'
             };
-            
+
             const icon = categoryIcons[milestone.category] || '🏁';
             const progress = Math.floor(milestone.progress);
             const progressText = isCompleted ? '已完成' : `${progress}%`;
-            
+
             // 格式化奖励文本
             const rewardText = formatMilestoneReward(milestone.rewards);
-            
+
             element.innerHTML = `
                 <div class="milestone-icon ${isCompleted ? 'completed' : ''}">${icon}</div>
                 <div class="milestone-info">
@@ -5229,14 +5254,14 @@
                     ${rewardText ? `<div class="milestone-reward">奖励: ${rewardText}</div>` : ''}
                 </div>
             `;
-            
+
             return element;
         }
 
         // 格式化里程碑奖励文本
         function formatMilestoneReward(rewards) {
             if (!rewards) return '';
-            
+
             const rewardParts = [];
             const rewardNames = {
                 money: '💰',
@@ -5245,43 +5270,43 @@
                 productivity: '📈',
                 experience: '⭐'
             };
-            
+
             for (const [type, amount] of Object.entries(rewards)) {
                 if (type === 'features' || type === 'floors') continue;
                 const icon = rewardNames[type] || type;
                 rewardParts.push(`${icon}${amount}`);
             }
-            
+
             if (rewards.features && rewards.features.length > 0) {
                 rewardParts.push(`🔓${rewards.features.length}项功能`);
             }
-            
+
             if (rewards.floors) {
                 rewardParts.push(`🏢${rewards.floors}层楼`);
             }
-            
+
             return rewardParts.join(' ');
         }
 
         // 更新楼层管理
         function updateFloorManagement() {
             if (!window.game || !window.game.gameManager) return;
-            
+
             const progressionSystem = window.game.gameManager.getProgressionSystem();
             if (!progressionSystem) return;
-            
+
             const floors = progressionSystem.getAllFloors();
             const container = document.getElementById('floorList');
-            
+
             if (!container) return;
-            
+
             container.innerHTML = '';
-            
+
             floors.forEach(floor => {
                 const floorElement = createFloorElement(floor);
                 container.appendChild(floorElement);
             });
-            
+
             if (floors.length === 0) {
                 container.innerHTML = '<div style="text-align: center; color: #6c757d; padding: 20px;">暂无楼层信息</div>';
             }
@@ -5291,10 +5316,10 @@
         function createFloorElement(floor) {
             const element = document.createElement('div');
             element.className = `milestone-item ${floor.unlocked ? 'completed' : ''}`;
-            
+
             const occupancyRate = floor.capacity > 0 ? Math.floor((floor.currentEmployees / floor.capacity) * 100) : 0;
             const statusColor = occupancyRate > 80 ? '#dc3545' : occupancyRate > 60 ? '#ffc107' : '#28a745';
-            
+
             element.innerHTML = `
                 <div class="milestone-icon ${floor.unlocked ? 'completed' : ''}">🏢</div>
                 <div class="milestone-info">
@@ -5314,24 +5339,24 @@
                     ${floor.maintenanceCost > 0 ? `<div class="milestone-reward">维护成本: 💰${floor.maintenanceCost}/5分钟</div>` : ''}
                 </div>
             `;
-            
+
             return element;
         }
 
         // 更新进展显示（在状态栏）
         function updateProgressionDisplay() {
             if (!window.game || !window.game.gameManager) return;
-            
+
             const progressionSystem = window.game.gameManager.getProgressionSystem();
             if (!progressionSystem) return;
-            
+
             const levelProgress = progressionSystem.getLevelProgress();
-            
+
             // 更新状态栏中的等级和经验
             const levelElement = document.getElementById('companyLevel');
             const experienceElement = document.getElementById('experiencePoints');
             const experienceToNextElement = document.getElementById('experienceToNext');
-            
+
             if (levelElement) {
                 levelElement.textContent = levelProgress.level;
             }
@@ -5347,13 +5372,13 @@
         function setupLevelUpListener() {
             // 监听等级变化
             let lastLevel = 1;
-            
+
             setInterval(() => {
                 if (!window.game || !window.game.gameManager) return;
-                
+
                 const progressionSystem = window.game.gameManager.getProgressionSystem();
                 if (!progressionSystem) return;
-                
+
                 const currentLevel = progressionSystem.companyLevel;
                 if (currentLevel > lastLevel) {
                     // 等级提升了，显示庆祝动画
@@ -5366,33 +5391,33 @@
         // 显示等级提升庆祝动画
         function showLevelUpAnimation(newLevel, oldLevel) {
             if (!window.game || !window.game.gameManager) return;
-            
+
             const progressionSystem = window.game.gameManager.getProgressionSystem();
             if (!progressionSystem) return;
-            
+
             const overlay = document.getElementById('levelUpOverlay');
             const levelElement = document.getElementById('levelUpNewLevel');
             const rewardsElement = document.getElementById('levelUpRewards');
             const unlocksElement = document.getElementById('levelUpUnlocks');
-            
+
             if (!overlay || !levelElement || !rewardsElement || !unlocksElement) return;
-            
+
             // 获取等级奖励信息
             const levelRewards = progressionSystem.getLevelRewards(newLevel);
             const unlockPreview = progressionSystem.getLevelUnlockPreview(newLevel);
-            
+
             // 设置动画内容
             levelElement.textContent = newLevel;
-            
+
             // 格式化奖励文本
             const rewardParts = [];
             if (levelRewards.money) rewardParts.push(`💰 +${levelRewards.money.toLocaleString()}元`);
             if (levelRewards.reputation) rewardParts.push(`⭐ +${levelRewards.reputation}声望`);
             if (levelRewards.satisfaction) rewardParts.push(`😊 +${levelRewards.satisfaction}满意度`);
             if (levelRewards.productivity) rewardParts.push(`📈 +${levelRewards.productivity}生产力`);
-            
+
             rewardsElement.innerHTML = rewardParts.join('<br>');
-            
+
             // 格式化解锁内容
             const unlockParts = [];
             if (unlockPreview.unlockDetails && unlockPreview.unlockDetails.length > 0) {
@@ -5400,16 +5425,16 @@
                     unlockParts.push(`🔓 ${unlock.name}`);
                 });
             }
-            
+
             if (unlockParts.length > 0) {
                 unlocksElement.innerHTML = '新解锁:<br>' + unlockParts.join('<br>');
             } else {
                 unlocksElement.innerHTML = '继续努力，更多功能等待解锁！';
             }
-            
+
             // 显示动画
             overlay.style.display = 'flex';
-            
+
             // 播放庆祝音效（如果有的话）
             console.log(`🎉 恭喜！公司等级从 ${oldLevel} 提升到 ${newLevel}！`);
         }
@@ -5442,11 +5467,11 @@
             // 更新顶部统计栏
             const achievementCountElement = document.getElementById('achievementCount');
             const totalAchievementsElement = document.getElementById('totalAchievements');
-            
+
             if (achievementCountElement) {
                 achievementCountElement.textContent = summary.unlocked;
             }
-            
+
             if (totalAchievementsElement) {
                 totalAchievementsElement.textContent = summary.total;
             }
@@ -5496,7 +5521,7 @@
 
             const summary = achievementSystem.getAchievementSummary();
             updateAchievementPanelStats(summary);
-            
+
             // 默认显示所有成就
             showAchievementTab('all');
         }
@@ -5568,7 +5593,7 @@
             achievements.forEach(achievement => {
                 const achievementItem = document.createElement('div');
                 achievementItem.className = `achievement-item ${achievement.unlocked ? 'unlocked' : ''}`;
-                
+
                 const progressPercent = Math.floor(achievement.progress || 0);
                 const rewardText = formatAchievementRewards(achievement.reward);
 
@@ -5596,7 +5621,7 @@
         // 格式化成就奖励
         function formatAchievementRewards(reward) {
             if (!reward) return '';
-            
+
             const rewardParts = [];
             const resourceIcons = {
                 money: '💰',
@@ -5604,19 +5629,19 @@
                 satisfaction: '😊',
                 productivity: '📈'
             };
-            
+
             for (const [resource, amount] of Object.entries(reward)) {
                 const icon = resourceIcons[resource] || resource;
                 rewardParts.push(`${icon}${amount}`);
             }
-            
+
             return rewardParts.join(' ');
         }
 
         // 成就解锁动画
-        window.showAchievementUnlockAnimation = function(achievement) {
+        window.showAchievementUnlockAnimation = function (achievement) {
             console.log(`🏆 成就解锁动画: ${achievement.name}`);
-            
+
             const overlay = document.getElementById('achievementUnlockOverlay');
             const nameElement = document.getElementById('unlockedAchievementName');
             const descriptionElement = document.getElementById('unlockedAchievementDescription');
@@ -5686,7 +5711,7 @@
             console.log('🔧 插件调试信息:');
             console.log('可用插件:', window.game.getPluginList());
             console.log('已实施解决方案:', window.game.getSolutions());
-            
+
             if (window.game.gameManager) {
                 console.log('增强功能状态:', window.game.gameManager.getGameSummary());
             }
@@ -5700,7 +5725,7 @@
             }
 
             console.log('🎮 测试增强功能...');
-            
+
             // 测试资源系统
             const resourceSystem = window.game.gameManager.getResourceSystem();
             if (resourceSystem) {
@@ -5728,105 +5753,23 @@
             console.log('🎉 增强功能测试完成！');
         }
 
-        // 插件管理函数
-        function togglePlugin(pluginName, pluginId) {
-            if (!game) {
-                console.log('❌ 游戏未初始化');
-                return;
-            }
 
-            const plugin = game.plugins.get(pluginName);
-            if (!plugin) {
-                console.log(`❌ 插件 "${pluginName}" 未找到`);
-                return;
-            }
 
-            const button = document.getElementById(`${pluginId}-toggle`);
-            const status = document.getElementById(`${pluginId}-status`);
-            const card = document.getElementById(`${pluginId}-plugin-card`);
-            const settings = document.getElementById(`${pluginId}-settings`);
 
-            if (plugin.isActive) {
-                // 停用插件
-                const success = game.deactivatePlugin(pluginName);
-                if (success && button && status && card) {
-                    button.textContent = '激活插件';
-                    button.className = 'btn btn-primary';
-                    status.textContent = '未激活';
-                    status.className = 'plugin-status';
-                    card.classList.remove('active');
-                    if (settings) settings.style.display = 'none';
-                }
-            } else {
-                // 检查资源是否足够
-                if (!canActivatePlugin(pluginName)) {
-                    showResourceWarning('资源不足，无法激活插件！', 'danger');
-                    return;
-                }
-
-                // 激活插件
-                const success = game.activatePlugin(pluginName);
-                if (success && button && status && card) {
-                    button.textContent = '停用插件';
-                    button.className = 'btn btn-danger';
-                    status.textContent = '已激活';
-                    status.className = 'plugin-status active';
-                    card.classList.add('active');
-                    if (settings) settings.style.display = 'block';
-                }
-            }
-        }
-
-        // 检查是否能激活插件
-        function canActivatePlugin(pluginName) {
-            if (!game || !game.gameManager) return false;
-
-            const resourceSystem = game.gameManager.getResourceSystem();
-            if (!resourceSystem) return false;
-
-            // 插件激活成本
-            const pluginCosts = {
-                '智能空调系统': { money: 5000, reputation: 5 },
-                '打印机维护系统': { money: 3000, reputation: 3 },
-                '员工健康计划': { money: 8000, reputation: 10 }
-            };
-
-            const cost = pluginCosts[pluginName];
-            if (!cost) return true;
-
-            return resourceSystem.canAfford(cost);
-        }
-
-        // 插件特定功能
-        function adjustTemperature(level) {
-            console.log(`🌡️ 调整温度级别: ${level}`);
-        }
-
-        function emergencyRepair() {
-            console.log('🚨 执行紧急维修');
-            showNotification('🔧 紧急维修完成！', 'success');
-        }
-
-        function conductHealthCheck() {
-            console.log('🏥 进行健康检查');
-            showNotification('💪 员工健康检查完成！', 'success');
-        }
 
         // 游戏初始化已在 game.js 中通过 window.addEventListener('load', ...) 处理
 
         // 全局函数导出
         window.updateEmployeeCount = updateEmployeeCount;
         window.updateGameTime = updateGameTime;
-        
+
         // 全局等级提升动画函数（供GameManager调用）
         window.showLevelUpAnimation = showLevelUpAnimation;
-        
+
         // 全局插件管理函数
         window.togglePlugin = togglePlugin;
-        window.canActivatePlugin = canActivatePlugin;
         window.adjustTemperature = adjustTemperature;
         window.emergencyRepair = emergencyRepair;
-        window.conductHealthCheck = conductHealthCheck;
 
         // ===== 统计面板函数 =====
 
@@ -5912,7 +5855,7 @@
 
             const resourceSystem = window.game.gameManager.getResourceSystem();
             const statisticsSystem = window.game.gameManager.getStatisticsSystem();
-            
+
             if (!resourceSystem || !statisticsSystem) return;
 
             const summary = statisticsSystem.getStatisticsSummary();
@@ -6054,7 +5997,7 @@
             if (iconElement && valueElement) {
                 // 更新图标和样式
                 iconElement.className = `trend-icon ${trend.direction}`;
-                
+
                 switch (trend.direction) {
                     case 'increasing':
                         iconElement.textContent = '📈';
@@ -6077,7 +6020,7 @@
             if (!reportElement) return;
 
             let report = '<div style="line-height: 1.6;">';
-            
+
             // 分析各项趋势
             Object.entries(trends).forEach(([metric, trend]) => {
                 const metricNames = {
@@ -6114,20 +6057,20 @@
             const kpi = `
                 <div style="line-height: 1.8;">
                     <p><strong>运营效率:</strong> ${Math.round(performance.efficiency)}% 
-                       ${performance.efficiency >= 70 ? '<span style="color: #28a745;">优秀</span>' : 
-                         performance.efficiency >= 50 ? '<span style="color: #ffc107;">良好</span>' : 
-                         '<span style="color: #dc3545;">需改进</span>'}</p>
+                       ${performance.efficiency >= 70 ? '<span style="color: #28a745;">优秀</span>' :
+                    performance.efficiency >= 50 ? '<span style="color: #ffc107;">良好</span>' :
+                        '<span style="color: #dc3545;">需改进</span>'}</p>
                     <p><strong>增长速度:</strong> ${Math.round(performance.growthRate)}% 
-                       ${performance.growthRate > 0 ? '<span style="color: #28a745;">正增长</span>' : 
-                         performance.growthRate < 0 ? '<span style="color: #dc3545;">负增长</span>' : 
-                         '<span style="color: #6c757d;">无增长</span>'}</p>
+                       ${performance.growthRate > 0 ? '<span style="color: #28a745;">正增长</span>' :
+                    performance.growthRate < 0 ? '<span style="color: #dc3545;">负增长</span>' :
+                        '<span style="color: #6c757d;">无增长</span>'}</p>
                     <p><strong>员工留存:</strong> ${Math.round(performance.retentionRate)}% 
-                       ${performance.retentionRate >= 80 ? '<span style="color: #28a745;">优秀</span>' : 
-                         performance.retentionRate >= 60 ? '<span style="color: #ffc107;">良好</span>' : 
-                         '<span style="color: #dc3545;">需关注</span>'}</p>
+                       ${performance.retentionRate >= 80 ? '<span style="color: #28a745;">优秀</span>' :
+                    performance.retentionRate >= 60 ? '<span style="color: #ffc107;">良好</span>' :
+                        '<span style="color: #dc3545;">需关注</span>'}</p>
                     <p><strong>盈利能力:</strong> ${Math.round(performance.profitability)}% 
-                       ${performance.profitability > 0 ? '<span style="color: #28a745;">盈利</span>' : 
-                         '<span style="color: #dc3545;">亏损</span>'}</p>
+                       ${performance.profitability > 0 ? '<span style="color: #28a745;">盈利</span>' :
+                    '<span style="color: #dc3545;">亏损</span>'}</p>
                 </div>
             `;
             kpiElement.innerHTML = kpi;
@@ -6154,7 +6097,7 @@
             history.forEach(suggestion => {
                 const executedTime = new Date(suggestion.executedAt).toLocaleString();
                 const costText = suggestion.estimatedCost ? `成本: ${suggestion.estimatedCost.toLocaleString()}元` : '无成本';
-                
+
                 html += `
                     <div style="background: #f8f9fa; padding: 10px; margin-bottom: 8px; border-radius: 6px; border-left: 3px solid #28a745;">
                         <div style="font-weight: 600; color: #333;">${suggestion.title}</div>
@@ -6235,24 +6178,24 @@
 
             let html = '';
             suggestions.forEach((suggestion, index) => {
-                const priorityClass = suggestion.priority === 'critical' ? 'high-priority' : 
-                                    suggestion.priority === 'high' ? 'high-priority' :
-                                    suggestion.priority === 'medium' ? 'medium-priority' : '';
-                
+                const priorityClass = suggestion.priority === 'critical' ? 'high-priority' :
+                    suggestion.priority === 'high' ? 'high-priority' :
+                        suggestion.priority === 'medium' ? 'medium-priority' : '';
+
                 const priorityIcon = suggestion.priority === 'critical' ? '🚨' :
-                                   suggestion.priority === 'high' ? '⚠️' :
-                                   suggestion.priority === 'medium' ? '💡' : 'ℹ️';
-                
-                const costText = suggestion.estimatedCost ? 
+                    suggestion.priority === 'high' ? '⚠️' :
+                        suggestion.priority === 'medium' ? '💡' : 'ℹ️';
+
+                const costText = suggestion.estimatedCost ?
                     `<div style="font-size: 0.8rem; color: #dc3545; margin-top: 5px;">
                         💰 预估成本: ${suggestion.estimatedCost.toLocaleString()}元
                     </div>` : '';
-                
-                const benefitText = suggestion.expectedBenefit ? 
+
+                const benefitText = suggestion.expectedBenefit ?
                     `<div style="font-size: 0.8rem; color: #28a745; margin-top: 3px;">
                         📈 预期收益: ${suggestion.expectedBenefit}
                     </div>` : '';
-                
+
                 html += `
                     <div class="suggestion-item ${priorityClass}" style="position: relative;">
                         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
@@ -6343,10 +6286,10 @@
 
             try {
                 const data = statisticsSystem.exportData(format);
-                const blob = new Blob([data], { 
-                    type: format === 'json' ? 'application/json' : 'text/csv' 
+                const blob = new Blob([data], {
+                    type: format === 'json' ? 'application/json' : 'text/csv'
                 });
-                
+
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
@@ -6383,7 +6326,7 @@
             try {
                 statisticsSystem.clearHistoricalData();
                 alert('历史统计数据已清除');
-                
+
                 // 刷新当前显示的数据
                 updateStatisticsPanel();
             } catch (error) {
@@ -6412,7 +6355,7 @@
             }
 
             const suggestion = suggestions[suggestionIndex];
-            
+
             // 确认执行
             let confirmMessage = `确定要执行建议"${suggestion.title}"吗？`;
             if (suggestion.estimatedCost) {
@@ -6554,7 +6497,7 @@
 
             const currentState = statisticsSystem.autoSuggestionsEnabled;
             statisticsSystem.enableAutoSuggestions(!currentState);
-            
+
             // 更新按钮文本
             const button = document.getElementById('autoSuggestionsToggle');
             if (button) {
@@ -6569,26 +6512,26 @@
         window.executeSuggestion = executeSuggestion;
         window.showSuggestionDetails = showSuggestionDetails;
         window.toggleAutoSuggestions = toggleAutoSuggestions;
-        
+
         // 全局成就和进展面板函数
         window.toggleAchievementPanel = toggleAchievementPanel;
         window.toggleProgressionPanel = toggleProgressionPanel;
-        
+
         // 全局调试和测试函数
         window.debugPlugins = debugPlugins;
         window.testEnhancedFeatures = testEnhancedFeatures;
-        
+
         // 全局标签页切换函数
         window.showAchievementTab = showAchievementTab;
         window.showProgressionTab = showProgressionTab;
         window.showStatisticsTab = showStatisticsTab;
-        
+
         // 全局对话框函数
         window.closeLevelUpAnimation = closeLevelUpAnimation;
         window.closeEventDialog = closeEventDialog;
         window.closeEventResultDialog = closeEventResultDialog;
         window.closeEmployeeDetailsPanel = closeEmployeeDetailsPanel;
-        
+
         // 全局数据导出函数
         window.exportStatisticsData = exportStatisticsData;
         window.clearStatisticsData = clearStatisticsData;
@@ -6598,7 +6541,7 @@
         // 社交分享面板
         function toggleSocialPanel() {
             let panel = document.getElementById('socialPanel');
-            
+
             if (panel) {
                 document.body.removeChild(panel);
                 return;
@@ -6618,9 +6561,9 @@
             panel = document.createElement('div');
             panel.id = 'socialPanel';
             panel.className = 'social-panel';
-            
+
             const summary = leaderboardSystem.getLeaderboardSummary();
-            
+
             panel.innerHTML = `
                 <div class="social-panel-header">
                     <h3>🌟 社交分享</h3>
@@ -6670,7 +6613,7 @@
             `;
 
             document.body.appendChild(panel);
-            
+
             // 初始化内容
             updateSocialPanel();
         }
@@ -6684,11 +6627,11 @@
             document.querySelectorAll('.social-tab-content').forEach(content => {
                 content.classList.remove('active');
             });
-            
+
             // 激活选中的标签
             event.target.classList.add('active');
             document.getElementById(tabName + 'Tab').classList.add('active');
-            
+
             // 更新内容
             updateSocialTabContent(tabName);
         }
@@ -6701,7 +6644,7 @@
         // 更新社交标签内容
         function updateSocialTabContent(tabName) {
             const leaderboardSystem = window.game.gameManager.getLeaderboardSystem();
-            
+
             switch (tabName) {
                 case 'share':
                     updateShareTab(leaderboardSystem);
@@ -6720,7 +6663,7 @@
             // 更新成就分享列表
             const achievementSystem = window.game.gameManager.getAchievementSystem();
             const recentAchievements = achievementSystem.getUnlockedAchievements().slice(-5);
-            
+
             const achievementList = document.getElementById('achievementShareList');
             if (achievementList) {
                 achievementList.innerHTML = recentAchievements.map(achievement => `
@@ -6734,7 +6677,7 @@
                     </div>
                 `).join('');
             }
-            
+
             // 更新分享历史
             const shareHistory = document.getElementById('shareHistory');
             if (shareHistory) {
@@ -6756,7 +6699,7 @@
         function updateLeaderboardTab(leaderboardSystem) {
             const leaderboards = leaderboardSystem.getAllLeaderboards();
             const content = document.getElementById('leaderboardContent');
-            
+
             if (content) {
                 content.innerHTML = `
                     <div class="leaderboard-selector">
@@ -6768,7 +6711,7 @@
                     </div>
                     <div id="selectedLeaderboard"></div>
                 `;
-                
+
                 // 显示第一个排行榜
                 if (leaderboards.length > 0) {
                     updateSelectedLeaderboard();
@@ -6780,11 +6723,11 @@
         function updateSelectedLeaderboard() {
             const select = document.getElementById('leaderboardSelect');
             const leaderboardSystem = window.game.gameManager.getLeaderboardSystem();
-            
+
             if (select && leaderboardSystem) {
                 const leaderboard = leaderboardSystem.getLeaderboard(select.value, 10);
                 const container = document.getElementById('selectedLeaderboard');
-                
+
                 if (container && leaderboard) {
                     container.innerHTML = `
                         <div class="leaderboard-header">
@@ -6815,7 +6758,7 @@
             const activeChallenges = leaderboardSystem.getActiveChallenges();
             const specialEvents = leaderboardSystem.getActiveSpecialEvents();
             const content = document.getElementById('challengesContent');
-            
+
             if (content) {
                 content.innerHTML = `
                     <div class="challenges-section">
@@ -6838,10 +6781,10 @@
                                         <span class="progress-text">${challenge.progress}/${challenge.target}</span>
                                     </div>
                                     <div class="challenge-actions">
-                                        ${challenge.completed && !challenge.claimed ? 
-                                            `<button class="btn btn-success" onclick="claimChallengeReward('${challenge.id}')">领取奖励</button>` : 
-                                            `<span class="time-remaining">${formatTimeRemaining(challenge.timeRemaining)}</span>`
-                                        }
+                                        ${challenge.completed && !challenge.claimed ?
+                        `<button class="btn btn-success" onclick="claimChallengeReward('${challenge.id}')">领取奖励</button>` :
+                        `<span class="time-remaining">${formatTimeRemaining(challenge.timeRemaining)}</span>`
+                    }
                                         <button class="btn btn-sm btn-secondary" onclick="shareChallenge('${challenge.id}')">分享</button>
                                     </div>
                                 </div>
@@ -6869,10 +6812,10 @@
                                         <span class="progress-text">${event.progress}/${event.target}</span>
                                     </div>
                                     <div class="event-actions">
-                                        ${event.completed && !event.claimed ? 
-                                            `<button class="btn btn-success" onclick="claimChallengeReward('${event.id}')">领取奖励</button>` : 
-                                            `<span class="time-remaining">${formatTimeRemaining(event.timeRemaining)}</span>`
-                                        }
+                                        ${event.completed && !event.claimed ?
+                            `<button class="btn btn-success" onclick="claimChallengeReward('${event.id}')">领取奖励</button>` :
+                            `<span class="time-remaining">${formatTimeRemaining(event.timeRemaining)}</span>`
+                        }
                                         <button class="btn btn-sm btn-secondary" onclick="shareSpecialEvent('${event.id}')">分享</button>
                                     </div>
                                 </div>
@@ -6887,7 +6830,7 @@
         function captureAndShare() {
             const leaderboardSystem = window.game.gameManager.getLeaderboardSystem();
             const screenshot = leaderboardSystem.captureOfficeScreenshot();
-            
+
             if (screenshot) {
                 const shareData = leaderboardSystem.shareOfficeStatus();
                 showSharePreview(shareData);
@@ -6900,7 +6843,7 @@
         function shareAchievement(achievementId) {
             const leaderboardSystem = window.game.gameManager.getLeaderboardSystem();
             const shareData = leaderboardSystem.shareAchievement(achievementId);
-            
+
             if (shareData) {
                 showSharePreview(shareData);
             } else {
@@ -6922,7 +6865,7 @@
                 },
                 timestamp: Date.now()
             };
-            
+
             leaderboardSystem.shareHistory.push(shareData);
             showSharePreview(shareData);
         }
@@ -6931,7 +6874,7 @@
         function recordCurrentScore(leaderboardId) {
             const leaderboardSystem = window.game.gameManager.getLeaderboardSystem();
             const success = leaderboardSystem.recordScore(leaderboardId, '当前玩家');
-            
+
             if (success) {
                 alert('成绩已记录到排行榜！');
                 updateSelectedLeaderboard();
@@ -6944,7 +6887,7 @@
         function shareLeaderboard(leaderboardId) {
             const leaderboardSystem = window.game.gameManager.getLeaderboardSystem();
             const leaderboard = leaderboardSystem.getLeaderboard(leaderboardId, 5);
-            
+
             if (leaderboard) {
                 const shareData = {
                     type: 'leaderboard',
@@ -6956,7 +6899,7 @@
                     playerRank: leaderboardSystem.getPlayerRank(leaderboardId),
                     timestamp: Date.now()
                 };
-                
+
                 leaderboardSystem.shareHistory.push(shareData);
                 showSharePreview(shareData);
             }
@@ -6966,7 +6909,7 @@
         function shareChallenge(challengeId) {
             const leaderboardSystem = window.game.gameManager.getLeaderboardSystem();
             const challenge = leaderboardSystem.challenges.get(challengeId);
-            
+
             if (challenge) {
                 const shareData = {
                     type: 'challenge',
@@ -6980,7 +6923,7 @@
                     },
                     timestamp: Date.now()
                 };
-                
+
                 leaderboardSystem.shareHistory.push(shareData);
                 showSharePreview(shareData);
             }
@@ -6995,7 +6938,7 @@
         function claimChallengeReward(challengeId) {
             const leaderboardSystem = window.game.gameManager.getLeaderboardSystem();
             const success = leaderboardSystem.claimChallengeReward(challengeId);
-            
+
             if (success) {
                 alert('奖励已领取！');
                 updateSocialTabContent('challenges');
@@ -7131,7 +7074,7 @@
         function copyShareData(encodedData) {
             const shareData = JSON.parse(atob(encodedData));
             const shareText = generateShareText(shareData);
-            
+
             navigator.clipboard.writeText(shareText).then(() => {
                 alert('分享数据已复制到剪贴板！');
             }).catch(() => {
@@ -7192,30 +7135,30 @@ ${shareData.achievement.description}
             const shareData = JSON.parse(atob(encodedData));
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
-            
+
             canvas.width = 600;
             canvas.height = 400;
-            
+
             // 背景
             ctx.fillStyle = '#f8f9fa';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
+
             // 标题
             ctx.fillStyle = '#333';
             ctx.font = 'bold 24px Arial';
             ctx.textAlign = 'center';
             ctx.fillText('办公室生存游戏', canvas.width / 2, 50);
-            
+
             // 内容
             ctx.font = '16px Arial';
             ctx.textAlign = 'left';
             const shareText = generateShareText(shareData);
             const lines = shareText.split('\n');
-            
+
             lines.forEach((line, index) => {
                 ctx.fillText(line, 50, 100 + index * 25);
             });
-            
+
             // 下载
             const link = document.createElement('a');
             link.download = `office-game-share-${type}-${Date.now()}.png`;
@@ -7228,7 +7171,7 @@ ${shareData.achievement.description}
             const shareData = JSON.parse(atob(encodedData));
             const dataStr = JSON.stringify(shareData, null, 2);
             const dataBlob = new Blob([dataStr], { type: 'application/json' });
-            
+
             const link = document.createElement('a');
             link.download = `office-game-share-${shareData.type}-${Date.now()}.json`;
             link.href = URL.createObjectURL(dataBlob);
@@ -7241,7 +7184,7 @@ ${shareData.achievement.description}
             const minutes = Math.floor(seconds / 60);
             const hours = Math.floor(minutes / 60);
             const days = Math.floor(hours / 24);
-            
+
             if (days > 0) return `${days}天${hours % 24}小时`;
             if (hours > 0) return `${hours}小时${minutes % 60}分钟`;
             if (minutes > 0) return `${minutes}分钟`;
@@ -7252,7 +7195,7 @@ ${shareData.achievement.description}
         function reshareContent(timestamp) {
             const leaderboardSystem = window.game.gameManager.getLeaderboardSystem();
             const shareItem = leaderboardSystem.shareHistory.find(item => item.timestamp == timestamp);
-            
+
             if (shareItem) {
                 showSharePreview(shareItem);
             }

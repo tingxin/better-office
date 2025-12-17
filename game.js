@@ -2,6 +2,7 @@
 class PluginAPI {
     constructor(game) {
         this.game = game;
+        this.effectSystem = new VisualEffectSystem(game);
     }
 
     // 获取抱怨统计数据
@@ -21,6 +22,11 @@ class PluginAPI {
             activityAreas: [...this.game.activityAreas],
             computers: [...this.game.computers]
         };
+    }
+
+    // 获取视觉效果系统
+    getEffectSystem() {
+        return this.effectSystem;
     }
 
     // 实施解决方案
@@ -60,6 +66,17 @@ class PluginAPI {
         }
     }
 
+    // 减少员工抱怨触发频率
+    reduceComplaintFrequency(employees = null, reductionFactor = 1.5) {
+        const targetEmployees = employees || this.game.employees;
+        targetEmployees.forEach(employee => {
+            if (employee.nextComplaintTime > 0) {
+                employee.nextComplaintTime *= reductionFactor;
+            }
+        });
+        console.log(`🔇 员工抱怨频率已降低 ${Math.round((reductionFactor - 1) * 100)}%`);
+    }
+
     // 添加新的活动区域
     addActivityArea(area) {
         this.game.activityAreas.push(area);
@@ -79,7 +96,7 @@ class PluginAPI {
 
 // 插件基类 - 所有插件都应该继承这个类
 class OfficePlugin {
-    constructor(name, description, targetComplaints = [], author = '未知作者', version = '1.0.0') {
+    constructor(name, description, targetComplaints = [], author = '未知作者', version = '1.0.0', config = {}) {
         this.name = name;
         this.description = description;
         this.targetComplaints = targetComplaints;
@@ -87,12 +104,38 @@ class OfficePlugin {
         this.version = version;
         this.isActive = false;
         this.api = null;
+
+        // 插件配置
+        this.config = {
+            effectInterval: 5000, // 默认5秒触发一次效果
+            complaintReduction: 0.1, // 默认每次减少10%抱怨
+            icon: '🔌', // 插件图标
+            color: '#4CAF50', // 插件主题色
+            ...config
+        };
+
+        // 视觉效果系统
+        this.effectSystem = null;
+        this.effectTimer = null;
+
+        // 抱怨映射 - 将抱怨类型映射到具体的抱怨ID
+        this.complaintMapping = new Map();
     }
 
     // 插件初始化
     init(api) {
         this.api = api;
+        this.effectSystem = api.getEffectSystem();
+        this.initComplaintMapping();
         console.log(`🔌 插件 "${this.name}" 已加载`);
+    }
+
+    // 初始化抱怨映射
+    initComplaintMapping() {
+        // 子类可以重写此方法来定义具体的抱怨映射
+        this.targetComplaints.forEach(complaint => {
+            this.complaintMapping.set(complaint, [complaint]);
+        });
     }
 
     // 激活插件
@@ -101,6 +144,7 @@ class OfficePlugin {
 
         this.isActive = true;
         this.onActivate();
+        this.startEffectTimer();
         console.log(`▶️ 插件 "${this.name}" 已激活`);
         return true;
     }
@@ -110,9 +154,46 @@ class OfficePlugin {
         if (!this.isActive) return false;
 
         this.isActive = false;
+        this.stopEffectTimer();
         this.onDeactivate();
         console.log(`⏸️ 插件 "${this.name}" 已停用`);
         return true;
+    }
+
+    // 开始效果定时器
+    startEffectTimer() {
+        if (this.effectTimer) {
+            clearInterval(this.effectTimer);
+        }
+
+        this.effectTimer = setInterval(() => {
+            if (this.isActive) {
+                this.triggerVisualEffect();
+                this.processComplaintReduction();
+            }
+        }, this.config.effectInterval);
+    }
+
+    // 停止效果定时器
+    stopEffectTimer() {
+        if (this.effectTimer) {
+            clearInterval(this.effectTimer);
+            this.effectTimer = null;
+        }
+    }
+
+    // 触发视觉效果 - 子类需要实现
+    triggerVisualEffect() {
+        // 子类实现具体的视觉效果
+    }
+
+    // 处理抱怨减少
+    processComplaintReduction() {
+        this.complaintMapping.forEach((complaintIds, category) => {
+            complaintIds.forEach(complaintId => {
+                this.api.reduceComplaints(complaintId, this.config.complaintReduction);
+            });
+        });
     }
 
     // 子类需要实现的方法
@@ -132,8 +213,349 @@ class OfficePlugin {
             author: this.author,
             version: this.version,
             isActive: this.isActive,
-            targetComplaints: this.targetComplaints
+            targetComplaints: this.targetComplaints,
+            config: this.config,
+            icon: this.config.icon,
+            color: this.config.color
         };
+    }
+
+    // 更新配置
+    updateConfig(newConfig) {
+        this.config = { ...this.config, ...newConfig };
+        if (this.isActive) {
+            this.stopEffectTimer();
+            this.startEffectTimer();
+        }
+    }
+}
+
+// 视觉效果系统 - 管理插件的视觉效果
+class VisualEffectSystem {
+    constructor(game) {
+        this.game = game;
+        this.effectCanvas = null;
+        this.effectCtx = null;
+        this.activeEffects = new Map();
+        this.particles = [];
+        this.animationId = null;
+
+        this.initEffectCanvas();
+    }
+
+    // 初始化效果画布
+    initEffectCanvas() {
+        // 创建效果层画布
+        this.effectCanvas = document.createElement('canvas');
+        this.effectCanvas.width = this.game.width;
+        this.effectCanvas.height = this.game.height;
+        this.effectCanvas.style.position = 'absolute';
+        this.effectCanvas.style.top = '0';
+        this.effectCanvas.style.left = '0';
+        this.effectCanvas.style.pointerEvents = 'none';
+        this.effectCanvas.style.zIndex = '10';
+        this.effectCtx = this.effectCanvas.getContext('2d');
+
+        // 将效果画布添加到游戏容器
+        const gameContainer = document.getElementById('gameContainer');
+        if (gameContainer) {
+            gameContainer.style.position = 'relative';
+            gameContainer.appendChild(this.effectCanvas);
+        }
+
+        // 开始动画循环
+        this.startAnimation();
+    }
+
+    // 开始动画循环
+    startAnimation() {
+        const animate = () => {
+            this.updateEffects();
+            this.renderEffects();
+            this.animationId = requestAnimationFrame(animate);
+        };
+        animate();
+    }
+
+    // 停止动画循环
+    stopAnimation() {
+        if (this.animationId) {
+            cancelAnimationFrame(this.animationId);
+            this.animationId = null;
+        }
+    }
+
+    // 添加空调凉风效果
+    addCoolingEffect(areas = null) {
+        const targetAreas = areas || this.game.activityAreas.filter(area =>
+            area.name.includes('空调') || area.name.includes('温控')
+        );
+
+        targetAreas.forEach(area => {
+            for (let i = 0; i < 8; i++) {
+                this.particles.push({
+                    type: 'cooling',
+                    x: area.x + Math.random() * area.width,
+                    y: area.y + area.height,
+                    vx: (Math.random() - 0.5) * 2,
+                    vy: -1 - Math.random() * 2,
+                    life: 1.0,
+                    maxLife: 2.0 + Math.random() * 2,
+                    size: 2 + Math.random() * 3
+                });
+            }
+        });
+
+        console.log('❄️ 空调凉风效果已添加');
+    }
+
+    // 添加打印机工作效果
+    addPrinterWorkingEffect(printers = null) {
+        const targetPrinters = printers || this.game.activityAreas.filter(area =>
+            area.name.includes('打印机')
+        );
+
+        targetPrinters.forEach(printer => {
+            // 添加绿色进度条效果
+            this.activeEffects.set(`printer_${printer.name}`, {
+                type: 'printer_progress',
+                x: printer.x,
+                y: printer.y - 10,
+                width: printer.width,
+                height: 4,
+                progress: 0,
+                duration: 3000, // 3秒完成一个打印任务
+                startTime: Date.now()
+            });
+
+            // 添加纸张飞出效果
+            for (let i = 0; i < 3; i++) {
+                this.particles.push({
+                    type: 'paper',
+                    x: printer.x + printer.width * 0.8,
+                    y: printer.y + printer.height * 0.5,
+                    vx: 1 + Math.random(),
+                    vy: -0.5 + Math.random() * 0.5,
+                    life: 1.0,
+                    maxLife: 1.5 + Math.random(),
+                    size: 3 + Math.random() * 2,
+                    rotation: Math.random() * Math.PI * 2,
+                    rotationSpeed: (Math.random() - 0.5) * 0.2
+                });
+            }
+        });
+
+        console.log('🖨️ 打印机工作效果已添加');
+    }
+
+    // 添加通用粒子效果
+    addParticleEffect(x, y, type, count = 10) {
+        for (let i = 0; i < count; i++) {
+            let particle;
+
+            switch (type) {
+                case 'sparkle':
+                    particle = {
+                        type: 'sparkle',
+                        x: x + (Math.random() - 0.5) * 20,
+                        y: y + (Math.random() - 0.5) * 20,
+                        vx: (Math.random() - 0.5) * 3,
+                        vy: (Math.random() - 0.5) * 3,
+                        life: 1.0,
+                        maxLife: 1.0 + Math.random(),
+                        size: 1 + Math.random() * 2,
+                        color: `hsl(${Math.random() * 60 + 40}, 70%, 60%)`
+                    };
+                    break;
+
+                case 'maintenance':
+                    particle = {
+                        type: 'maintenance',
+                        x: x + (Math.random() - 0.5) * 30,
+                        y: y + (Math.random() - 0.5) * 30,
+                        vx: (Math.random() - 0.5) * 1,
+                        vy: -1 - Math.random(),
+                        life: 1.0,
+                        maxLife: 2.0 + Math.random(),
+                        size: 2 + Math.random() * 2,
+                        color: '#4CAF50'
+                    };
+                    break;
+
+                default:
+                    particle = {
+                        type: 'generic',
+                        x: x,
+                        y: y,
+                        vx: (Math.random() - 0.5) * 2,
+                        vy: -Math.random() * 2,
+                        life: 1.0,
+                        maxLife: 1.5,
+                        size: 2,
+                        color: '#2196F3'
+                    };
+            }
+
+            this.particles.push(particle);
+        }
+    }
+
+    // 更新效果
+    updateEffects() {
+        const currentTime = Date.now();
+
+        // 更新粒子
+        this.particles = this.particles.filter(particle => {
+            particle.x += particle.vx;
+            particle.y += particle.vy;
+            particle.life -= 1 / 60; // 假设60FPS
+
+            if (particle.rotation !== undefined) {
+                particle.rotation += particle.rotationSpeed;
+            }
+
+            // 重力效果
+            if (particle.type === 'paper') {
+                particle.vy += 0.02;
+            }
+
+            return particle.life > 0;
+        });
+
+        // 更新活动效果
+        this.activeEffects.forEach((effect, key) => {
+            if (effect.type === 'printer_progress') {
+                const elapsed = currentTime - effect.startTime;
+                effect.progress = Math.min(1, elapsed / effect.duration);
+
+                if (effect.progress >= 1) {
+                    // 重新开始进度
+                    effect.startTime = currentTime;
+                    effect.progress = 0;
+                }
+            }
+        });
+    }
+
+    // 渲染效果
+    renderEffects() {
+        // 清空画布
+        this.effectCtx.clearRect(0, 0, this.effectCanvas.width, this.effectCanvas.height);
+
+        // 渲染活动效果
+        this.activeEffects.forEach(effect => {
+            if (effect.type === 'printer_progress') {
+                this.renderProgressBar(effect);
+            }
+        });
+
+        // 渲染粒子
+        this.particles.forEach(particle => {
+            this.renderParticle(particle);
+        });
+    }
+
+    // 渲染进度条
+    renderProgressBar(effect) {
+        const ctx = this.effectCtx;
+
+        // 背景
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+        ctx.fillRect(effect.x, effect.y, effect.width, effect.height);
+
+        // 进度
+        ctx.fillStyle = '#4CAF50';
+        ctx.fillRect(effect.x, effect.y, effect.width * effect.progress, effect.height);
+
+        // 边框
+        ctx.strokeStyle = '#2E7D32';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(effect.x, effect.y, effect.width, effect.height);
+    }
+
+    // 渲染粒子
+    renderParticle(particle) {
+        const ctx = this.effectCtx;
+        const alpha = particle.life / particle.maxLife;
+
+        ctx.save();
+        ctx.globalAlpha = alpha;
+
+        if (particle.rotation !== undefined) {
+            ctx.translate(particle.x, particle.y);
+            ctx.rotate(particle.rotation);
+            ctx.translate(-particle.x, -particle.y);
+        }
+
+        switch (particle.type) {
+            case 'cooling':
+                ctx.fillStyle = `rgba(173, 216, 230, ${alpha})`;
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                ctx.fill();
+                break;
+
+            case 'paper':
+                ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+                ctx.fillRect(
+                    particle.x - particle.size / 2,
+                    particle.y - particle.size / 2,
+                    particle.size,
+                    particle.size * 1.4
+                );
+                ctx.strokeStyle = `rgba(200, 200, 200, ${alpha})`;
+                ctx.lineWidth = 0.5;
+                ctx.strokeRect(
+                    particle.x - particle.size / 2,
+                    particle.y - particle.size / 2,
+                    particle.size,
+                    particle.size * 1.4
+                );
+                break;
+
+            case 'sparkle':
+                ctx.fillStyle = particle.color;
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                ctx.fill();
+                break;
+
+            case 'maintenance':
+                ctx.fillStyle = particle.color;
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                ctx.fill();
+                break;
+
+            default:
+                ctx.fillStyle = particle.color || '#2196F3';
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                ctx.fill();
+        }
+
+        ctx.restore();
+    }
+
+    // 清除特定效果
+    clearEffect(effectId) {
+        this.activeEffects.delete(effectId);
+    }
+
+    // 清除所有效果
+    clearAllEffects() {
+        this.activeEffects.clear();
+        this.particles = [];
+    }
+
+    // 销毁效果系统
+    destroy() {
+        this.stopAnimation();
+        this.clearAllEffects();
+
+        if (this.effectCanvas && this.effectCanvas.parentNode) {
+            this.effectCanvas.parentNode.removeChild(this.effectCanvas);
+        }
     }
 }
 
@@ -213,16 +635,16 @@ class OfficeGame {
 
         // 增强功能管理器
         this.gameManager = null;
-        
+
         // 个性系统
         this.personalitySystem = new PersonalitySystem();
-        
+
         // 性能优化器
         this.performanceOptimizer = null;
-        
+
         // 用户体验增强器
         this.uxEnhancer = null;
-        
+
         // 错误恢复系统
         this.errorRecoverySystem = null;
 
@@ -437,7 +859,7 @@ class OfficeGame {
     initializeEnhancements() {
         console.log('🔧 开始初始化增强功能...');
         console.log('GameManager 类型:', typeof GameManager);
-        
+
         // 初始化性能优化器
         if (typeof PerformanceOptimizer !== 'undefined') {
             try {
@@ -448,7 +870,7 @@ class OfficeGame {
                 console.error('❌ 性能优化器初始化失败:', error);
             }
         }
-        
+
         // 初始化用户体验增强器
         if (typeof UXEnhancer !== 'undefined') {
             try {
@@ -460,7 +882,7 @@ class OfficeGame {
                 console.error('❌ 用户体验增强器初始化失败:', error);
             }
         }
-        
+
         // 初始化错误恢复系统
         if (typeof ErrorRecoverySystem !== 'undefined') {
             try {
@@ -471,25 +893,25 @@ class OfficeGame {
                 console.error('❌ 错误恢复系统初始化失败:', error);
             }
         }
-        
+
         // 确保GameManager类已加载
         if (typeof GameManager !== 'undefined') {
             try {
                 this.gameManager = new GameManager(this);
                 this.gameManager.initialize();
                 console.log('🎮 游戏增强功能已启用');
-                
+
                 // 测试系统访问
                 const resourceSystem = this.gameManager.getResourceSystem();
                 if (resourceSystem) {
                     console.log('💰 资源系统已就绪，初始资金:', resourceSystem.getResource('money'));
                 }
-                
+
                 const achievementSystem = this.gameManager.getAchievementSystem();
                 if (achievementSystem) {
                     console.log('🏆 成就系统已就绪，成就数量:', achievementSystem.achievements.size);
                 }
-                
+
             } catch (error) {
                 console.error('❌ 增强功能初始化失败:', error);
             }
@@ -610,19 +1032,19 @@ class OfficeGame {
             complaint: null,
             complaintTimer: 0,
             nextComplaintTime: 60 + Math.random() * 180, // 1-4秒后第一次抱怨
-            
+
             // 个性特征 (五大人格)
             personality: personality,
-            
+
             // 技能属性
             skills: skills,
-            
+
             // 状态属性
             mood: initialState.mood,
             energy: initialState.energy,
             stress: initialState.stress,
             relationships: initialState.relationships,
-            
+
             // 行为修正参数（基于个性计算）
             behaviorModifiers: this.personalitySystem.modifyBehaviorParameters({ personality: personality })
         };
@@ -707,7 +1129,7 @@ class OfficeGame {
 
         // 更新员工状态（心情、精力、压力）
         if (employee.personality) {
-            this.personalitySystem.updateEmployeeState(employee, 1/60); // 60 FPS
+            this.personalitySystem.updateEmployeeState(employee, 1 / 60); // 60 FPS
         }
 
         // 处理抱怨系统
@@ -750,7 +1172,7 @@ class OfficeGame {
 
                 // 根据个性和状态决定是否抱怨
                 let shouldComplain = currentComplainingCount < 2;
-                
+
                 if (shouldComplain && employee.personality) {
                     // 个性化的抱怨倾向
                     const complaintThreshold = this.calculateComplaintThreshold(employee);
@@ -761,7 +1183,7 @@ class OfficeGame {
                     // 根据个性选择抱怨类型
                     const complaintIndex = this.selectPersonalizedComplaint(employee);
                     employee.complaint = this.complaints[complaintIndex];
-                    
+
                     // 根据个性调整抱怨显示时间
                     const displayDuration = this.calculateComplaintDuration(employee);
                     employee.complaintTimer = displayDuration;
@@ -770,7 +1192,7 @@ class OfficeGame {
                     this.recordComplaint(complaintIndex);
                     console.log(`${employee.name} (${this.personalitySystem.getPersonalityTags(employee).join(', ')}) 抱怨: ${employee.complaint}`);
                 }
-                
+
                 // 设置下次抱怨时间，考虑个性化频率和当前状态
                 this.setNextComplaintTime(employee);
             }
@@ -780,34 +1202,34 @@ class OfficeGame {
     // 计算员工的抱怨阈值（增强版本）
     calculateComplaintThreshold(employee) {
         let threshold = 0.5; // 基础阈值
-        
+
         if (!employee.personality) return threshold;
-        
+
         // 使用个性化行为模式
         const baseAction = { complaintFrequency: 1.0 };
         const adjustedAction = this.personalitySystem.adjustBehaviorPattern(employee, baseAction);
-        
+
         // 神经质影响抱怨倾向
         threshold += (employee.personality.neuroticism / 100) * 0.4;
-        
+
         // 宜人性影响（宜人性高的人较少抱怨）
         threshold -= (employee.personality.agreeableness / 100) * 0.3;
-        
+
         // 外向性影响（外向的人更愿意表达不满）
         threshold += (employee.personality.extroversion / 100) * 0.2;
-        
+
         // 尽责性影响（尽责的人对工作环境要求更高）
         threshold += (employee.personality.conscientiousness / 100) * 0.15;
-        
+
         // 心情和压力影响
         threshold += (employee.stress / 100) * 0.3;
         threshold -= (employee.mood / 100) * 0.2;
-        
+
         // 精力影响
         if (employee.energy < 30) {
             threshold += 0.2;
         }
-        
+
         // 应用个性化的抱怨频率修正
         if (adjustedAction.emotionalVolatility) {
             threshold *= 1.3; // 情绪不稳定的人更容易抱怨
@@ -815,7 +1237,7 @@ class OfficeGame {
         if (adjustedAction.emotionalStability) {
             threshold *= 0.7; // 情绪稳定的人较少抱怨
         }
-        
+
         return Math.max(0.1, Math.min(0.9, threshold));
     }
 
@@ -823,61 +1245,61 @@ class OfficeGame {
     selectPersonalizedComplaint(employee) {
         const personality = employee.personality;
         let weightedComplaints = [];
-        
+
         // 为每个抱怨分配权重
         this.complaints.forEach((complaint, index) => {
             let weight = 1.0;
-            
+
             // 根据个性调整权重
             if (complaint.includes('热') || complaint.includes('空调')) {
                 // 神经质的人更容易抱怨温度
                 weight *= (1 + personality.neuroticism / 200);
             }
-            
+
             if (complaint.includes('噪音') || complaint.includes('大声')) {
                 // 内向的人更容易抱怨噪音
                 weight *= (1 + (100 - personality.extroversion) / 200);
             }
-            
+
             if (complaint.includes('排队') || complaint.includes('等')) {
                 // 尽责性高的人更容易抱怨效率问题
                 weight *= (1 + personality.conscientiousness / 200);
             }
-            
+
             if (complaint.includes('脏') || complaint.includes('清洁')) {
                 // 尽责性高的人更容易抱怨清洁问题
                 weight *= (1 + personality.conscientiousness / 150);
             }
-            
+
             weightedComplaints.push({ index, weight });
         });
-        
+
         // 按权重随机选择
         const totalWeight = weightedComplaints.reduce((sum, item) => sum + item.weight, 0);
         let random = Math.random() * totalWeight;
-        
+
         for (const item of weightedComplaints) {
             random -= item.weight;
             if (random <= 0) {
                 return item.index;
             }
         }
-        
+
         return Math.floor(Math.random() * this.complaints.length);
     }
 
     // 计算抱怨显示持续时间
     calculateComplaintDuration(employee) {
         let baseDuration = 300; // 5秒基础时间
-        
+
         if (employee.personality) {
             // 外向的人抱怨时间更长（更愿意表达）
             baseDuration *= (0.8 + employee.personality.extroversion / 250);
-            
+
             // 神经质的人抱怨时间更长
             baseDuration *= (0.9 + employee.personality.neuroticism / 200);
         }
-        
+
         return Math.floor(baseDuration);
     }
 
@@ -885,13 +1307,13 @@ class OfficeGame {
     setNextComplaintTime(employee) {
         const complaintFrequency = employee.behaviorModifiers?.complaintFrequency || 1.0;
         const baseTime = 900 + Math.random() * 1800; // 15-45秒基础时间
-        
+
         // 根据当前状态调整
         let stateModifier = 1.0;
         if (employee.stress > 70) stateModifier *= 0.7; // 高压力时更频繁抱怨
         if (employee.mood < 30) stateModifier *= 0.8;   // 心情差时更频繁抱怨
         if (employee.energy < 20) stateModifier *= 0.9; // 低精力时更容易抱怨
-        
+
         employee.nextComplaintTime = (baseTime * stateModifier) / complaintFrequency;
     }
 
@@ -900,7 +1322,7 @@ class OfficeGame {
         const workTimeModifier = employee.behaviorModifiers?.workTime || 1.0;
         const workEfficiency = this.personalitySystem.calculateWorkEfficiency(employee, 'general');
         const decreaseRate = workTimeModifier * workEfficiency;
-        
+
         employee.workTimer -= decreaseRate;
 
         // 根据个性调整显示名字的概率
@@ -921,14 +1343,14 @@ class OfficeGame {
                 workDuration: 1.0,
                 breakFrequency: 1.0
             };
-            
+
             const adjustedAction = this.personalitySystem.adjustBehaviorPattern(employee, baseAction);
             const rand = Math.random();
-            
+
             // 根据精力水平调整行为选择
             const energyFactor = employee.energy / 100;
             const adjustedSocialChance = adjustedAction.socialInteractionChance * energyFactor;
-            
+
             if (rand < adjustedSocialChance && adjustedAction.groupActivityPreference !== false) {
                 // 个性化的活动选择
                 this.startActivity(employee);
@@ -994,29 +1416,29 @@ class OfficeGame {
             breakFrequency: 1.0,
             noveltySeekingBehavior: false
         };
-        
+
         const adjustedAction = this.personalitySystem.adjustBehaviorPattern(employee, baseAction);
         const rand = Math.random();
-        
+
         // 根据个性调整行为概率
         let workReturnChance = 0.03;
         let activityChance = 0.03;
         let moveChance = 0.04;
         let socialChance = 0.02;
-        
+
         if (employee.personality) {
             // 尽责性影响回到工作的概率
             workReturnChance *= (0.5 + employee.personality.conscientiousness / 100);
-            
+
             // 外向性影响活动和社交概率
             activityChance *= adjustedAction.socialInteractionChance;
             socialChance *= adjustedAction.socialInteractionChance;
-            
+
             // 开放性影响探索移动的概率
             if (adjustedAction.noveltySeekingBehavior) {
                 moveChance *= 1.5;
             }
-            
+
             // 神经质影响决策速度
             if (employee.personality.neuroticism > 70) {
                 workReturnChance *= 1.3; // 更急于回到安全的工作状态
@@ -1024,11 +1446,11 @@ class OfficeGame {
                 socialChance *= 0.5;     // 避免社交
             }
         }
-        
+
         // 精力和心情影响行为选择
         const energyFactor = employee.energy / 100;
         const moodFactor = employee.mood / 100;
-        
+
         workReturnChance *= (0.5 + energyFactor * 0.5);
         activityChance *= energyFactor;
         moveChance *= (0.7 + moodFactor * 0.3);
@@ -1089,34 +1511,34 @@ class OfficeGame {
             // 使用个性化行为模式选择活动
             const baseAction = { groupActivityPreference: true };
             const adjustedAction = this.personalitySystem.adjustBehaviorPattern(employee, baseAction);
-            
+
             let selectedArea;
-            
+
             if (employee.personality) {
                 const personality = employee.personality;
                 const preferences = [];
-                
+
                 // 外向的人更喜欢社交区域
                 if (personality.extroversion > 60 && adjustedAction.groupActivityPreference) {
-                    const socialAreas = availableAreas.filter(area => 
+                    const socialAreas = availableAreas.filter(area =>
                         ['茶水间', '休息区', '会议室'].includes(area.name));
                     preferences.push(...socialAreas.map(area => ({ area, weight: 2.5 })));
                 }
-                
+
                 // 尽责的人可能更喜欢功能性区域
                 if (personality.conscientiousness > 60 || adjustedAction.organizationLevel === 'high') {
-                    const functionalAreas = availableAreas.filter(area => 
+                    const functionalAreas = availableAreas.filter(area =>
                         ['打印机', '储物间'].includes(area.name));
                     preferences.push(...functionalAreas.map(area => ({ area, weight: 2.0 })));
                 }
-                
+
                 // 神经质高的人可能避免人多的地方
                 if (personality.neuroticism > 70 || adjustedAction.stressReaction === 'high') {
-                    const quietAreas = availableAreas.filter(area => 
+                    const quietAreas = availableAreas.filter(area =>
                         ['洗手间', '储物间'].includes(area.name));
                     preferences.push(...quietAreas.map(area => ({ area, weight: 2.2 })));
                 }
-                
+
                 // 开放性高的人可能尝试不同的活动
                 if (personality.openness > 60 && adjustedAction.noveltySeekingBehavior) {
                     // 给所有区域一个基础权重，鼓励探索
@@ -1126,19 +1548,19 @@ class OfficeGame {
                         }
                     });
                 }
-                
+
                 // 宜人性高的人倾向于选择能帮助他人的区域
                 if (personality.agreeableness > 70 && adjustedAction.helpingBehavior > 1.0) {
-                    const helpfulAreas = availableAreas.filter(area => 
+                    const helpfulAreas = availableAreas.filter(area =>
                         ['茶水间', '会议室'].includes(area.name));
                     preferences.push(...helpfulAreas.map(area => ({ area, weight: 1.8 })));
                 }
-                
+
                 // 如果有偏好，按权重选择
                 if (preferences.length > 0) {
                     const totalWeight = preferences.reduce((sum, pref) => sum + pref.weight, 0);
                     let random = Math.random() * totalWeight;
-                    
+
                     for (const pref of preferences) {
                         random -= pref.weight;
                         if (random <= 0) {
@@ -1148,31 +1570,31 @@ class OfficeGame {
                     }
                 }
             }
-            
+
             // 如果没有特殊偏好或偏好区域不可用，随机选择
             if (!selectedArea) {
                 selectedArea = availableAreas[Math.floor(Math.random() * availableAreas.length)];
             }
-            
+
             employee.currentActivity = selectedArea.name;
-            
+
             // 根据个性调整活动时间和显示
             const nameDisplayDuration = employee.personality?.extroversion > 50 ? 240 : 180;
             employee.nameTimer = nameDisplayDuration;
-            
+
             // 根据个性调整活动持续时间
             const baseActivityTime = 120 + Math.random() * 240;
             let activityTimeModifier = 1.0;
-            
+
             if (adjustedAction.groupActivityPreference) {
                 activityTimeModifier *= 1.2; // 喜欢社交的人活动时间更长
             }
             if (adjustedAction.stressReaction === 'high') {
                 activityTimeModifier *= 0.8; // 容易紧张的人活动时间较短
             }
-            
+
             employee.activityTimer = baseActivityTime * activityTimeModifier;
-            
+
             this.moveEmployeeTo(employee, selectedArea.x + selectedArea.width / 2 - 16, selectedArea.y + selectedArea.height / 2 - 16);
         } else {
             employee.state = 'wandering';
@@ -1226,9 +1648,9 @@ class OfficeGame {
         if (!employee.personality || !employee.currentDesk) return;
 
         // 寻找附近的工作员工
-        const nearbyEmployees = this.employees.filter(other => 
-            other !== employee && 
-            other.state === 'working' && 
+        const nearbyEmployees = this.employees.filter(other =>
+            other !== employee &&
+            other.state === 'working' &&
             other.currentDesk &&
             this.getDistance(employee, other) < 100 // 100像素范围内
         );
@@ -1263,7 +1685,7 @@ class OfficeGame {
             // 协作成功，提升工作效率
             const efficiency1 = this.personalitySystem.calculateWorkEfficiency(employee1, 'general');
             const efficiency2 = this.personalitySystem.calculateWorkEfficiency(employee2, 'general');
-            
+
             // 缩短工作时间（表示效率提升）
             employee1.workTimer *= 0.9;
             employee2.workTimer *= 0.9;
@@ -1281,8 +1703,8 @@ class OfficeGame {
         if (!employee.personality) return;
 
         // 寻找附近的其他员工
-        const nearbyEmployees = this.employees.filter(other => 
-            other !== employee && 
+        const nearbyEmployees = this.employees.filter(other =>
+            other !== employee &&
             this.getDistance(employee, other) < 80 // 80像素范围内
         );
 
@@ -1295,16 +1717,16 @@ class OfficeGame {
 
         // 根据个性选择互动对象
         let targetEmployee = null;
-        
+
         if (employee.personality.extroversion > 60) {
             // 外向的人倾向于与更多人互动
             targetEmployee = nearbyEmployees[Math.floor(Math.random() * nearbyEmployees.length)];
         } else {
             // 内向的人倾向于与关系好的人互动
-            const knownEmployees = nearbyEmployees.filter(other => 
+            const knownEmployees = nearbyEmployees.filter(other =>
                 employee.relationships && employee.relationships.has(other.name)
             );
-            
+
             if (knownEmployees.length > 0) {
                 // 选择关系最好的员工
                 targetEmployee = knownEmployees.reduce((best, current) => {
@@ -1594,11 +2016,11 @@ class OfficeGame {
                 const nameX = employee.x + employee.width / 2 - textWidth / 2 - 6;
                 const boxWidth = textWidth + 12;
                 const boxHeight = 20;
-                
+
                 // 绘制背景矩形（深色背景）
                 this.ctx.fillStyle = '#333333';
                 this.ctx.fillRect(nameX, nameY, boxWidth, boxHeight);
-                
+
                 // 绘制边框
                 this.ctx.strokeStyle = '#666666';
                 this.ctx.lineWidth = 1;
@@ -1778,7 +2200,7 @@ class OfficeGame {
 
         // 使用已过滤的数据
         const validComplaints = sortedComplaints;
-        
+
         if (validComplaints.length === 0) {
             this.ctx.fillStyle = '#6c757d';
             this.ctx.font = '14px Inter, sans-serif';
@@ -1786,9 +2208,9 @@ class OfficeGame {
             this.ctx.fillText('暂无有效抱怨记录', boardX + boardWidth / 2, boardY + 80);
             return;
         }
-        
+
         const maxCount = validComplaints[0][1] || 1; // 防止除以0
-        
+
         validComplaints.forEach((complaint, index) => {
             const [category, count] = complaint;
 
@@ -1985,7 +2407,7 @@ function resetGame() {
 function toggleAchievementPanel() {
     const panel = document.getElementById('achievementPanel');
     if (!panel) return;
-    
+
     if (panel.style.display === 'none' || panel.style.display === '') {
         panel.style.display = 'flex';
         if (typeof updateAchievementPanel === 'function') {
@@ -2000,7 +2422,7 @@ function toggleAchievementPanel() {
 function toggleProgressionPanel() {
     const panel = document.getElementById('progressionPanel');
     if (!panel) return;
-    
+
     if (panel.style.display === 'none' || panel.style.display === '') {
         panel.style.display = 'flex';
         if (typeof updateProgressionPanel === 'function') {
@@ -2015,7 +2437,7 @@ function toggleProgressionPanel() {
 function toggleStatisticsPanel() {
     const panel = document.getElementById('statisticsPanel');
     if (!panel) return;
-    
+
     if (panel.style.display === 'none' || panel.style.display === '') {
         panel.style.display = 'flex';
         if (typeof updateStatisticsPanel === 'function') {

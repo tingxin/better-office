@@ -1,8 +1,26 @@
-# 办公室生存游戏 - 插件开发指南
+# 办公室生存游戏 - 插件开发指南 v2.0
 
 ## 概述
 
-欢迎来到办公室生存游戏插件开发！这个插件系统允许开发者创建解决方案来改善虚拟办公室环境，减少员工抱怨，提升工作满意度。
+欢迎来到办公室生存游戏插件开发！这个插件系统允许开发者创建解决方案来改善虚拟办公室环境，减少员工抱怨，提升工作满意度，并提供丰富的视觉效果。
+
+## 新功能特性
+
+### 🎨 视觉效果系统
+- 独立的效果画布层
+- 粒子效果系统
+- 实时动画渲染
+- 可配置的效果参数
+
+### 📊 增强的抱怨管理
+- 具体抱怨内容映射
+- 抱怨频率控制
+- 个性化抱怨减少
+
+### ⚙️ 可配置插件系统
+- 效果触发间隔配置
+- 抱怨减少率配置
+- 插件主题色和图标
 
 ## 快速开始
 
@@ -16,8 +34,24 @@ class MyPlugin extends OfficePlugin {
         super(
             '插件名称',
             '插件描述',
-            ['目标抱怨类型1', '目标抱怨类型2'] // 可选
+            ['目标抱怨类型1', '目标抱怨类型2'],
+            '作者名称',
+            '版本号',
+            {
+                effectInterval: 5000,      // 效果触发间隔(毫秒)
+                complaintReduction: 0.1,   // 抱怨减少率
+                icon: '🔌',               // 插件图标
+                color: '#4CAF50'          // 主题色
+            }
         );
+    }
+    
+    // 初始化具体抱怨映射
+    initComplaintMapping() {
+        this.complaintMapping.set('抱怨类型', [
+            '具体抱怨内容1',
+            '具体抱怨内容2'
+        ]);
     }
     
     onActivate() {
@@ -26,6 +60,11 @@ class MyPlugin extends OfficePlugin {
     
     onDeactivate() {
         // 插件停用时的清理逻辑
+    }
+    
+    // 实现视觉效果
+    triggerVisualEffect() {
+        // 添加视觉效果逻辑
     }
 }
 ```
@@ -65,6 +104,9 @@ const employees = this.api.getEmployees();
 
 // 获取办公设施
 const facilities = this.api.getFacilities();
+
+// 获取视觉效果系统
+const effectSystem = this.api.getEffectSystem();
 ```
 
 ### 解决方案管理
@@ -88,6 +130,9 @@ this.api.removeSolution('solution-id');
 // 减少特定类型抱怨
 this.api.reduceComplaints('空调问题', 0.5); // 减少50%
 
+// 减少员工抱怨频率
+this.api.reduceComplaintFrequency(null, 1.5); // 增加50%抱怨间隔
+
 // 提升员工满意度
 this.api.boostEmployeeMorale();
 ```
@@ -108,18 +153,62 @@ this.api.addActivityArea({
 });
 ```
 
+### 🎨 视觉效果API
+
+```javascript
+// 获取效果系统
+const effectSystem = this.api.getEffectSystem();
+
+// 添加空调凉风效果
+effectSystem.addCoolingEffect(areas);
+
+// 添加打印机工作效果
+effectSystem.addPrinterWorkingEffect(printers);
+
+// 添加通用粒子效果
+effectSystem.addParticleEffect(x, y, type, count);
+// type: 'sparkle', 'maintenance', 'cooling', 'paper'
+
+// 清除特定效果
+effectSystem.clearEffect(effectId);
+
+// 清除所有效果
+effectSystem.clearAllEffects();
+```
+
 ## 开发示例
 
-### 示例1：简单的清洁服务插件
+### 示例1：带视觉效果的清洁服务插件
 
 ```javascript
 class CleaningServicePlugin extends OfficePlugin {
     constructor() {
         super(
             '专业清洁服务',
-            '定期清洁办公室，保持环境整洁',
-            ['清洁问题', '异味问题']
+            '定期清洁办公室，保持环境整洁，显示清洁效果',
+            ['清洁问题', '异味问题'],
+            '清洁专家',
+            '2.0.0',
+            {
+                effectInterval: 6000,      // 6秒触发一次清洁效果
+                complaintReduction: 0.15,  // 每次减少15%抱怨
+                icon: '🧹',
+                color: '#FF9800'
+            }
         );
+        this.cleaningAreas = [];
+    }
+    
+    // 初始化抱怨映射
+    initComplaintMapping() {
+        this.complaintMapping.set('清洁问题', [
+            '办公室好脏啊，什么时候能打扫一下',
+            '垃圾桶都满了，没人清理'
+        ]);
+        this.complaintMapping.set('异味问题', [
+            '谁在吃榴莲啊，味道太重了',
+            '办公室有股怪味'
+        ]);
     }
     
     onActivate() {
@@ -134,22 +223,40 @@ class CleaningServicePlugin extends OfficePlugin {
         this.api.reduceComplaints('清洁问题', 0.8);
         this.api.reduceComplaints('异味问题', 0.6);
         
-        // 定期清洁
-        this.cleaningInterval = setInterval(() => {
-            this.performCleaning();
-        }, 30000);
+        // 减少抱怨频率
+        this.api.reduceComplaintFrequency(null, 1.3);
+        
+        // 设置清洁区域
+        this.setupCleaningAreas();
     }
     
     onDeactivate() {
         this.api.removeSolution('cleaning-service');
-        if (this.cleaningInterval) {
-            clearInterval(this.cleaningInterval);
-        }
     }
     
-    performCleaning() {
-        this.api.reduceComplaints('清洁问题', 0.1);
-        console.log('🧹 定期清洁完成');
+    setupCleaningAreas() {
+        // 定义需要清洁的区域
+        this.cleaningAreas = [
+            { x: 300, y: 100, width: 400, height: 300 }, // 主办公区
+            { x: 500, y: 420, width: 200, height: 100 }  // 休息区
+        ];
+    }
+    
+    // 触发视觉效果
+    triggerVisualEffect() {
+        if (this.effectSystem) {
+            // 在清洁区域添加清洁粒子效果
+            this.cleaningAreas.forEach(area => {
+                for (let i = 0; i < 8; i++) {
+                    this.effectSystem.addParticleEffect(
+                        area.x + Math.random() * area.width,
+                        area.y + Math.random() * area.height,
+                        'sparkle',
+                        3
+                    );
+                }
+            });
+        }
     }
 }
 ```
